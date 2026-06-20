@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nosotros - Oportunidades Públicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f1f3f5; color: #2c3e50; }
+        
+        .header { background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%); color: white; padding: 100px 0; text-align: center; }
+        .header h1 { font-size: 2.8em; margin-bottom: 15px; }
+        .header p { font-size: 1.2em; opacity: 0.9; max-width: 600px; margin: 0 auto; }
+        
+        .container { max-width: 1100px; margin: 0 auto; padding: 60px 40px; }
+        
+        .section { margin-bottom: 80px; }
+        .section-title { font-size: 2em; color: #1a2332; margin-bottom: 30px; font-weight: 700; }
+        .section-content { font-size: 1.05em; line-height: 1.8; color: #555; }
+        
+        /* MISIÓN */
+        .mission-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        .mission-text h3 { color: #d4af37; font-size: 1.3em; margin-bottom: 15px; }
+        .mission-text p { margin-bottom: 15px; }
+        
+        /* EQUIPO */
+        .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+        .team-card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); text-align: center; }
+        .team-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        .team-photo { width: 100%; height: 280px; background: linear-gradient(135deg, #d4af37 0%, #c4a02e 100%); display: flex; align-items: center; justify-content: center; font-size: 80px; }
+        .team-info { padding: 25px; }
+        .team-name { font-size: 1.3em; font-weight: 700; color: #1a2332; margin-bottom: 5px; }
+        .team-role { color: #d4af37; font-weight: 600; margin-bottom: 15px; }
+        .team-bio { font-size: 0.95em; color: #555; line-height: 1.6; margin-bottom: 15px; }
+        .team-social { display: flex; gap: 10px; justify-content: center; }
+        .team-social a { width: 40px; height: 40px; border-radius: 50%; background: #f1f3f5; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #d4af37; transition: all 0.3s; }
+        .team-social a:hover { background: #d4af37; color: white; }
+        
+        /* STATS */
+        .stats { background: white; padding: 50px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); margin: 40px 0; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+        .stat-item { text-align: center; }
+        .stat-number { font-size: 2.5em; font-weight: 800; color: #d4af37; }
+        .stat-label { color: #555; margin-top: 10px; font-size: 0.95em; }
+        
+        /* VALORES */
+        .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .value-card { background: white; padding: 30px; border-radius: 8px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .value-icon { font-size: 3em; margin-bottom: 15px; }
+        .value-name { font-size: 1.1em; font-weight: 700; color: #1a2332; margin-bottom: 10px; }
+        .value-desc { color: #555; font-size: 0.95em; line-height: 1.6; }
+        
+        /* CERTIFICATIONS */
+        .certifications { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .cert-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 30px; }
+        .cert-item { text-align: center; }
+        .cert-icon { font-size: 2.5em; margin-bottom: 10px; }
+        .cert-name { font-weight: 700; color: #1a2332; margin-bottom: 5px; }
+        .cert-desc { font-size: 0.9em; color: #555; }
+        
+        /* CTA */
+        .cta-section { background: linear-gradient(135deg, #d4af37 0%, #e5c158 100%); color: #1a2332; padding: 50px; border-radius: 8px; text-align: center; margin-top: 80px; }
+        .cta-section h2 { font-size: 1.8em; margin-bottom: 15px; }
+        .cta-section p { font-size: 1.05em; margin-bottom: 25px; }
+        .cta-btn { background: #1a2332; color: white; border: none; padding: 15px 40px; border-radius: 4px; font-size: 1em; font-weight: 700; cursor: pointer; transition: all 0.3s; }
+        .cta-btn:hover { background: #2c3e50; }
+        
+        @media (max-width: 1024px) {
+            .mission-grid { grid-template-columns: 1fr; }
+            .team-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .values-grid { grid-template-columns: 1fr; }
+            .cert-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <h1>Sobre Oportunidades Públicas</h1>
+        <p>Somos un equipo apasionado por democratizar el acceso a subvenciones y licitaciones públicas en España.</p>
+    </div>
+
+    <div class="container">
+        <!-- MISIÓN -->
+        <div class="section">
+            <div class="mission-grid">
+                <div class="mission-text">
+                    <h3>Nuestra Misión</h3>
+                    <p>
+                        Creemos que las pequeñas empresas y autónomos merecen acceso fácil a las oportunidades de financiación pública. 
+                        Hemos visto cómo empresas pierden <strong>€100K+ en ayudas</strong> simplemente porque no sabían que existían.
+                    </p>
+                    <p>
+                        <strong>Oportunidades Públicas existe para cambiar eso.</strong> Usamos tecnología y automatización para poner 
+                        las mejores oportunidades al alcance de todos, sin importar si tienes equipo legal o no.
+                    </p>
+                </div>
+                <div class="mission-text">
+                    <h3>La Realidad</h3>
+                    <p>
+                        En España hay <strong>€8.5 BILLONES</strong> en ayudas públicas disponibles cada año. Pero:
+                    </p>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li>❌ 65% de empresas no tienen acceso a información</li>
+                        <li>❌ 45% desconoce dónde buscar</li>
+                        <li>❌ 80% pierde oportunidades por falta de tiempo</li>
+                        <li>❌ 90% no tiene recursos para redactar solicitudes</li>
+                    </ul>
+                    <p style="margin-top: 15px;">
+                        <strong>Nosotros resolvemos todos estos problemas.</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats">
+            <h2 style="text-align: center; margin-bottom: 40px;">Nuestro Impacto</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">€4.2M</div>
+                    <div class="stat-label">En ayudas conseguidas para nuestros usuarios</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">847</div>
+                    <div class="stat-label">Empresas y autónomos activos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">94%</div>
+                    <div class="stat-label">Tasa de aprobación en plan Premium</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">6x</div>
+                    <div class="stat-label">ROI promedio vs inversión</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EQUIPO -->
+        <div class="section">
+            <h2 class="section-title">Nuestro Equipo</h2>
+            <div class="team-grid">
+                <!-- Salva -->
+                <div class="team-card">
+                    <div class="team-photo">👨‍💼</div>
+                    <div class="team-info">
+                        <div class="team-name">Salva Vázquez</div>
+                        <div class="team-role">Fundador & CEO</div>
+                        <div class="team-bio">
+                            10+ años en administración pública y subvenciones. Ingeniero de software. Vio el problema y decidió resolverlo.
+                        </div>
+                        <div class="team-social">
+                            <a href="#" title="LinkedIn">in</a>
+                            <a href="#" title="Twitter">𝕏</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carlos -->
+                <div class="team-card">
+                    <div class="team-photo">⚖️</div>
+                    <div class="team-info">
+                        <div class="team-name">Carlos Álvarez Ruiz</div>
+                        <div class="team-role">Legal & DPO</div>
+                        <div class="team-bio">
+                            Abogado especializado en GDPR y cumplimiento regulatorio. Asegura que todo lo hacemos es legal y seguro.
+                        </div>
+                        <div class="team-social">
+                            <a href="#" title="LinkedIn">in</a>
+                            <a href="#" title="Twitter">𝕏</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Laura -->
+                <div class="team-card">
+                    <div class="team-photo">💬</div>
+                    <div class="team-info">
+                        <div class="team-name">Laura Serrano Gómez</div>
+                        <div class="team-role">Head of Support</div>
+                        <div class="team-bio">
+                            Gestora pública durante 8 años. Conoce los procesos de solicitud como nadie. Soporta a nuestros usuarios 24/7.
+                        </div>
+                        <div class="team-social">
+                            <a href="#" title="LinkedIn">in</a>
+                            <a href="#" title="Twitter">𝕏</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VALORES -->
+        <div class="section">
+            <h2 class="section-title">Nuestros Valores</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">🎯</div>
+                    <div class="value-name">Enfoque en el Usuario</div>
+                    <div class="value-desc">
+                        Todo lo que hacemos es para facilitar la vida de nuestros usuarios. Si no los ayuda, no lo hacemos.
+                    </div>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🔒</div>
+                    <div class="value-name">Transparencia Total</div>
+                    <div class="value-desc">
+                        Sin sorpresas, sin honorarios ocultos. Precios claros, procesos claros, resultados claros.
+                    </div>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">⚡</div>
+                    <div class="value-name">Innovación Continua</div>
+                    <div class="value-desc">
+                        Mejoramos cada semana basándonos en feedback de nuestros usuarios y datos reales.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CERTIFICACIONES -->
+        <div class="section">
+            <h2 class="section-title">Cumplimiento y Seguridad</h2>
+            <div class="certifications">
+                <div class="cert-grid">
+                    <div class="cert-item">
+                        <div class="cert-icon">🛡️</div>
+                        <div class="cert-name">GDPR Compliant</div>
+                        <div class="cert-desc">Todos tus datos están protegidos según la normativa europea más exigente.</div>
+                    </div>
+                    <div class="cert-item">
+                        <div class="cert-icon">🔐</div>
+                        <div class="cert-name">SSL/TLS Encryption</div>
+                        <div class="cert-desc">Comunicación 100% encriptada. Certificado de seguridad clase A.</div>
+                    </div>
+                    <div class="cert-item">
+                        <div class="cert-icon">☁️</div>
+                        <div class="cert-name">Supabase Enterprise</div>
+                        <div class="cert-desc">Base de datos alojada en infraestructura de nivel empresarial con backups automáticos.</div>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 30px; color: #555;">
+                    Auditamos seguridad mensualmente. <a href="/security" style="color: #d4af37; font-weight: 700; text-decoration: none;">Ver detalles de seguridad →</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- HISTORIA -->
+        <div class="section">
+            <h2 class="section-title">Nuestra Historia</h2>
+            <div class="section-content">
+                <p>
+                    <strong>2024 - El Comienzo</strong><br>
+                    Salva trabajaba como consultor independiente ayudando pequeñas empresas a acceder a subvenciones públicas. 
+                    Se dio cuenta de que 95% de su trabajo era repetitivo y mecanizable. Así nació la idea: ¿y si podemos automatizar todo esto?
+                </p>
+                <p style="margin-top: 20px;">
+                    <strong>Primeras Versiones (Enero-Marzo 2024)</strong><br>
+                    Pasó 3 meses perfeccionando el algoritmo de búsqueda. Probó con 50 usuarios beta. El feedback fue claro: 
+                    "Esto es lo que llevábamos años buscando". Ajustó features, mejoró UX, agregó más integraciones.
+                </p>
+                <p style="margin-top: 20px;">
+                    <strong>Crecimiento (Abril-Junio 2024)</strong><br>
+                    Pasó de 50 a 200 usuarios activos en 2 meses. Agregó el equipo legal (Carlos) para garantizar cumplimiento. 
+                    Luego agregó a Laura para soporte 24/7. Los números hablaban solos: €45K promedio conseguidos por usuario.
+                </p>
+                <p style="margin-top: 20px;">
+                    <strong>Hoy (Junio 2024)</strong><br>
+                    847 empresas activas, €4.2M en ayudas conseguidas, 94% tasa de aprobación. Y recién estamos empezando. 
+                    La misión es llegar a 10.000 usuarios antes de fin de año.
+                </p>
+            </div>
+        </div>
+
+        <!-- VISIÓN -->
+        <div class="section">
+            <h2 class="section-title">Visión 2025</h2>
+            <div class="section-content">
+                <p>
+                    Queremos ser la plataforma #1 de España para acceso a subvenciones y licitaciones públicas. 
+                    Objetivo: ayudar a <strong>50.000 empresas</strong> a conseguir <strong>€1 BILLÓN</strong> en ayudas públicas.
+                </p>
+                <p style="margin-top: 20px;">
+                    Estamos desarrollando:
+                </p>
+                <ul style="margin-top: 15px; padding-left: 30px;">
+                    <li>✅ App móvil (iOS & Android)</li>
+                    <li>✅ Integraciones con software contable (Contaplus, Sage)</li>
+                    <li>✅ API para integradores</li>
+                    <li>✅ Expansión a Portugal e Italia</li>
+                    <li>✅ Análisis predictivo (IA para predecir probabilidad de aprobación)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-section">
+            <h2>¿Listo para conseguir tu primera subvención?</h2>
+            <p>Únete a las 847 empresas que ya están usando Oportunidades Públicas</p>
+            <button class="cta-btn" onclick="window.location='/register'">Empezar gratis</button>
+        </div>
+    </div>
+</body>
+</html>

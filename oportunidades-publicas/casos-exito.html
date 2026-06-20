@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casos de Éxito - Oportunidades Públicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; background: #f5f7fa; }
+        
+        .header { background: linear-gradient(135deg, #003d82 0%, #004a9e 100%); color: white; padding: 20px 0; border-bottom: 4px solid #ffc400; }
+        .header-content { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px; }
+        
+        .title { text-align: center; font-size: 2.5em; color: #003d82; margin-bottom: 50px; font-weight: 800; }
+        
+        .cases-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
+        
+        .case-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.08); transition: all 0.3s; }
+        .case-card:hover { transform: translateY(-8px); box-shadow: 0 12px 32px rgba(0,0,0,0.15); }
+        
+        .case-image { width: 100%; height: 250px; background: linear-gradient(135deg, #003d82, #004a9e); display: flex; align-items: center; justify-content: center; font-size: 5em; }
+        
+        .case-content { padding: 30px; }
+        
+        .case-person { display: flex; gap: 15px; margin-bottom: 20px; }
+        .case-avatar { width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(135deg, #003d82, #004a9e); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.5em; flex-shrink: 0; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        .case-info h3 { color: #003d82; font-weight: 700; margin-bottom: 3px; }
+        .case-info p { color: #999; font-size: 0.9em; }
+        
+        .case-company { background: #f8fafb; padding: 15px; border-radius: 6px; margin-bottom: 20px; }
+        .case-company-name { color: #003d82; font-weight: 700; margin-bottom: 5px; }
+        .case-company-desc { color: #666; font-size: 0.9em; }
+        
+        .case-story { color: #666; font-size: 0.95em; line-height: 1.8; margin-bottom: 20px; font-style: italic; }
+        
+        .case-results { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; background: #e8f5e9; border-radius: 6px; }
+        .result-item { }
+        .result-label { color: #999; font-size: 0.85em; margin-bottom: 5px; }
+        .result-value { color: #2e7d32; font-weight: 700; font-size: 1.4em; }
+        
+        .case-timeline { background: #f8fafb; padding: 15px; border-radius: 6px; margin-top: 20px; font-size: 0.9em; }
+        .timeline-item { display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start; }
+        .timeline-date { color: #999; min-width: 80px; }
+        .timeline-text { color: #666; }
+        
+        .stats-section { background: white; padding: 50px 40px; border-radius: 12px; margin-top: 50px; text-align: center; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+        .stats-title { font-size: 1.8em; color: #003d82; margin-bottom: 30px; font-weight: 700; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .stat { }
+        .stat-number { font-size: 2.5em; color: #003d82; font-weight: 800; }
+        .stat-label { color: #999; margin-top: 8px; }
+        
+        @media (max-width: 768px) {
+            .cases-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .title { font-size: 1.8em; }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-content">
+            <h1 style="font-size: 1.5em;">Casos de Éxito</h1>
+        </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="container">
+        <h2 class="title">Empresas reales, resultados reales</h2>
+
+        <!-- CASES GRID -->
+        <div class="cases-grid">
+            <!-- CASO 1 -->
+            <div class="case-card">
+                <div class="case-image">☀️</div>
+                <div class="case-content">
+                    <div class="case-person">
+                        <div class="case-avatar">JC</div>
+                        <div class="case-info">
+                            <h3>Juan Carlos Rodríguez</h3>
+                            <p>CEO & Founder</p>
+                        </div>
+                    </div>
+
+                    <div class="case-company">
+                        <div class="case-company-name">TecnoEficiencia SL</div>
+                        <div class="case-company-desc">Instalación de placas solares en Sevilla</div>
+                    </div>
+
+                    <div class="case-story">
+                        "Hace 3 meses no sabía cómo buscar subvenciones. Hoy tenemos €180.000 en trámite. El reporte diario de Oportunidades Públicas cambió completamente nuestro negocio."
+                    </div>
+
+                    <div class="case-results">
+                        <div class="result-item">
+                            <div class="result-label">Conseguido</div>
+                            <div class="result-value">€45.000</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">En trámite</div>
+                            <div class="result-value">€135.000</div>
+                        </div>
+                    </div>
+
+                    <div class="case-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">Mes 1</div>
+                            <div class="timeline-text">Descubrimos 8 subvenciones específicas</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Mes 2</div>
+                            <div class="timeline-text">Presentamos 4 solicitudes sin complicaciones</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Mes 3</div>
+                            <div class="timeline-text">Primera aprobación: €45.000</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CASO 2 -->
+            <div class="case-card">
+                <div class="case-image">💻</div>
+                <div class="case-content">
+                    <div class="case-person">
+                        <div class="case-avatar" style="background: linear-gradient(135deg, #2e7d32, #388e3c);">MP</div>
+                        <div class="case-info">
+                            <h3>María Pérez López</h3>
+                            <p>Consultora independiente</p>
+                        </div>
+                    </div>
+
+                    <div class="case-company">
+                        <div class="case-company-name">PerezConsult</div>
+                        <div class="case-company-desc">Consultoría digital para PyMEs</div>
+                    </div>
+
+                    <div class="case-story">
+                        "Como autónoma creía que no tendría opciones. Me sorprendió descubrir 6 subvenciones dirigidas específicamente a mi perfil. Plan Profesional fue clave."
+                    </div>
+
+                    <div class="case-results">
+                        <div class="result-item">
+                            <div class="result-label">Solicitudes</div>
+                            <div class="result-value">6 aprobadas</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Total recibido</div>
+                            <div class="result-value">€28.000</div>
+                        </div>
+                    </div>
+
+                    <div class="case-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">Mes 1</div>
+                            <div class="timeline-text">Plan Profesional: acceso a descargas</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Mes 2</div>
+                            <div class="timeline-text">6 solicitudes rellenadas y presentadas</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Mes 3-4</div>
+                            <div class="timeline-text">Aprobadas 4. Otras 2 en revisión</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CASO 3 -->
+            <div class="case-card">
+                <div class="case-image">🏭</div>
+                <div class="case-content">
+                    <div class="case-person">
+                        <div class="case-avatar" style="background: linear-gradient(135deg, #f57c00, #fb8c00);">AF</div>
+                        <div class="case-info">
+                            <h3>Andrés Fernández</h3>
+                            <p>Director General</p>
+                        </div>
+                    </div>
+
+                    <div class="case-company">
+                        <div class="case-company-name">ManualCraft SL</div>
+                        <div class="case-company-desc">Carpintería artesanal en Córdoba</div>
+                    </div>
+
+                    <div class="case-story">
+                        "Plan Premium cambió todo. Ellos presentan, yo solo subo documentos. Ganamos tiempo valioso y la tasa de éxito es increíble: 3 de 3 aprobadas."
+                    </div>
+
+                    <div class="case-results">
+                        <div class="result-item">
+                            <div class="result-label">Tasa éxito</div>
+                            <div class="result-value">100%</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Total conseguido</div>
+                            <div class="result-value">€92.000</div>
+                        </div>
+                    </div>
+
+                    <div class="case-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">Sem 1</div>
+                            <div class="timeline-text">Plan Premium + asesor dedicado</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Sem 2-3</div>
+                            <div class="timeline-text">Subimos documentos, ellos presentan</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Sem 4-8</div>
+                            <div class="timeline-text">Aprobadas 3 solicitudes consecutivas</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-section">
+            <h2 class="stats-title">Resultados globales de nuestros usuarios</h2>
+            <div class="stats-grid">
+                <div class="stat">
+                    <div class="stat-number">€4.2M</div>
+                    <div class="stat-label">En subvenciones conseguidas en 2026</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">847</div>
+                    <div class="stat-label">Empresas activas en plataforma</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">94%</div>
+                    <div class="stat-label">Tasa de aprobación IA (Premium)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

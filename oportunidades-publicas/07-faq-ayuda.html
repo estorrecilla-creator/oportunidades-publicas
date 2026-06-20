@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preguntas Frecuentes - Oportunidades Públicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7fa; }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        .header { background: linear-gradient(to right, #003d82 0%, #004a9e 100%); color: white; padding: 20px 0; margin-bottom: 40px; border-bottom: 4px solid #ffc400; }
+        .header-content { padding: 0 40px; }
+        .header h1 { font-size: 1.5em; margin-bottom: 5px; }
+        .header p { opacity: 0.9; font-size: 0.95em; }
+        .search-box { background: white; padding: 30px; border-radius: 4px; margin-bottom: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .search-box input { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 4px; font-size: 1em; outline: none; }
+        .search-box input:focus { border-color: #003d82; }
+        .category { margin-bottom: 40px; }
+        .category-title { font-size: 1.3em; color: #003d82; font-weight: 700; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #ffc400; }
+        .faq-item { background: white; padding: 20px; margin-bottom: 15px; border-radius: 4px; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .faq-item:hover { box-shadow: 0 4px 12px rgba(0,61,130,0.1); }
+        .faq-question { color: #003d82; font-weight: 700; font-size: 1em; display: flex; justify-content: space-between; align-items: center; }
+        .faq-answer { color: #666; margin-top: 15px; line-height: 1.6; display: none; }
+        .faq-item.open .faq-answer { display: block; }
+        .faq-item.open .faq-icon { transform: rotate(180deg); }
+        .faq-icon { font-size: 1.5em; transition: transform 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>Preguntas Frecuentes</h1>
+            <p>Resuelve tus dudas sobre Oportunidades Públicas</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="search-box">
+            <input type="text" placeholder="🔍 Busca tu pregunta..." onkeyup="filterFAQ(this)">
+        </div>
+
+        <!-- CATEGORÍA: CÓMO FUNCIONA -->
+        <div class="category">
+            <div class="category-title">📖 Cómo funciona</div>
+
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <span>¿Cómo selecciono mi nicho?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Al registrarte, debes elegir tu sector, tipo de beneficiario y comunidad autónoma. <strong>Esto es definitivo</strong> y no se puede cambiar después (para mantener seguridad y especificidad). Si necesitas cambiar, crea una nueva cuenta.</p>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <span>¿A qué hora llega el reporte diario?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>El reporte se envía a la hora que configures en tu perfil (por defecto 08:00). Puedes cambiarla en Preferencias > Horario de reporte.</p>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <span>¿Qué diferencia hay entre los planes?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p><strong>Básico (€19):</strong> Búsqueda + Reporte diario + Chat básico.<br>
+                    <strong>Profesional (€59):</strong> Todo + Descarga Word/Excel + Simulador ROI + Chat avanzado.<br>
+                    <strong>Premium (€149):</strong> Todo + Nosotros presentamos + Timeline + Seguimiento.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CATEGORÍA: SOLICITUDES -->
+        <div class="category">
+            <div class="category-title">📝 Solicitudes y presentación</div>
+
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <span>¿Puedo descargar la solicitud en Plan Básico?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>No. El Plan Básico solo permite ver información resumida. Para descargar en Word/Excel necesitas Plan Profesional o Premium.</p>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <span>¿Vosotros presentáis la solicitud?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Solo en Plan Premium. Tú subes la documentación en el panel de carga, nosotros validamos y presentamos por ti. En Profesional y Básico, tú la presentas.</p>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <span>¿Cómo funciona el panel de carga de documentos?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Subes tus documentos (fotos o PDF). El sistema valida automáticamente con check verde (✓) o X roja (✗). Si hay errores, te lo indica para que corrijas.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CATEGORÍA: PAGOS -->
+        <div class="category">
+            <div class="category-title">💳 Pagos y suscripción</div>
+
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <span>¿Puedo cambiar de plan en cualquier momento?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Sí. Puedes cambiar de plan en tu Perfil > Suscripción. El cambio es inmediato. Si subes de plan, se prorratea; si bajas, se aplica en la próxima renovación.</p>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <span>¿Hay período de prueba?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>No. Acceso inmediato con el pago. Pero puedes cambiar a Plan Básico (€19/mes) para probar con bajo riesgo.</p>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <span>¿Se renueva automáticamente?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Sí. Puedes cancelar en cualquier momento en Perfil > Suscripción. No hay penalización.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CATEGORÍA: GENERAL -->
+        <div class="category">
+            <div class="category-title">❓ General</div>
+
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <span>¿Es seguro compartir mis datos?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>100% seguro. Usamos encriptación SSL, cumplen RGPD, y tus datos solo se comparten con organismos oficiales si conseguimos una ayuda.</p>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <span>¿Cobráis comisión si gano una ayuda?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>No. El 0% de comisión sobre las ayudas conseguidas. Cobrabamos solo por la suscripción mensual. Todo el dinero conseguido es tuyo.</p>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <div class="faq-question">
+                    <span>¿Cómo contacto con soporte?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Usa el Chat (disponible 24/7 en el dashboard) o escribe a contacto@oportunidadespublicas.es. Respondemos en menos de 2 horas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleFAQ(element) {
+            element.classList.toggle('open');
+        }
+        function filterFAQ(input) {
+            const filter = input.value.toLowerCase();
+            document.querySelectorAll('.faq-item').forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(filter) ? 'block' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>

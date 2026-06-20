@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancelar suscripción - Oportunidades Públicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f1f3f5; color: #2c3e50; }
+        
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        
+        .header { background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%); color: white; padding: 30px 0; border-bottom: 3px solid #d4af37; margin-bottom: 40px; }
+        .header-content { max-width: 800px; margin: 0 auto; padding: 0 20px; }
+        .header h1 { font-size: 1.8em; margin-bottom: 8px; }
+        
+        .main-card { background: white; border-radius: 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 40px; margin-bottom: 30px; }
+        
+        .alert { padding: 20px; border-radius: 5px; margin-bottom: 30px; border-left: 4px solid; }
+        .alert-warning { background: #fff3cd; border-color: #ffc107; color: #856404; }
+        .alert-info { background: #d1ecf1; border-color: #17a2b8; color: #0c5460; }
+        
+        .section { margin-bottom: 35px; }
+        .section h2 { font-size: 1.3em; color: #1a2332; margin-bottom: 15px; font-weight: 700; }
+        
+        .info-box { background: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px; border-left: 3px solid #d4af37; }
+        .info-box-title { font-weight: 700; color: #1a2332; margin-bottom: 8px; }
+        .info-box-text { color: #95a5a6; font-size: 0.95em; }
+        
+        .reasons { display: grid; gap: 15px; margin-bottom: 30px; }
+        .reason-option { padding: 15px; border: 2px solid #ecf0f1; border-radius: 5px; cursor: pointer; transition: all 0.3s; }
+        .reason-option:hover { border-color: #d4af37; background: #fafbfc; }
+        .reason-option.selected { border-color: #d4af37; background: #fafbfc; }
+        .reason-title { font-weight: 600; color: #1a2332; }
+        .reason-desc { font-size: 0.85em; color: #95a5a6; margin-top: 5px; }
+        
+        .feedback-section { margin-bottom: 30px; }
+        .feedback-section textarea { width: 100%; padding: 12px; border: 1px solid #ecf0f1; border-radius: 3px; font-family: inherit; font-size: 0.95em; resize: vertical; height: 120px; }
+        .feedback-section textarea:focus { outline: none; border-color: #d4af37; box-shadow: 0 0 0 3px rgba(212,175,55,0.1); }
+        
+        .consequences { background: #ffe0e0; padding: 20px; border-radius: 5px; margin-bottom: 30px; border-left: 4px solid #c62828; }
+        .consequences h3 { color: #c62828; margin-bottom: 12px; font-weight: 700; }
+        .consequences ul { list-style: none; padding-left: 20px; }
+        .consequences li { padding: 6px 0; color: #b71c1c; position: relative; }
+        .consequences li::before { content: "⚠️"; position: absolute; left: -25px; }
+        
+        .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+        .btn { padding: 14px 20px; border: none; border-radius: 3px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s; text-align: center; }
+        .btn-primary { background: #c62828; color: white; grid-column: span 2; }
+        .btn-primary:hover { background: #b71c1c; }
+        .btn-secondary { background: #1a2332; color: white; }
+        .btn-secondary:hover { background: #0f1419; }
+        
+        .support-section { text-align: center; margin-top: 30px; padding-top: 30px; border-top: 1px solid #ecf0f1; }
+        .support-section p { color: #95a5a6; margin-bottom: 15px; }
+        .support-link { color: #d4af37; text-decoration: none; font-weight: 600; }
+        .support-link:hover { text-decoration: underline; }
+        
+        @media (max-width: 600px) {
+            .actions { grid-template-columns: 1fr; }
+            .btn-primary { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-content">
+            <h1>Cancelar suscripción</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- ALERT -->
+        <div class="alert alert-warning">
+            <strong>⚠️ Importante:</strong> Al cancelar, perderás acceso a tu plan y a todas sus funcionalidades. No podrás recuperar el acceso a tus datos si cambias de idea después de 30 días.
+        </div>
+
+        <div class="main-card">
+            <!-- CURRENT PLAN -->
+            <div class="section">
+                <h2>Tu plan actual</h2>
+                <div class="info-box">
+                    <div class="info-box-title">Plan Profesional</div>
+                    <div class="info-box-text">€59,00/mes • Próxima renovación: 20 de julio de 2026</div>
+                </div>
+            </div>
+
+            <!-- WHY LEAVING -->
+            <div class="section">
+                <h2>¿Por qué te vas?</h2>
+                <p style="color: #95a5a6; margin-bottom: 15px;">Nos ayuda mejorar (opcional)</p>
+                
+                <div class="reasons">
+                    <div class="reason-option">
+                        <div class="reason-title">Es demasiado caro</div>
+                        <div class="reason-desc">El precio no se ajusta a mi presupuesto</div>
+                    </div>
+                    <div class="reason-option">
+                        <div class="reason-title">No he encontrado subvenciones útiles</div>
+                        <div class="reason-desc">No se adapta a mi sector o necesidades</div>
+                    </div>
+                    <div class="reason-option">
+                        <div class="reason-title">Prefiero otra plataforma</div>
+                        <div class="reason-desc">He cambiado a un competidor</div>
+                    </div>
+                    <div class="reason-option">
+                        <div class="reason-title">Problemas técnicos</div>
+                        <div class="reason-desc">La plataforma no funciona como esperaba</div>
+                    </div>
+                    <div class="reason-option">
+                        <div class="reason-title">Otros/Prefiero no decir</div>
+                        <div class="reason-desc">Motivos personales o privados</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FEEDBACK -->
+            <div class="section">
+                <h2>¿Algún comentario? (opcional)</h2>
+                <p style="color: #95a5a6; margin-bottom: 15px;">Tus comentarios nos ayudan a mejorar el servicio</p>
+                <div class="feedback-section">
+                    <textarea placeholder="Cuéntanos qué podríamos hacer mejor..."></textarea>
+                </div>
+            </div>
+
+            <!-- CONSEQUENCES -->
+            <div class="consequences">
+                <h3>Al cancelar:</h3>
+                <ul>
+                    <li>Perderás acceso inmediato al dashboard</li>
+                    <li>No recibirás más alertas diarias</li>
+                    <li>No podrás descargar documentos Word/Excel</li>
+                    <li>El chat 24/7 no estará disponible</li>
+                    <li>No se reembolsará el mes actual</li>
+                </ul>
+            </div>
+
+            <!-- ALTERNATIVE OPTIONS -->
+            <div class="section">
+                <h2>¿Quizás una alternativa?</h2>
+                <div class="info-box">
+                    <div class="info-box-title">Cambiar a plan más barato</div>
+                    <div class="info-box-text">
+                        Tenemos el plan <strong>Básico a €19/mes</strong> con búsqueda ilimitada y alertas diarias. 
+                        <a href="08-gestion-plan-pago.html" style="color: #d4af37;">Cambiar de plan →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="actions">
+                <button class="btn btn-secondary">Mantener suscripción</button>
+                <button class="btn btn-primary">Cancelar permanentemente</button>
+            </div>
+
+            <!-- SUPPORT -->
+            <div class="support-section">
+                <p>¿Problemas o dudas?</p>
+                <a href="#soporte" class="support-link">Habla con nuestro equipo antes de cancelar →</a>
+            </div>
+        </div>
+
+        <!-- LEGAL NOTE -->
+        <div class="alert alert-info" style="margin-top: 30px;">
+            <strong>Nota legal:</strong> Tu suscripción se cancelará al finalizar el ciclo de facturación actual (20 de julio). No se realizarán cargos futuros. Puedes reactivar tu cuenta en cualquier momento dentro de 30 días. Pasado ese tiempo, los datos se eliminarán permanentemente.
+        </div>
+    </div>
+</body>
+</html>

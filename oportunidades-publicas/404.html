@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página no encontrada - Oportunidades Públicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; color: #2c3e50; }
+        
+        .container { text-align: center; padding: 40px 20px; }
+        
+        .error-code { font-size: 10em; font-weight: 900; color: rgba(255,255,255,0.1); line-height: 1; margin-bottom: 20px; }
+        
+        .error-title { font-size: 2.5em; color: white; margin-bottom: 15px; font-weight: 700; }
+        .error-description { font-size: 1.2em; color: rgba(255,255,255,0.8); margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto; }
+        
+        .error-icon { font-size: 4em; margin-bottom: 30px; }
+        
+        .suggestions { background: rgba(255,255,255,0.05); padding: 30px; border-radius: 5px; margin: 30px 0; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .suggestions h3 { color: white; margin-bottom: 20px; font-size: 1.1em; }
+        .suggestion-list { list-style: none; text-align: left; }
+        .suggestion-list li { padding: 10px 0; color: rgba(255,255,255,0.8); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .suggestion-list li:last-child { border-bottom: none; }
+        .suggestion-list li::before { content: "→ "; color: #d4af37; margin-right: 8px; }
+        
+        .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 500px; margin: 0 auto; margin-top: 40px; }
+        .btn { padding: 14px 30px; border: none; border-radius: 3px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s; font-size: 1em; }
+        .btn-primary { background: #d4af37; color: #1a2332; }
+        .btn-primary:hover { background: #e5c158; }
+        .btn-secondary { background: rgba(255,255,255,0.2); color: white; border: 2px solid white; }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+        
+        .search-box { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 5px; margin: 30px auto; max-width: 500px; }
+        .search-box input { width: 100%; padding: 12px; border: 1px solid rgba(255,255,255,0.3); border-radius: 3px; background: rgba(255,255,255,0.05); color: white; font-size: 1em; }
+        .search-box input::placeholder { color: rgba(255,255,255,0.5); }
+        .search-box input:focus { outline: none; border-color: #d4af37; box-shadow: 0 0 0 3px rgba(212,175,55,0.2); }
+        
+        .footer-text { margin-top: 50px; color: rgba(255,255,255,0.6); font-size: 0.95em; }
+        .footer-text a { color: #d4af37; text-decoration: none; }
+        .footer-text a:hover { text-decoration: underline; }
+        
+        @media (max-width: 600px) {
+            .error-code { font-size: 5em; }
+            .error-title { font-size: 1.8em; }
+            .action-buttons { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-code">404</div>
+        
+        <div class="error-icon">🔍</div>
+        
+        <h1 class="error-title">Página no encontrada</h1>
+        <p class="error-description">
+            Parece que intentas acceder a una página que no existe o ha sido movida.
+        </p>
+
+        <!-- SUGERENCIAS -->
+        <div class="suggestions">
+            <h3>¿Qué puede haber pasado?</h3>
+            <ul class="suggestion-list">
+                <li>La URL está mal escrita o tiene un error</li>
+                <li>La página fue movida a otra ubicación</li>
+                <li>El recurso ya no está disponible</li>
+                <li>No tienes permisos para acceder</li>
+            </ul>
+        </div>
+
+        <!-- SEARCH -->
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Busca lo que necesitas...">
+        </div>
+
+        <!-- BOTONES -->
+        <div class="action-buttons">
+            <a href="landing-avatares-stilizados.html" class="btn btn-primary">Ir al inicio</a>
+            <a href="contacto.html" class="btn btn-secondary">Contactar soporte</a>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer-text">
+            <p>¿Necesitas ayuda? <a href="contacto.html">Contacta con nuestro equipo</a></p>
+            <p>Error code: <code style="background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 2px;">404_NOT_FOUND</code></p>
+        </div>
+    </div>
+
+    <script>
+        // Search handler
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const query = this.value;
+                // En producción: redirigir a página de búsqueda
+                console.log('Buscando:', query);
+                window.location.href = '02-busqueda-resultados.html?q=' + encodeURIComponent(query);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar contraseña - Oportunidades Públicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; color: #2c3e50; }
+        
+        .container { width: 100%; max-width: 500px; padding: 20px; }
+        
+        .reset-card { background: white; border-radius: 5px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); overflow: hidden; }
+        
+        .reset-header { background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%); color: white; padding: 40px 30px; text-align: center; }
+        .reset-logo { width: 50px; height: 50px; background: #d4af37; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #1a2332; font-weight: 800; font-size: 1.2em; margin: 0 auto 20px; }
+        .reset-header h1 { font-size: 1.6em; margin-bottom: 8px; }
+        .reset-header p { opacity: 0.9; font-size: 0.95em; }
+        
+        .reset-body { padding: 40px 30px; }
+        
+        .steps-progress { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 30px; }
+        .step-dot { width: 100%; height: 4px; background: #ecf0f1; border-radius: 2px; }
+        .step-dot.active { background: #d4af37; }
+        
+        .step-section { margin-bottom: 30px; }
+        .step-label { font-size: 0.8em; color: #95a5a6; text-transform: uppercase; margin-bottom: 15px; font-weight: 600; }
+        .step-title { font-size: 1.3em; color: #1a2332; margin-bottom: 15px; font-weight: 700; }
+        .step-description { color: #95a5a6; margin-bottom: 20px; font-size: 0.95em; }
+        
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; font-weight: 600; color: #1a2332; margin-bottom: 8px; }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid #ecf0f1; border-radius: 3px; font-family: inherit; font-size: 0.95em; transition: all 0.3s; }
+        .form-group input:focus { outline: none; border-color: #d4af37; box-shadow: 0 0 0 3px rgba(212,175,55,0.1); }
+        
+        .cta-btn { width: 100%; padding: 14px; background: #1a2332; color: white; border: none; border-radius: 3px; font-weight: 700; font-size: 1em; cursor: pointer; transition: all 0.3s; margin-bottom: 15px; }
+        .cta-btn:hover { background: #0f1419; }
+        .cta-btn:disabled { background: #bdc3c7; cursor: not-allowed; }
+        
+        .cta-secondary { width: 100%; padding: 14px; background: transparent; color: #1a2332; border: 2px solid #1a2332; border-radius: 3px; font-weight: 700; font-size: 1em; cursor: pointer; transition: all 0.3s; }
+        .cta-secondary:hover { background: #1a2332; color: white; }
+        
+        .alert { padding: 12px; border-radius: 3px; margin-bottom: 20px; display: none; }
+        .alert.error { background: #ffebee; color: #c62828; border-left: 3px solid #c62828; }
+        .alert.success { background: #e8f5e9; color: #2e7d32; border-left: 3px solid #2e7d32; }
+        .alert.info { background: #d1ecf1; color: #0c5460; border-left: 3px solid #17a2b8; }
+        
+        .timer { text-align: center; color: #95a5a6; font-size: 0.9em; margin-top: 15px; }
+        .timer-count { font-weight: 700; color: #d4af37; }
+        
+        .support-link { text-align: center; margin-top: 20px; color: #95a5a6; font-size: 0.9em; }
+        .support-link a { color: #d4af37; text-decoration: none; }
+        .support-link a:hover { text-decoration: underline; }
+        
+        .hidden { display: none; }
+        
+        @media (max-width: 480px) {
+            .reset-card { border-radius: 0; }
+            .reset-body { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="reset-card">
+            <!-- HEADER -->
+            <div class="reset-header">
+                <div class="reset-logo">OP</div>
+                <h1>Recuperar contraseña</h1>
+                <p>Te ayudamos a acceder de nuevo</p>
+            </div>
+
+            <!-- BODY -->
+            <div class="reset-body">
+                <!-- PROGRESS -->
+                <div class="steps-progress">
+                    <div class="step-dot active" id="step1-dot"></div>
+                    <div class="step-dot" id="step2-dot"></div>
+                    <div class="step-dot" id="step3-dot"></div>
+                </div>
+
+                <!-- STEP 1: EMAIL -->
+                <div class="step-section" id="step1">
+                    <div class="step-label">Paso 1 de 3</div>
+                    <div class="step-title">Verifica tu email</div>
+                    <div class="step-description">Introduce el email asociado a tu cuenta</div>
+                    
+                    <div class="alert error" id="errorAlert"></div>
+                    <div class="alert success" id="successAlert"></div>
+                    
+                    <form id="emailForm">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="tu@empresa.es" required>
+                        </div>
+                        <button type="submit" class="cta-btn">Enviar enlace de recuperación</button>
+                    </form>
+                    
+                    <div class="timer hidden">
+                        Se reenviará en <span class="timer-count" id="timerCount">60</span>s
+                    </div>
+                </div>
+
+                <!-- STEP 2: VERIFY CODE -->
+                <div class="step-section hidden" id="step2">
+                    <div class="step-label">Paso 2 de 3</div>
+                    <div class="step-title">Verifica tu email</div>
+                    <div class="step-description">Hemos enviado un código a <strong id="emailShown">tu@empresa.es</strong></div>
+                    
+                    <form id="codeForm">
+                        <div class="form-group">
+                            <label for="code">Código de 6 dígitos</label>
+                            <input type="text" id="code" placeholder="000000" maxlength="6" pattern="[0-9]{6}" required>
+                        </div>
+                        <button type="submit" class="cta-btn">Verificar código</button>
+                    </form>
+                    
+                    <div class="timer">
+                        Código válido <span class="timer-count" id="timerCode">10</span> minutos. 
+                        <a href="#" style="color: #d4af37; cursor: pointer;" onclick="resendCode()">Reenviar</a>
+                    </div>
+                </div>
+
+                <!-- STEP 3: NEW PASSWORD -->
+                <div class="step-section hidden" id="step3">
+                    <div class="step-label">Paso 3 de 3</div>
+                    <div class="step-title">Nueva contraseña</div>
+                    <div class="step-description">Crea una contraseña fuerte</div>
+                    
+                    <form id="passwordForm">
+                        <div class="form-group">
+                            <label for="password">Nueva contraseña</label>
+                            <input type="password" id="password" placeholder="••••••••" required minlength="8">
+                            <small style="color: #95a5a6; display: block; margin-top: 5px;">
+                                Mínimo 8 caracteres (letras, números, símbolos recomendados)
+                            </small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="passwordConfirm">Confirma contraseña</label>
+                            <input type="password" id="passwordConfirm" placeholder="••••••••" required minlength="8">
+                        </div>
+                        
+                        <button type="submit" class="cta-btn">Cambiar contraseña</button>
+                    </form>
+                </div>
+
+                <!-- SUCCESS -->
+                <div class="step-section hidden" id="stepSuccess">
+                    <div style="text-align: center; padding: 20px 0;">
+                        <div style="font-size: 3em; margin-bottom: 15px;">✅</div>
+                        <div class="step-title">Contraseña actualizada</div>
+                        <div class="step-description">Tu contraseña ha sido cambiada exitosamente</div>
+                        <a href="login.html" class="cta-btn" style="display: inline-block; margin-top: 20px; width: auto; padding: 14px 40px;">Ir a login</a>
+                    </div>
+                </div>
+
+                <!-- SUPPORT -->
+                <div class="support-link">
+                    <p>¿No recibiste el email?</p>
+                    <a href="#soporte">Contacta con soporte →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // STEP 1: Email submission
+        document.getElementById('emailForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            
+            // Simular envío
+            console.log('Enviando código a:', email);
+            
+            // Mostrar paso 2
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+            document.getElementById('emailShown').textContent = email;
+            
+            // Actualizar progress
+            document.getElementById('step1-dot').classList.remove('active');
+            document.getElementById('step2-dot').classList.add('active');
+            
+            // Mostrar alerta de éxito
+            const successMsg = document.getElementById('successAlert');
+            successMsg.textContent = `Hemos enviado un código a ${email}. Revisa spam si no lo ves.`;
+            successMsg.style.display = 'block';
+            
+            // Timer para reenvío
+            startResendTimer();
+        });
+        
+        // STEP 2: Code verification
+        document.getElementById('codeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const code = document.getElementById('code').value;
+            
+            // Simular verificación (aceptar cualquier código de 6 dígitos)
+            if (code.length === 6) {
+                // Mostrar paso 3
+                document.getElementById('step2').classList.add('hidden');
+                document.getElementById('step3').classList.remove('hidden');
+                
+                // Actualizar progress
+                document.getElementById('step2-dot').classList.remove('active');
+                document.getElementById('step3-dot').classList.add('active');
+            }
+        });
+        
+        // STEP 3: Password change
+        document.getElementById('passwordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            const confirm = document.getElementById('passwordConfirm').value;
+            
+            if (password !== confirm) {
+                alert('Las contraseñas no coinciden');
+                return;
+            }
+            
+            if (password.length < 8) {
+                alert('La contraseña debe tener al menos 8 caracteres');
+                return;
+            }
+            
+            // Simular cambio de contraseña
+            console.log('Contraseña cambiada');
+            
+            // Mostrar éxito
+            document.getElementById('step3').classList.add('hidden');
+            document.getElementById('stepSuccess').classList.remove('hidden');
+            document.getElementById('step3-dot').classList.remove('active');
+            
+            // En producción: redirigir a login después de 2 segundos
+            setTimeout(() => {
+                // window.location.href = 'login.html';
+            }, 2000);
+        });
+        
+        function resendCode() {
+            console.log('Reenviando código...');
+            startResendTimer();
+        }
+        
+        function startResendTimer() {
+            let seconds = 60;
+            const timerCount = document.getElementById('timerCount');
+            
+            const interval = setInterval(() => {
+                seconds--;
+                timerCount.textContent = seconds;
+                
+                if (seconds <= 0) {
+                    clearInterval(interval);
+                    document.querySelector('.timer').classList.add('hidden');
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirma tu email - Oportunidades Públicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        
+        .container { width: 100%; max-width: 500px; padding: 20px; }
+        .card { background: white; border-radius: 5px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); overflow: hidden; }
+        
+        .header { background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%); color: white; padding: 40px 30px; text-align: center; }
+        .logo { width: 50px; height: 50px; background: #d4af37; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #1a2332; font-weight: 800; margin: 0 auto 20px; font-size: 1.2em; }
+        .header h1 { font-size: 1.6em; margin-bottom: 8px; }
+        .header p { opacity: 0.9; }
+        
+        .body { padding: 40px 30px; text-align: center; }
+        
+        .step-icon { font-size: 3.5em; margin-bottom: 20px; }
+        .step-title { font-size: 1.3em; color: #1a2332; margin-bottom: 15px; font-weight: 700; }
+        .step-description { color: #95a5a6; margin-bottom: 30px; line-height: 1.6; }
+        
+        .code-box { background: #f8f9fa; padding: 20px; border-radius: 5px; margin: 30px 0; }
+        .code-label { color: #95a5a6; font-size: 0.85em; margin-bottom: 8px; }
+        .code-value { font-size: 2em; font-weight: 800; color: #1a2332; letter-spacing: 4px; font-family: 'Courier New', monospace; }
+        
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; color: #1a2332; margin-bottom: 8px; }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid #ecf0f1; border-radius: 3px; font-family: inherit; font-size: 0.95em; }
+        .form-group input:focus { outline: none; border-color: #d4af37; box-shadow: 0 0 0 3px rgba(212,175,55,0.1); }
+        
+        .cta-btn { width: 100%; padding: 14px; background: #1a2332; color: white; border: none; border-radius: 3px; font-weight: 700; cursor: pointer; transition: all 0.3s; margin-bottom: 15px; }
+        .cta-btn:hover { background: #0f1419; }
+        .cta-btn:disabled { background: #bdc3c7; cursor: not-allowed; }
+        
+        .timer { color: #95a5a6; font-size: 0.9em; margin: 15px 0; }
+        .timer-count { font-weight: 700; color: #d4af37; }
+        
+        .resend-link { color: #d4af37; text-decoration: none; cursor: pointer; font-weight: 600; }
+        .resend-link:hover { text-decoration: underline; }
+        
+        .info-box { background: #d1ecf1; padding: 15px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #17a2b8; color: #0c5460; font-size: 0.9em; }
+        
+        .steps-progress { display: flex; gap: 8px; margin: 20px 0; }
+        .step-dot { flex: 1; height: 4px; background: #ecf0f1; border-radius: 2px; }
+        .step-dot.active { background: #d4af37; }
+        
+        @media (max-width: 480px) {
+            .card { border-radius: 0; }
+            .body { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <!-- HEADER -->
+            <div class="header">
+                <div class="logo">OP</div>
+                <h1>Confirma tu email</h1>
+                <p>Un último paso para acceder</p>
+            </div>
+
+            <!-- BODY -->
+            <div class="body">
+                <!-- PROGRESS -->
+                <div class="steps-progress">
+                    <div class="step-dot active"></div>
+                    <div class="step-dot"></div>
+                    <div class="step-dot"></div>
+                </div>
+
+                <!-- STEP 1: CÓDIGO -->
+                <div id="step1">
+                    <div class="step-icon">📧</div>
+                    <div class="step-title">Hemos enviado un código</div>
+                    <div class="step-description">
+                        Revisa tu email <strong>tu@empresa.es</strong><br>
+                        Busca el código de 6 dígitos
+                    </div>
+
+                    <div class="info-box">
+                        No ves el email? Revisa spam o <a href="#" class="resend-link">reenvía el código</a>
+                    </div>
+
+                    <form id="codeForm">
+                        <div class="form-group">
+                            <label>Código de 6 dígitos</label>
+                            <input type="text" id="codeInput" placeholder="000000" maxlength="6" pattern="[0-9]{6}" required>
+                        </div>
+                        <button type="submit" class="cta-btn">Verificar código</button>
+                    </form>
+
+                    <div class="timer">
+                        Código válido <span class="timer-count" id="timerCode">10</span> minutos
+                    </div>
+                </div>
+
+                <!-- STEP 2: VERIFICANDO -->
+                <div id="step2" style="display: none;">
+                    <div class="step-icon">⏳</div>
+                    <div class="step-title">Verificando...</div>
+                    <div class="step-description">
+                        Estamos validando tu código. Un momento...
+                    </div>
+                    <div style="margin: 30px 0; font-size: 2em; animation: spin 1s linear infinite;">⟳</div>
+                </div>
+
+                <!-- STEP 3: ÉXITO -->
+                <div id="step3" style="display: none;">
+                    <div class="step-icon">✅</div>
+                    <div class="step-title">Email verificado</div>
+                    <div class="step-description">
+                        Tu email ha sido confirmado exitosamente.<br>
+                        Redirigiendo al dashboard...
+                    </div>
+                </div>
+
+                <a href="dashboard-profesional.html" id="dashboardLink" style="display: none; text-decoration: none;">
+                    <button class="cta-btn">Ir al dashboard</button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('codeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const code = document.getElementById('codeInput').value;
+            
+            if (code.length === 6) {
+                // Step 1 → Step 2
+                document.getElementById('step1').style.display = 'none';
+                document.getElementById('step2').style.display = 'block';
+                document.querySelectorAll('.step-dot')[0].classList.remove('active');
+                document.querySelectorAll('.step-dot')[1].classList.add('active');
+                
+                // Simular verificación (2 segundos)
+                setTimeout(() => {
+                    document.getElementById('step2').style.display = 'none';
+                    document.getElementById('step3').style.display = 'block';
+                    document.querySelectorAll('.step-dot')[1].classList.remove('active');
+                    document.querySelectorAll('.step-dot')[2].classList.add('active');
+                    document.getElementById('dashboardLink').style.display = 'block';
+                    
+                    // Redirigir después de 3 segundos
+                    setTimeout(() => {
+                        window.location.href = 'dashboard-profesional.html';
+                    }, 3000);
+                }, 2000);
+            }
+        });
+        
+        // Timer
+        let seconds = 600;
+        setInterval(() => {
+            seconds--;
+            document.getElementById('timerCode').textContent = Math.ceil(seconds / 60);
+        }, 1000);
+    </script>
+    
+    <style>
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Oportunidades Públicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; background: #f5f7fa; }
+        
+        .container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 280px 1fr; gap: 0; min-height: 100vh; }
+        
+        /* SIDEBAR */
+        .sidebar { background: linear-gradient(135deg, #003d82 0%, #004a9e 100%); color: white; padding: 30px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+        .sidebar-logo { font-size: 1.3em; font-weight: 800; margin-bottom: 30px; text-align: center; }
+        .nav-item { padding: 12px 15px; margin-bottom: 8px; border-radius: 4px; cursor: pointer; transition: all 0.3s; }
+        .nav-item:hover { background: rgba(255,255,255,0.2); }
+        .nav-item.active { background: #ffc400; color: #003d82; font-weight: 700; }
+        
+        /* TOPBAR */
+        .topbar { grid-column: 2; background: white; padding: 20px 40px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .topbar-left { font-size: 1.5em; font-weight: 700; color: #003d82; }
+        .topbar-right { display: flex; gap: 20px; align-items: center; }
+        .user-badge { display: flex; gap: 10px; align-items: center; }
+        .avatar-small { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #003d82, #004a9e); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; }
+        .plan-badge { background: #ffc400; color: #003d82; padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 0.85em; }
+        
+        /* MAIN CONTENT */
+        .main { grid-column: 2; padding: 40px; }
+        
+        /* PROFILE CARD */
+        .profile-card { background: white; padding: 25px; border-radius: 8px; margin-bottom: 30px; display: grid; grid-template-columns: auto 1fr auto; gap: 25px; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 4px solid #ffc400; }
+        .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #003d82, #004a9e); display: flex; align-items: center; justify-content: center; color: white; font-size: 2em; font-weight: 700; }
+        .profile-info { }
+        .profile-name { font-size: 1.3em; color: #003d82; font-weight: 700; }
+        .profile-company { color: #999; }
+        .profile-stats { display: flex; gap: 30px; }
+        .stat-item { text-align: center; }
+        .stat-number { font-size: 1.5em; color: #003d82; font-weight: 700; }
+        .stat-label { color: #999; font-size: 0.85em; }
+        
+        /* TABS */
+        .tabs { display: flex; gap: 0; border-bottom: 2px solid #ddd; margin-bottom: 30px; }
+        .tab { padding: 15px 25px; background: none; border: none; cursor: pointer; font-weight: 600; color: #666; border-bottom: 3px solid transparent; transition: all 0.3s; }
+        .tab:hover { color: #003d82; }
+        .tab.active { color: #003d82; border-bottom-color: #ffc400; }
+        
+        /* ALERTS GRID */
+        .alerts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .alert-card { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 4px solid #ffc400; transition: all 0.3s; }
+        .alert-card:hover { transform: translateY(-4px); box-shadow: 0 8px 16px rgba(0,0,0,0.12); }
+        .alert-title { font-size: 1.05em; font-weight: 700; color: #003d82; margin-bottom: 10px; }
+        .alert-org { color: #999; font-size: 0.9em; margin-bottom: 15px; }
+        .alert-meta { display: flex; gap: 15px; margin-bottom: 15px; font-size: 0.9em; }
+        .meta-item { color: #666; }
+        .meta-label { color: #999; }
+        .relevance { background: #e8f5e9; color: #2e7d32; padding: 8px 12px; border-radius: 4px; font-weight: 600; }
+        
+        /* CHAT SIDEBAR */
+        .chat-sidebar { position: fixed; bottom: 20px; right: 20px; width: 350px; background: white; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); overflow: hidden; }
+        .chat-header { background: linear-gradient(135deg, #003d82, #004a9e); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .chat-header h3 { font-size: 0.95em; }
+        .chat-header .avatar-tiny { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.8em; }
+        .chat-messages { padding: 15px; height: 300px; overflow-y: auto; background: #f8fafb; }
+        .chat-msg { margin-bottom: 12px; display: flex; gap: 10px; }
+        .chat-msg.support { }
+        .chat-msg.user { justify-content: flex-end; }
+        .chat-bubble { padding: 10px 12px; border-radius: 12px; max-width: 75%; font-size: 0.85em; }
+        .support .chat-bubble { background: white; color: #333; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .user .chat-bubble { background: #003d82; color: white; }
+        .chat-input { padding: 12px; border-top: 1px solid #ddd; }
+        .chat-input input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85em; outline: none; }
+        
+        @media (max-width: 1024px) {
+            .container { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+            .topbar { grid-column: 1; }
+            .main { grid-column: 1; }
+            .profile-card { grid-template-columns: 1fr; }
+            .chat-sidebar { width: 100%; position: relative; bottom: auto; right: auto; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="sidebar-logo">OP</div>
+            <div class="nav-item active">📊 Alertas Diarias</div>
+            <div class="nav-item">📝 Mis Solicitudes</div>
+            <div class="nav-item">🔍 Nuevas Oportunidades</div>
+            <div class="nav-item">👤 Mi Perfil</div>
+            <div class="nav-item">📥 Descargas</div>
+        </div>
+
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div class="topbar-left">Dashboard</div>
+            <div class="topbar-right">
+                <div class="user-badge">
+                    <span>Juan Carlos</span>
+                    <div class="avatar-small">JC</div>
+                </div>
+                <div class="plan-badge">Profesional</div>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main">
+            <!-- PROFILE CARD -->
+            <div class="profile-card">
+                <div class="profile-avatar">JC</div>
+                <div class="profile-info">
+                    <div class="profile-name">TecnoEficiencia SL</div>
+                    <div class="profile-company">Sector: Energías Renovables • Andalucía</div>
+                </div>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">4</div>
+                        <div class="stat-label">Solicitudes activas</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">€180K</div>
+                        <div class="stat-label">En trámite</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">€45K</div>
+                        <div class="stat-label">Conseguido</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABS -->
+            <div class="tabs">
+                <button class="tab active">🎯 Nuevas para ti (8)</button>
+                <button class="tab">📋 Mis solicitudes (4)</button>
+                <button class="tab">✓ Ganadas (2)</button>
+            </div>
+
+            <!-- ALERTS GRID -->
+            <div class="alerts-grid">
+                <div class="alert-card">
+                    <div class="alert-title">Subvención energía solar</div>
+                    <div class="alert-org">Instituto IDEA</div>
+                    <div class="alert-meta">
+                        <div class="meta-item"><span class="meta-label">Importe:</span> €50.000</div>
+                        <div class="meta-item"><span class="meta-label">Plazo:</span> 40d</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div class="relevance">94% relevancia</div>
+                        <button style="padding: 8px 15px; background: #003d82; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">Ver →</button>
+                    </div>
+                </div>
+
+                <div class="alert-card">
+                    <div class="alert-title">Ayuda digitalización PYME</div>
+                    <div class="alert-org">Junta de Andalucía</div>
+                    <div class="alert-meta">
+                        <div class="meta-item"><span class="meta-label">Importe:</span> €25.000</div>
+                        <div class="meta-item"><span class="meta-label">Plazo:</span> 57d</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div class="relevance">87% relevancia</div>
+                        <button style="padding: 8px 15px; background: #003d82; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">Ver →</button>
+                    </div>
+                </div>
+
+                <div class="alert-card">
+                    <div class="alert-title">Subvención energía térmica</div>
+                    <div class="alert-org">MITECO</div>
+                    <div class="alert-meta">
+                        <div class="meta-item"><span class="meta-label">Importe:</span> €40.000</div>
+                        <div class="meta-item"><span class="meta-label">Plazo:</span> 30d</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div class="relevance">91% relevancia</div>
+                        <button style="padding: 8px 15px; background: #003d82; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">Ver →</button>
+                    </div>
+                </div>
+
+                <div class="alert-card">
+                    <div class="alert-title">Ayuda inversión sostenible</div>
+                    <div class="alert-org">Banco de Crédito Oficial</div>
+                    <div class="alert-meta">
+                        <div class="meta-item"><span class="meta-label">Importe:</span> €100.000</div>
+                        <div class="meta-item"><span class="meta-label">Plazo:</span> 60d</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div class="relevance">78% relevancia</div>
+                        <button style="padding: 8px 15px; background: #003d82; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">Ver →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHAT SIDEBAR -->
+    <div class="chat-sidebar">
+        <div class="chat-header">
+            <div>
+                <h3>💬 Asesor Laura</h3>
+                <div style="font-size: 0.8em; opacity: 0.9;">Online 24/7</div>
+            </div>
+            <div class="avatar-tiny">LS</div>
+        </div>
+        <div class="chat-messages">
+            <div class="chat-msg support">
+                <div class="chat-bubble">¿Tienes dudas sobre la solicitud?</div>
+            </div>
+            <div class="chat-msg user">
+                <div class="chat-bubble">¿Cuál es el plazo máximo?</div>
+            </div>
+            <div class="chat-msg support">
+                <div class="chat-bubble">40 días desde hoy. ¡Ampliamente!</div>
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" placeholder="Escribe aquí...">
+        </div>
+    </div>
+</body>
+</html>

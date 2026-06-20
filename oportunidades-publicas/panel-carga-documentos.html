@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargar Documentos - Oportunidades Públicas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* ============ HEADER ============ */
+        .header {
+            background: linear-gradient(to right, #003d82 0%, #004a9e 100%);
+            color: white;
+            padding: 20px 0;
+            border-bottom: 4px solid #ffc400;
+            margin-bottom: 40px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #003d82;
+        }
+
+        .header-button {
+            padding: 10px 20px;
+            background: white;
+            color: #003d82;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* ============ SOLICITUD INFO ============ */
+        .solicitud-header {
+            background: white;
+            padding: 30px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-left: 4px solid #ffc400;
+        }
+
+        .solicitud-title {
+            font-size: 1.5em;
+            color: #003d82;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .solicitud-org {
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        .solicitud-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .meta-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8fafb;
+            border-radius: 3px;
+        }
+
+        .meta-label {
+            color: #999;
+            font-size: 0.85em;
+            margin-bottom: 5px;
+        }
+
+        .meta-value {
+            color: #003d82;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        /* ============ BARRA PROGRESO ============ */
+        .progress-section {
+            background: white;
+            padding: 30px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .progress-title {
+            color: #003d82;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar-container {
+            background: #e0e0e0;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #2e7d32 0%, #4caf50 100%);
+            width: 65%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85em;
+            transition: width 0.3s;
+        }
+
+        .progress-text {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        /* ============ DOCUMENTOS ============ */
+        .documents-section {
+            background: white;
+            padding: 30px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            color: #003d82;
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .documents-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .document-item {
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 4px;
+            transition: all 0.3s;
+            background: #f8fafb;
+        }
+
+        .document-item:hover {
+            border-color: #003d82;
+            background: white;
+        }
+
+        .document-item.completed {
+            border-color: #2e7d32;
+            background: #e8f5e9;
+        }
+
+        .document-item.error {
+            border-color: #c62828;
+            background: #ffebee;
+        }
+
+        .document-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .document-name {
+            font-weight: 600;
+            color: #003d82;
+            font-size: 1.05em;
+        }
+
+        .document-status {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9em;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .status-completed {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .status-error {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+
+        .document-description {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .document-required {
+            color: #c62828;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+
+        /* ============ DROP ZONE ============ */
+        .drop-zone {
+            border: 2px dashed #003d82;
+            border-radius: 4px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+            margin-bottom: 15px;
+        }
+
+        .drop-zone:hover {
+            background: #f8fafb;
+            border-color: #002a5e;
+        }
+
+        .drop-zone.active {
+            background: #e3f2fd;
+            border-color: #1976d2;
+        }
+
+        .drop-zone-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .drop-zone-text {
+            color: #003d82;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .drop-zone-hint {
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        /* ============ FILE PREVIEW ============ */
+        .file-preview {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            margin-top: 10px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .file-icon {
+            font-size: 1.5em;
+        }
+
+        .file-details {
+            flex: 1;
+        }
+
+        .file-name {
+            color: #003d82;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .file-size {
+            color: #999;
+            font-size: 0.8em;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8em;
+            transition: background 0.3s;
+        }
+
+        .btn-small:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-remove {
+            color: #c62828;
+        }
+
+        /* ============ BOTONES ============ */
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: 16px;
+            background: #003d82;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #002a5e;
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 16px;
+            border: 2px solid #003d82;
+            color: #003d82;
+            background: white;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: #f8fafb;
+        }
+
+        /* ============ CHECKLIST SUMMARY ============ */
+        .checklist-summary {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 4px;
+            margin-top: 30px;
+            border-left: 4px solid #2e7d32;
+        }
+
+        .checklist-summary h3 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .checklist-items {
+            list-style: none;
+        }
+
+        .checklist-items li {
+            padding: 8px 0;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checklist-items li:before {
+            content: "✓";
+            color: #2e7d32;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        /* ============ MODAL CONFIRMACIÓN ============ */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 4px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .modal-content h2 {
+            color: #003d82;
+            margin-bottom: 15px;
+        }
+
+        .modal-content p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 3px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-btn-primary {
+            background: #003d82;
+            color: white;
+        }
+
+        .modal-btn-primary:hover {
+            background: #002a5e;
+        }
+
+        .modal-btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .modal-btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header-content {
+                padding: 0 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .solicitud-meta {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .modal-content {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="logo">OP</div>
+                <div>
+                    <h1 style="font-size: 1.2em;">Cargar documentación</h1>
+                </div>
+            </div>
+            <button class="header-button" onclick="window.history.back()">← Volver</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- SOLICITUD INFO -->
+        <div class="solicitud-header">
+            <div class="solicitud-title">Subvención instalación placas solares</div>
+            <div class="solicitud-org">Instituto para la Diversificación y Ahorro de la Energía (IDEA)</div>
+            <div class="solicitud-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Importe solicitado</div>
+                    <div class="meta-value">€45.000</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Fecha límite</div>
+                    <div class="meta-value">30 ago 2026</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Días restantes</div>
+                    <div class="meta-value" style="color: #2e7d32;">15</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Completado</div>
+                    <div class="meta-value">65%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BARRA PROGRESO -->
+        <div class="progress-section">
+            <div class="progress-title">Progreso de documentación</div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 65%;">65%</div>
+            </div>
+            <div class="progress-text">7 de 10 documentos cargados</div>
+        </div>
+
+        <!-- DOCUMENTOS -->
+        <div class="documents-section">
+            <div class="section-title">Documentación requerida</div>
+
+            <div class="documents-list">
+                <!-- DOC 1: COMPLETADO -->
+                <div class="document-item completed">
+                    <div class="document-header">
+                        <div class="document-name">✓ CIF y Registro Mercantil</div>
+                        <div class="document-status status-completed">Enviado</div>
+                    </div>
+                    <div class="document-description">
+                        Certificado oficial de inscripción en el Registro Mercantil.
+                    </div>
+                    <div class="file-preview">
+                        <div class="file-info">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">CIF_registro_mercantil.pdf</div>
+                                <div class="file-size">2.3 MB - Cargado 18 ago</div>
+                            </div>
+                        </div>
+                        <div class="file-actions">
+                            <button class="btn-small" onclick="alert('Ver documento')">👁️ Ver</button>
+                            <button class="btn-small btn-remove" onclick="alert('Cambiar archivo')">✎ Cambiar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DOC 2: COMPLETADO -->
+                <div class="document-item completed">
+                    <div class="document-header">
+                        <div class="document-name">✓ Certificado de no insolvencia (AEAT)</div>
+                        <div class="document-status status-completed">Enviado</div>
+                    </div>
+                    <div class="document-description">
+                        Certificación de la Agencia Tributaria de no estar incluido en listado de morosos.
+                    </div>
+                    <div class="file-preview">
+                        <div class="file-info">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">certificado_no_insolvencia.pdf</div>
+                                <div class="file-size">1.8 MB - Cargado 18 ago</div>
+                            </div>
+                        </div>
+                        <div class="file-actions">
+                            <button class="btn-small" onclick="alert('Ver documento')">👁️ Ver</button>
+                            <button class="btn-small btn-remove" onclick="alert('Cambiar archivo')">✎ Cambiar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DOC 3: PENDIENTE -->
+                <div class="document-item">
+                    <div class="document-header">
+                        <div class="document-name">Presupuesto detallado</div>
+                        <div class="document-status status-pending">Pendiente</div>
+                    </div>
+                    <div class="document-description">
+                        Presupuesto desglosado con costes de equipos, instalación, mano de obra y otros gastos.
+                    </div>
+                    <div class="document-required">OBLIGATORIO</div>
+                    <div class="drop-zone" onclick="document.getElementById('file-input-3').click()">
+                        <div class="drop-zone-icon">📤</div>
+                        <div class="drop-zone-text">Arrastra tu archivo aquí</div>
+                        <div class="drop-zone-hint">o haz clic para seleccionar (PDF, Excel, Word)</div>
+                        <input type="file" id="file-input-3" class="file-input" onchange="handleFileUpload(event, 3)">
+                    </div>
+                </div>
+
+                <!-- DOC 4: PENDIENTE -->
+                <div class="document-item">
+                    <div class="document-header">
+                        <div class="document-name">Planos técnicos de la instalación</div>
+                        <div class="document-status status-pending">Pendiente</div>
+                    </div>
+                    <div class="document-description">
+                        Esquemas técnicos, diagramas unifilares y planos de la ubicación de los equipos.
+                    </div>
+                    <div class="document-required">OBLIGATORIO</div>
+                    <div class="drop-zone" onclick="document.getElementById('file-input-4').click()">
+                        <div class="drop-zone-icon">📤</div>
+                        <div class="drop-zone-text">Arrastra tu archivo aquí</div>
+                        <div class="drop-zone-hint">o haz clic para seleccionar (PDF, JPG, PNG)</div>
+                        <input type="file" id="file-input-4" class="file-input" onchange="handleFileUpload(event, 4)">
+                    </div>
+                </div>
+
+                <!-- DOC 5: COMPLETADO -->
+                <div class="document-item completed">
+                    <div class="document-header">
+                        <div class="document-name">✓ Certificación de eficiencia energética</div>
+                        <div class="document-status status-completed">Enviado</div>
+                    </div>
+                    <div class="document-description">
+                        Certificado que acredita la eficiencia energética del sistema propuesto.
+                    </div>
+                    <div class="file-preview">
+                        <div class="file-info">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">eficiencia_energetica.pdf</div>
+                                <div class="file-size">3.1 MB - Cargado 17 ago</div>
+                            </div>
+                        </div>
+                        <div class="file-actions">
+                            <button class="btn-small" onclick="alert('Ver documento')">👁️ Ver</button>
+                            <button class="btn-small btn-remove" onclick="alert('Cambiar archivo')">✎ Cambiar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DOC 6: COMPLETADO -->
+                <div class="document-item completed">
+                    <div class="document-header">
+                        <div class="document-name">✓ Estudio de viabilidad técnica y económica</div>
+                        <div class="document-status status-completed">Enviado</div>
+                    </div>
+                    <div class="document-description">
+                        Análisis de viabilidad del proyecto con proyecciones económicas.
+                    </div>
+                    <div class="file-preview">
+                        <div class="file-info">
+                            <div class="file-icon">📊</div>
+                            <div class="file-details">
+                                <div class="file-name">viabilidad_estudio.xlsx</div>
+                                <div class="file-size">4.5 MB - Cargado 17 ago</div>
+                            </div>
+                        </div>
+                        <div class="file-actions">
+                            <button class="btn-small" onclick="alert('Ver documento')">👁️ Ver</button>
+                            <button class="btn-small btn-remove" onclick="alert('Cambiar archivo')">✎ Cambiar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DOC 7: PENDIENTE -->
+                <div class="document-item">
+                    <div class="document-header">
+                        <div class="document-name">Póliza de responsabilidad civil</div>
+                        <div class="document-status status-pending">Pendiente</div>
+                    </div>
+                    <div class="document-description">
+                        Documento que acredita cobertura de responsabilidad civil mínimo €300.000.
+                    </div>
+                    <div class="document-required">OBLIGATORIO</div>
+                    <div class="drop-zone" onclick="document.getElementById('file-input-7').click()">
+                        <div class="drop-zone-icon">📤</div>
+                        <div class="drop-zone-text">Arrastra tu archivo aquí</div>
+                        <div class="drop-zone-hint">o haz clic para seleccionar (PDF)</div>
+                        <input type="file" id="file-input-7" class="file-input" onchange="handleFileUpload(event, 7)">
+                    </div>
+                </div>
+
+                <!-- DOC 8: COMPLETADO -->
+                <div class="document-item completed">
+                    <div class="document-header">
+                        <div class="document-name">✓ Referencias de proyectos anteriores</div>
+                        <div class="document-status status-completed">Enviado</div>
+                    </div>
+                    <div class="document-description">
+                        Listado de proyectos similares realizados con datos de contacto de clientes.
+                    </div>
+                    <div class="file-preview">
+                        <div class="file-info">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">referencias_proyectos.pdf</div>
+                                <div class="file-size">2.9 MB - Cargado 16 ago</div>
+                            </div>
+                        </div>
+                        <div class="file-actions">
+                            <button class="btn-small" onclick="alert('Ver documento')">👁️ Ver</button>
+                            <button class="btn-small btn-remove" onclick="alert('Cambiar archivo')">✎ Cambiar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DOC 9: COMPLETADO -->
+                <div class="document-item completed">
+                    <div class="document-header">
+                        <div class="document-name">✓ Certificación ISO 9001</div>
+                        <div class="document-status status-completed">Enviado</div>
+                    </div>
+                    <div class="document-description">
+                        Certificado vigente de calidad ISO 9001 (recomendado).
+                    </div>
+                    <div class="file-preview">
+                        <div class="file-info">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">ISO_9001_certificado.pdf</div>
+                                <div class="file-size">1.5 MB - Cargado 15 ago</div>
+                            </div>
+                        </div>
+                        <div class="file-actions">
+                            <button class="btn-small" onclick="alert('Ver documento')">👁️ Ver</button>
+                            <button class="btn-small btn-remove" onclick="alert('Cambiar archivo')">✎ Cambiar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DOC 10: PENDIENTE -->
+                <div class="document-item">
+                    <div class="document-header">
+                        <div class="document-name">Declaración de no estar en listado de morosos</div>
+                        <div class="document-status status-pending">Pendiente</div>
+                    </div>
+                    <div class="document-description">
+                        Certificación adicional de no estar incluido en bases de datos de morosidad.
+                    </div>
+                    <div class="drop-zone" onclick="document.getElementById('file-input-10').click()">
+                        <div class="drop-zone-icon">📤</div>
+                        <div class="drop-zone-text">Arrastra tu archivo aquí</div>
+                        <div class="drop-zone-hint">o haz clic para seleccionar (PDF)</div>
+                        <input type="file" id="file-input-10" class="file-input" onchange="handleFileUpload(event, 10)">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESUMEN CHECKLIST -->
+        <div class="checklist-summary">
+            <h3>✓ Documentación completada</h3>
+            <ul class="checklist-items">
+                <li>7 de 10 documentos cargados</li>
+                <li>Todos los documentos obligatorios: 3 de 3 faltando</li>
+                <li>Sin documentos con errores</li>
+            </ul>
+        </div>
+
+        <!-- BOTONES ACCIONES -->
+        <div class="actions">
+            <button class="btn-secondary" onclick="window.history.back()">Volver</button>
+            <button class="btn-primary" onclick="openConfirmModal()" id="btnPresentar">
+                📤 Presentar solicitud (PREMIUM)
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL CONFIRMACIÓN -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-icon">✓</div>
+            <h2>¿Listo para presentar?</h2>
+            <p>
+                Nosotros nos encargamos de:<br>
+                • Validar documentación<br>
+                • Completar campos faltantes<br>
+                • Presentar en el registro oficial<br>
+                • Notificarte del estado
+            </p>
+            <div class="modal-buttons">
+                <button class="modal-btn-secondary" onclick="closeConfirmModal()">Revisar de nuevo</button>
+                <button class="modal-btn-primary" onclick="submitPresentation()">Sí, presentar ahora</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ÉXITO -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-icon">🎉</div>
+            <h2>¡Solicitud presentada!</h2>
+            <p>
+                Tu documentación se ha enviado al organismo oficial.<br><br>
+                <strong>Número de seguimiento:</strong> OP-2026-08-0847<br><br>
+                Recibirás actualizaciones por email y WhatsApp.
+            </p>
+            <div class="modal-buttons">
+                <button class="modal-btn-primary" onclick="goToDashboard()">Ir al dashboard</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function handleFileUpload(event, docNum) {
+            const file = event.target.files[0];
+            if (file) {
+                alert(`Archivo "${file.name}" cargado correctamente.\n\nTamaño: ${(file.size / 1024 / 1024).toFixed(1)} MB`);
+                // Aquí iría la lógica real de upload
+            }
+        }
+
+        function openConfirmModal() {
+            // Validar que falten documentos
+            const faltanObligatorios = true; // En este caso sí
+            if (faltanObligatorios) {
+                alert('Aún faltan documentos obligatorios por cargar.');
+                return;
+            }
+            document.getElementById('confirmModal').classList.add('active');
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.remove('active');
+        }
+
+        function submitPresentation() {
+            closeConfirmModal();
+            document.getElementById('successModal').classList.add('active');
+        }
+
+        function goToDashboard() {
+            alert('Serías redirigido al dashboard.');
+            window.history.back();
+        }
+
+        window.onclick = function(e) {
+            const confirm = document.getElementById('confirmModal');
+            const success = document.getElementById('successModal');
+            if (e.target === confirm) confirm.classList.remove('active');
+            if (e.target === success) success.classList.remove('active');
+        }
+    </script>
+</body>
+</html>

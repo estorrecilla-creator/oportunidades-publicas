@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Oportunidades Públicas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        /* ============ LAYOUT ============ */
+        .dashboard-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(to right, #003d82 0%, #004a9e 100%);
+            color: white;
+            padding: 20px;
+            overflow-y: auto;
+            transition: width 0.3s;
+            position: relative;
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .sidebar-logo {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #003d82;
+            font-size: 1.2em;
+        }
+
+        .sidebar.collapsed .sidebar-logo {
+            margin: 0 auto;
+        }
+
+        .logo-text {
+            flex: 1;
+            margin-left: 10px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .sidebar.collapsed .logo-text {
+            display: none;
+        }
+
+        .toggle-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 1.2em;
+            transition: background 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .menu-item {
+            margin-bottom: 15px;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .menu-link:hover,
+        .menu-link.active {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .menu-icon {
+            font-size: 1.3em;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .menu-text {
+            margin-left: 15px;
+            white-space: nowrap;
+        }
+
+        .sidebar.collapsed .menu-text {
+            display: none;
+        }
+
+        .sidebar-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .top-bar {
+            background: white;
+            padding: 20px 40px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            background: #003d82;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .user-details h3 {
+            font-size: 1em;
+            margin-bottom: 3px;
+        }
+
+        .user-details p {
+            font-size: 0.85em;
+            color: #999;
+        }
+
+        .logout-btn {
+            padding: 10px 20px;
+            background: #c60c30;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #a00a25;
+        }
+
+        /* CONTENT AREA */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
+            display: flex;
+            gap: 40px;
+        }
+
+        .main-panel {
+            flex: 1;
+        }
+
+        /* TUTORIAL MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 50px;
+            border-radius: 4px;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .modal-content h2 {
+            color: #003d82;
+            margin-bottom: 20px;
+        }
+
+        .modal-content p {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: 12px;
+            background: #003d82;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: #002a5e;
+        }
+
+        /* PROFILE CARD */
+        .profile-card {
+            background: white;
+            padding: 25px;
+            border-radius: 4px;
+            border-left: 4px solid #ffc400;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .profile-card h3 {
+            color: #003d82;
+            margin-bottom: 15px;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .profile-item {
+            padding: 15px;
+            background: #f8fafb;
+            border-radius: 3px;
+        }
+
+        .profile-label {
+            color: #999;
+            font-size: 0.85em;
+            margin-bottom: 5px;
+        }
+
+        .profile-value {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #003d82;
+        }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 30px;
+        }
+
+        .tab-btn {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 500;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            color: #003d82;
+            border-bottom-color: #003d82;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ALERTAS */
+        .alert-card {
+            background: white;
+            padding: 20px;
+            border-radius: 4px;
+            border-left: 4px solid #2e7d32;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .alert-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .alert-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #003d82;
+            flex: 1;
+        }
+
+        .alert-badge {
+            padding: 6px 12px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            white-space: nowrap;
+            margin-left: 10px;
+        }
+
+        .alert-org {
+            color: #999;
+            font-size: 0.9em;
+            margin-bottom: 12px;
+        }
+
+        .alert-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+            padding: 15px 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+
+        .alert-detail {
+            text-align: center;
+        }
+
+        .alert-detail-label {
+            color: #999;
+            font-size: 0.8em;
+        }
+
+        .alert-detail-value {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #003d82;
+        }
+
+        .alert-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-secondary {
+            padding: 10px 20px;
+            background: #003d82;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: #002a5e;
+        }
+
+        /* TABLA */
+        .table-responsive {
+            background: white;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8fafb;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #ddd;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f8fafb;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .status-approved {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-rejected {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        /* FILTROS */
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            border-color: #003d82;
+        }
+
+        /* CHAT LATERAL */
+        .chat-panel {
+            width: 350px;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(to right, #003d82 0%, #004a9e 100%);
+            color: white;
+            padding: 15px;
+            font-weight: 600;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            padding: 10px 12px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            line-height: 1.4;
+        }
+
+        .message.user {
+            background: #003d82;
+            color: white;
+            align-self: flex-end;
+            max-width: 80%;
+        }
+
+        .message.assistant {
+            background: #f0f4f8;
+            color: #333;
+            align-self: flex-start;
+            max-width: 80%;
+        }
+
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #ddd;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .chat-input button {
+            padding: 10px 15px;
+            background: #003d82;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* RESPONSIVO */
+        @media (max-width: 1024px) {
+            .content {
+                flex-direction: column;
+            }
+
+            .chat-panel {
+                width: 100%;
+                max-height: 400px;
+            }
+
+            .sidebar {
+                width: 80px;
+            }
+
+            .sidebar.collapsed {
+                width: 80px;
+            }
+
+            .sidebar.collapsed .menu-text,
+            .sidebar.collapsed .logo-text {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                height: 80px;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                overflow-x: auto;
+            }
+
+            .sidebar-menu {
+                display: flex;
+                gap: 5px;
+            }
+
+            .menu-item {
+                margin: 0;
+            }
+
+            .menu-link {
+                padding: 8px 12px;
+            }
+
+            .content {
+                padding: 20px;
+                flex-direction: column;
+            }
+
+            .chat-panel {
+                order: -1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- TUTORIAL MODAL -->
+    <div id="tutorialModal" class="modal active">
+        <div class="modal-content">
+            <h2>Bienvenido a Oportunidades Públicas</h2>
+            <p><strong>Paso 1: Tu Dashboard</strong></p>
+            <p>Aquí ves todas las oportunidades de tu sector. El sistema aprende de ti y te envía alertas diarias a las 08:00.</p>
+            
+            <p style="margin-top: 20px;"><strong>Paso 2: Los Tabs</strong></p>
+            <p>🔴 <strong>Alertas</strong> - Nuevas oportunidades cada día<br>
+            📋 <strong>Mis solicitudes</strong> - Seguimiento de tus trámites<br>
+            🔍 <strong>Nuevas oportunidades</strong> - Búsqueda avanzada<br>
+            ⚙️ <strong>Mi perfil</strong> - Tu configuración</p>
+            
+            <p style="margin-top: 20px;"><strong>Paso 3: El Chat</strong></p>
+            <p>A la derecha. Pregunta lo que necesites sobre tu sector, documentación, requisitos. Disponible 24/7.</p>
+            
+            <p style="margin-top: 20px;"><strong>Paso 4: Tu Plan</strong></p>
+            <p>Según tu suscripción verás más opciones. Profesional: descargas en Word/Excel. Premium: nosotros la presentamos.</p>
+            
+            <div class="modal-buttons">
+                <button class="btn-primary" onclick="closeTutorial()">Entendido, vamos allá</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-container">
+        <!-- SIDEBAR -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div style="display: flex; align-items: center; width: 100%;">
+                    <div class="sidebar-logo">OP</div>
+                    <div class="logo-text">Oportunidades</div>
+                </div>
+                <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="menu-item">
+                    <a class="menu-link active" onclick="switchTab(0)">
+                        <span class="menu-icon">🔴</span>
+                        <span class="menu-text">Alertas</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" onclick="switchTab(1)">
+                        <span class="menu-icon">📋</span>
+                        <span class="menu-text">Mis solicitudes</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" onclick="switchTab(2)">
+                        <span class="menu-icon">🔍</span>
+                        <span class="menu-text">Nuevas oportunidades</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" onclick="switchTab(3)">
+                        <span class="menu-icon">⚙️</span>
+                        <span class="menu-text">Mi perfil</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" onclick="switchTab(4)">
+                        <span class="menu-icon">📥</span>
+                        <span class="menu-text">Descargas</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn" style="width: 100%;">Cerrar sesión</button>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <!-- TOP BAR -->
+            <div class="top-bar">
+                <div></div>
+                <div class="profile-info">
+                    <div class="user-avatar">JG</div>
+                    <div class="user-details">
+                        <h3>Juan García</h3>
+                        <p>Plan Profesional</p>
+                    </div>
+                </div>
+                <button class="logout-btn">Cerrar sesión</button>
+            </div>
+
+            <!-- CONTENT -->
+            <div class="content">
+                <div class="main-panel">
+                    <!-- PROFILE CARD -->
+                    <div class="profile-card">
+                        <h3>Tu perfil</h3>
+                        <div class="profile-grid">
+                            <div class="profile-item">
+                                <div class="profile-label">Sector</div>
+                                <div class="profile-value">Energías Renovables</div>
+                            </div>
+                            <div class="profile-item">
+                                <div class="profile-label">Comunidad</div>
+                                <div class="profile-value">Andalucía</div>
+                            </div>
+                            <div class="profile-item">
+                                <div class="profile-label">Tipo</div>
+                                <div class="profile-value">PYME</div>
+                            </div>
+                            <div class="profile-item">
+                                <div class="profile-label">Plan</div>
+                                <div class="profile-value">Profesional</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TABS -->
+                    <div class="tabs">
+                        <button class="tab-btn active" onclick="switchTab(0)">🔴 Alertas diarias</button>
+                        <button class="tab-btn" onclick="switchTab(1)">📋 Mis solicitudes</button>
+                        <button class="tab-btn" onclick="switchTab(2)">🔍 Nuevas oportunidades</button>
+                        <button class="tab-btn" onclick="switchTab(3)">⚙️ Mi perfil</button>
+                        <button class="tab-btn" onclick="switchTab(4)">📥 Descargas</button>
+                    </div>
+
+                    <!-- TAB 0: ALERTAS -->
+                    <div class="tab-content active">
+                        <p style="color: #999; margin-bottom: 20px;">Actualizado hoy 08:00 - 3 nuevas oportunidades para ti</p>
+                        
+                        <div class="alert-card">
+                            <div class="alert-header">
+                                <div class="alert-title">Subvención instalación placas solares</div>
+                                <div class="alert-badge">ABIERTO</div>
+                            </div>
+                            <div class="alert-org">Instituto para la Diversificación y Ahorro de la Energía (IDEA)</div>
+                            <div class="alert-details">
+                                <div class="alert-detail">
+                                    <div class="alert-detail-label">Importe</div>
+                                    <div class="alert-detail-value">€50.000</div>
+                                </div>
+                                <div class="alert-detail">
+                                    <div class="alert-detail-label">Cobertura</div>
+                                    <div class="alert-detail-value">80%</div>
+                                </div>
+                                <div class="alert-detail">
+                                    <div class="alert-detail-label">Plazo</div>
+                                    <div class="alert-detail-value">40 días</div>
+                                </div>
+                                <div class="alert-detail">
+                                    <div class="alert-detail-label">Relevancia</div>
+                                    <div class="alert-detail-value" style="color: #2e7d32;">94%</div>
+                                </div>
+                            </div>
+                            <div class="alert-actions">
+                                <button class="btn-secondary">Ver detalles</button>
+                                <button class="btn-secondary" style="background: #2e7d32;">Crear solicitud</button>
+                            </div>
+                        </div>
+
+                        <div class="alert-card">
+                            <div class="alert-header">
+                                <div class="alert-title">Ayuda digitalización empresas</div>
+                                <div class="alert-badge">ABIERTO</div>
+                            </div>
+                            <div class="alert-org">Junta de Andalucía</div>
+                            <div class="alert-details">
+                                <div class="alert-detail">
+                                    <div class="alert-detail-label">Importe</div>
+                                    <div class="alert-detail-value">€25.000</div>
+                                </div>
+                                <div class="alert-detail">
+                                    <div class="alert-detail-label">Cobertura</div>
+                                    <div class="alert-detail-value">75%</div>
+                                </div>
+                                <div class="alert-detail">
+                                    <div class="alert-detail-label">Plazo</div>
+                                    <div class="alert-detail-value">57 días</div>
+                                </div>
+                                <div class="alert-detail">
+                                    <div class="alert-detail-label">Relevancia</div>
+                                    <div class="alert-detail-value" style="color: #2e7d32;">87%</div>
+                                </div>
+                            </div>
+                            <div class="alert-actions">
+                                <button class="btn-secondary">Ver detalles</button>
+                                <button class="btn-secondary" style="background: #2e7d32;">Crear solicitud</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 1: MIS SOLICITUDES (PREMIUM) -->
+                    <div class="tab-content">
+                        <div class="filters">
+                            <div class="filter-group">
+                                <label>Estado</label>
+                                <select>
+                                    <option>Todas</option>
+                                    <option>Pendiente</option>
+                                    <option>Aprobada</option>
+                                    <option>Denegada</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label>Período</label>
+                                <select>
+                                    <option>Últimos 6 meses</option>
+                                    <option>Último año</option>
+                                    <option>Todo</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Título</th>
+                                        <th>Fecha presentación</th>
+                                        <th>Estado</th>
+                                        <th>Actualización</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Subvención placas solares IDEA 2025</td>
+                                        <td>15 jun 2026</td>
+                                        <td><span class="status-badge status-approved">Aprobada</span></td>
+                                        <td>05 ago 2026</td>
+                                        <td><button class="btn-secondary" style="padding: 6px 12px; font-size: 0.85em;">Timeline</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ayuda digitalización Junta Andalucía</td>
+                                        <td>22 may 2026</td>
+                                        <td><span class="status-badge status-pending">En revisión</span></td>
+                                        <td>18 ago 2026</td>
+                                        <td><button class="btn-secondary" style="padding: 6px 12px; font-size: 0.85em;">Timeline</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Licitación obra reforma municipal</td>
+                                        <td>10 may 2026</td>
+                                        <td><span class="status-badge status-rejected">Denegada</span></td>
+                                        <td>02 jul 2026</td>
+                                        <td><button class="btn-secondary" style="padding: 6px 12px; font-size: 0.85em;">Timeline</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: NUEVAS OPORTUNIDADES -->
+                    <div class="tab-content">
+                        <div class="filters">
+                            <div class="filter-group">
+                                <label>Tipo</label>
+                                <select>
+                                    <option>Todas</option>
+                                    <option>Subvenciones</option>
+                                    <option>Licitaciones</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label>Importe mínimo</label>
+                                <select>
+                                    <option>Todas</option>
+                                    <option>Mayor €10.000</option>
+                                    <option>Mayor €50.000</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label>Plazo</label>
+                                <select>
+                                    <option>Todos</option>
+                                    <option>Menos de 30 días</option>
+                                    <option>30-60 días</option>
+                                    <option>Más de 60 días</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Título</th>
+                                        <th>Importe</th>
+                                        <th>Plazo</th>
+                                        <th>Relevancia</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Subvención energía solar térmica</td>
+                                        <td>€50.000</td>
+                                        <td>40 días</td>
+                                        <td><strong style="color: #2e7d32;">94%</strong></td>
+                                        <td><button class="btn-secondary" style="padding: 6px 12px; font-size: 0.85em;">Detalles</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Licitación obra municipal Sevilla</td>
+                                        <td>€120.000</td>
+                                        <td>45 días</td>
+                                        <td><strong style="color: #2e7d32;">78%</strong></td>
+                                        <td><button class="btn-secondary" style="padding: 6px 12px; font-size: 0.85em;">Detalles</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: MI PERFIL -->
+                    <div class="tab-content">
+                        <div class="profile-card">
+                            <h3>Información de la empresa</h3>
+                            <div class="profile-grid">
+                                <div class="profile-item">
+                                    <div class="profile-label">Nombre</div>
+                                    <div class="profile-value">TecnoEficiencia SL</div>
+                                </div>
+                                <div class="profile-item">
+                                    <div class="profile-label">CIF</div>
+                                    <div class="profile-value">A12345678</div>
+                                </div>
+                                <div class="profile-item">
+                                    <div class="profile-label">Empleados</div>
+                                    <div class="profile-value">12</div>
+                                </div>
+                                <div class="profile-item">
+                                    <div class="profile-label">Sector</div>
+                                    <div class="profile-value">Energías Renovables</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profile-card">
+                            <h3>Preferencias de alertas</h3>
+                            <div class="profile-grid">
+                                <label style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="checkbox" checked> Email
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="checkbox" checked> WhatsApp
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="profile-card">
+                            <h3>Horario de reporte diario</h3>
+                            <div class="filter-group">
+                                <label>Hora</label>
+                                <select>
+                                    <option selected>08:00</option>
+                                    <option>09:00</option>
+                                    <option>10:00</option>
+                                    <option>12:00</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button class="btn-secondary" style="margin-top: 20px; padding: 12px 30px;">Guardar cambios</button>
+                    </div>
+
+                    <!-- TAB 4: DESCARGAS -->
+                    <div class="tab-content">
+                        <div style="background: white; padding: 25px; border-radius: 4px;">
+                            <h3 style="color: #003d82; margin-bottom: 20px;">Descargas disponibles</h3>
+                            <p style="color: #666; margin-bottom: 20px;">Según tu plan Profesional, puedes descargar y editar tus solicitudes.</p>
+                            
+                            <div style="display: grid; gap: 15px;">
+                                <div style="padding: 15px; border: 1px solid #ddd; border-radius: 3px;">
+                                    <h4 style="color: #003d82; margin-bottom: 10px;">Solicitud: Placas solares IDEA</h4>
+                                    <div style="display: flex; gap: 10px;">
+                                        <button class="btn-secondary" style="padding: 8px 16px; font-size: 0.9em;">📄 Word</button>
+                                        <button class="btn-secondary" style="padding: 8px 16px; font-size: 0.9em;">📊 Excel</button>
+                                        <button class="btn-secondary" style="padding: 8px 16px; font-size: 0.9em;">📋 PDF</button>
+                                    </div>
+                                </div>
+
+                                <div style="padding: 15px; border: 1px solid #ddd; border-radius: 3px;">
+                                    <h4 style="color: #003d82; margin-bottom: 10px;">Checklist documentación</h4>
+                                    <div style="display: flex; gap: 10px;">
+                                        <button class="btn-secondary" style="padding: 8px 16px; font-size: 0.9em;">📄 Descargar</button>
+                                    </div>
+                                </div>
+
+                                <div style="padding: 15px; border: 1px solid #ddd; border-radius: 3px;">
+                                    <h4 style="color: #003d82; margin-bottom: 10px;">Reporte de todas mis oportunidades</h4>
+                                    <div style="display: flex; gap: 10px;">
+                                        <button class="btn-secondary" style="padding: 8px 16px; font-size: 0.9em;">📊 Exportar Excel</button>
+                                        <button class="btn-secondary" style="padding: 8px 16px; font-size: 0.9em;">📄 Exportar PDF</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHAT LATERAL -->
+                <div class="chat-panel">
+                    <div class="chat-header">
+                        💬 Asesor disponible 24/7
+                    </div>
+                    <div class="chat-messages">
+                        <div class="message assistant">Hola, ¿en qué puedo ayudarte hoy?</div>
+                        <div class="message user">¿Qué requisitos necesito para la subvención de placas solares?</div>
+                        <div class="message assistant">Para la subvención IDEA de placas solares necesitas:
+• Estar al corriente con Hacienda
+• Certificación ISO 9001 (recomendado)
+• Experiencia mínima 3 años
+• Responsabilidad civil €300k
+
+¿Tienes algo más?</div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" placeholder="Tu pregunta...">
+                        <button>📤</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('collapsed');
+        }
+
+        function switchTab(index) {
+            const contents = document.querySelectorAll('.tab-content');
+            const buttons = document.querySelectorAll('.tab-btn');
+            
+            contents.forEach(c => c.classList.remove('active'));
+            buttons.forEach(b => b.classList.remove('active'));
+            
+            contents[index].classList.add('active');
+            buttons[index].classList.add('active');
+
+            // Update menu links
+            const menuLinks = document.querySelectorAll('.menu-link');
+            menuLinks.forEach(l => l.classList.remove('active'));
+            if (menuLinks[index]) menuLinks[index].classList.add('active');
+        }
+
+        function closeTutorial() {
+            document.getElementById('tutorialModal').classList.remove('active');
+        }
+    </script>
+</body>
+</html>

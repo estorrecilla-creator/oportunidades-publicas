@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Oportunidades Públicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #2c3e50; background: #f1f3f5; }
+        
+        .header { background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%); color: white; padding: 60px 20px; text-align: center; }
+        .header h1 { font-size: 2.2em; margin-bottom: 10px; }
+        .header p { font-size: 1em; opacity: 0.9; }
+        
+        .container { max-width: 1100px; margin: 0 auto; padding: 60px 20px; }
+        
+        .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+        
+        /* FORMULARIO */
+        .form-section h2 { font-size: 1.5em; color: #1a2332; margin-bottom: 25px; font-weight: 700; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #1a2332; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ecf0f1; border-radius: 4px; font-size: 1em; font-family: inherit; }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #d4af37; box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1); }
+        .form-btn { width: 100%; background: #d4af37; color: #1a2332; border: none; padding: 14px; font-weight: 700; border-radius: 4px; cursor: pointer; transition: all 0.3s; }
+        .form-btn:hover { background: #c4a02e; }
+        
+        /* CALENDLY */
+        .calendly-section { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-top: 30px; }
+        .calendly-section h3 { color: #1a2332; margin-bottom: 15px; font-weight: 700; }
+        .calendly-section p { color: #555; margin-bottom: 20px; line-height: 1.6; }
+        .calendly-btn { display: inline-block; background: #27ae60; color: white; padding: 12px 30px; border-radius: 4px; text-decoration: none; font-weight: 600; transition: all 0.3s; }
+        .calendly-btn:hover { background: #229954; }
+        
+        /* INFO LADO DERECHO */
+        .info-section { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .info-section h2 { font-size: 1.5em; color: #1a2332; margin-bottom: 30px; font-weight: 700; }
+        
+        .info-item { margin-bottom: 35px; padding-bottom: 35px; border-bottom: 1px solid #ecf0f1; }
+        .info-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .info-label { font-weight: 700; color: #d4af37; margin-bottom: 8px; font-size: 0.9em; }
+        .info-content { color: #555; line-height: 1.6; }
+        .info-content a { color: #d4af37; text-decoration: none; font-weight: 700; }
+        .info-content a:hover { text-decoration: underline; }
+        
+        /* LEAD MAGNET */
+        .lead-magnet { background: linear-gradient(135deg, #d4af37 0%, #e5c158 100%); color: #1a2332; padding: 25px; border-radius: 8px; margin-bottom: 30px; }
+        .lead-magnet h3 { margin-bottom: 10px; }
+        .lead-magnet p { font-size: 0.95em; margin-bottom: 15px; }
+        .lead-magnet-btn { background: #1a2332; color: white; border: none; padding: 12px 25px; border-radius: 4px; font-weight: 700; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-block; }
+        .lead-magnet-btn:hover { background: #2c3e50; }
+        
+        /* FAQ PEQUEÑO */
+        .faq-box { background: #f8f9fa; padding: 25px; border-radius: 8px; margin-top: 30px; }
+        .faq-box h3 { color: #1a2332; margin-bottom: 15px; font-weight: 700; }
+        .faq-item { margin-bottom: 15px; }
+        .faq-q { font-weight: 600; color: #1a2332; cursor: pointer; margin-bottom: 5px; }
+        .faq-a { display: none; color: #555; font-size: 0.95em; line-height: 1.6; }
+        .faq-item.open .faq-a { display: block; }
+        
+        @media (max-width: 1024px) {
+            .content-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <h1>Contáctanos</h1>
+        <p>Respuesta en menos de 1 hora. Garantizado. 📬</p>
+    </div>
+
+    <div class="container">
+        <div class="content-grid">
+            <!-- FORMULARIO IZQUIERDA -->
+            <div class="form-section">
+                <h2>Envíanos un Mensaje</h2>
+                <form onsubmit="handleForm(event)">
+                    <div class="form-group">
+                        <label>Tu Nombre *</label>
+                        <input type="text" placeholder="Juan García" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tu Email *</label>
+                        <input type="email" placeholder="juan@empresa.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Empresa</label>
+                        <input type="text" placeholder="ACME SL">
+                    </div>
+                    <div class="form-group">
+                        <label>Asunto *</label>
+                        <select required style="width: 100%; padding: 12px; border: 1px solid #ecf0f1; border-radius: 4px; font-size: 1em;">
+                            <option value="">-- Selecciona --</option>
+                            <option>Pregunta general</option>
+                            <option>Problema técnico</option>
+                            <option>Facturación</option>
+                            <option>Solicitar demo</option>
+                            <option>Opinión/Sugerencia</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Mensaje *</label>
+                        <textarea placeholder="Cuéntanos cómo podemos ayudarte..." required></textarea>
+                    </div>
+                    <button type="submit" class="form-btn">Enviar Mensaje 📬</button>
+                    <p style="font-size: 0.85em; color: #95a5a6; margin-top: 15px;">
+                        ✓ Responderemos en menos de 1 hora (L-V 08:00-18:00)<br>
+                        ✓ Tus datos están seguros (GDPR compliant)
+                    </p>
+                </form>
+
+                <!-- CALENDLY AGENDADOR -->
+                <div class="calendly-section">
+                    <h3>📅 Agendar Demo Gratuita</h3>
+                    <p>¿Prefieres que te mostremos todo en vivo? Elige una hora que te venga bien:</p>
+                    <a href="https://calendly.com/oportunidades-publicas/demo" target="_blank" class="calendly-btn">
+                        Agendar 15 minutos →
+                    </a>
+                    <p style="font-size: 0.85em; color: #555; margin-top: 15px;">
+                        Demo en vivo con video llamada. Sin compromiso.
+                    </p>
+                </div>
+            </div>
+
+            <!-- INFO DERECHA -->
+            <div class="info-section">
+                <!-- LEAD MAGNET -->
+                <div class="lead-magnet">
+                    <h3>📥 Guía Gratis: Top 10 Subvenciones 2024</h3>
+                    <p>Las oportunidades más fáciles de conseguir este año. Actualizado diariamente.</p>
+                    <a href="#" onclick="alert('Descargando PDF...')" class="lead-magnet-btn">Descargar PDF →</a>
+                </div>
+
+                <!-- INFORMACIÓN DE CONTACTO -->
+                <h2>Información de Contacto</h2>
+
+                <div class="info-item">
+                    <div class="info-label">📧 EMAIL</div>
+                    <div class="info-content">
+                        <a href="mailto:soporte@oportunidadespublicas.es">soporte@oportunidadespublicas.es</a><br>
+                        <small>Respuesta garantizada en &lt; 1 hora</small>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">📞 TELÉFONO</div>
+                    <div class="info-content">
+                        <a href="tel:+34912345678">+34 91 234 5678</a><br>
+                        <small>L-V 08:00-18:00 CET</small>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">💬 CHAT EN VIVO</div>
+                    <div class="info-content">
+                        Disponible 24/7 en el dashboard de usuario.<br>
+                        <a href="#" onclick="alert('Abre chat...')">Iniciar chat</a>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">📍 UBICACIÓN</div>
+                    <div class="info-content">
+                        Seville, Spain 🇪🇸<br>
+                        <small>Horario: UTC+1 (UTC+2 verano)</small>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">🌐 REDES SOCIALES</div>
+                    <div class="info-content">
+                        <a href="#" target="_blank">LinkedIn</a> •
+                        <a href="#" target="_blank">Twitter</a> •
+                        <a href="#" target="_blank">Instagram</a>
+                    </div>
+                </div>
+
+                <!-- FAQ PEQUEÑO -->
+                <div class="faq-box">
+                    <h3>Preguntas Rápidas</h3>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">¿Cuál es tu horario?</div>
+                        <div class="faq-a">Lunes a Viernes 08:00-18:00 CET. Fuera de horario respondemos al día siguiente.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">¿Cuánto tarda responder?</div>
+                        <div class="faq-a">Garantizamos menos de 1 hora durante horario laboral. Usualmente en 15 minutos.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">¿Qué idiomas hablamos?</div>
+                        <div class="faq-a">Español e inglés. Si necesitas otro, avísanos.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function handleForm(e) {
+            e.preventDefault();
+            alert('✅ Mensaje enviado correctamente!\n\nNos pondremos en contacto pronto.');
+            e.target.reset();
+        }
+    </script>
+</body>
+</html>

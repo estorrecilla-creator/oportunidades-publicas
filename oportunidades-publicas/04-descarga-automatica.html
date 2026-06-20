@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descargar Solicitud - Oportunidades Públicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7fa; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+        .header { background: linear-gradient(to right, #003d82 0%, #004a9e 100%); color: white; padding: 20px 0; margin-bottom: 40px; border-bottom: 4px solid #ffc400; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; padding: 0 40px; }
+        .logo { width: 40px; height: 40px; background: white; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #003d82; }
+        .main-card { background: white; padding: 40px; border-radius: 4px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 4px solid #ffc400; }
+        .title { font-size: 1.5em; color: #003d82; margin-bottom: 10px; font-weight: 700; }
+        .subtitle { color: #666; margin-bottom: 25px; }
+        .download-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .download-card { padding: 25px; background: #f8fafb; border: 2px solid #e0e0e0; border-radius: 4px; text-align: center; transition: all 0.3s; }
+        .download-card:hover { border-color: #003d82; background: white; box-shadow: 0 4px 12px rgba(0,61,130,0.1); }
+        .download-icon { font-size: 2.5em; margin-bottom: 15px; }
+        .download-name { font-weight: 700; color: #003d82; margin-bottom: 10px; font-size: 1.05em; }
+        .download-desc { color: #666; font-size: 0.9em; margin-bottom: 15px; }
+        .download-btn { padding: 12px 20px; background: #003d82; color: white; border: none; border-radius: 3px; cursor: pointer; font-weight: 600; width: 100%; transition: background 0.3s; }
+        .download-btn:hover { background: #002a5e; }
+        .features { background: #e3f2fd; padding: 20px; border-radius: 4px; margin-bottom: 30px; }
+        .features-title { color: #003d82; font-weight: 700; margin-bottom: 15px; }
+        .features-list { list-style: none; }
+        .features-list li { padding: 8px 0; color: #666; display: flex; gap: 10px; }
+        .features-list li:before { content: "✓"; color: #2e7d32; font-weight: bold; }
+        .plan-badge { display: inline-block; padding: 6px 12px; background: #2e7d32; color: white; border-radius: 12px; font-size: 0.75em; font-weight: 600; margin-top: 10px; }
+        .info-box { background: #fff3e0; padding: 15px; border-radius: 4px; border-left: 4px solid #e65100; margin-top: 20px; }
+        .info-box p { color: #666; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <div class="logo">OP</div>
+                <h1>Descargar Solicitud</h1>
+            </div>
+            <button style="padding: 10px 20px; background: white; color: #003d82; border: none; border-radius: 3px; cursor: pointer; font-weight: 600;">← Volver</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="main-card">
+            <div class="title">Subvención instalación placas solares</div>
+            <div class="subtitle">Instituto para la Diversificación y Ahorro de la Energía (IDEA)</div>
+
+            <div class="features">
+                <div class="features-title">✓ Características de tu descarga</div>
+                <ul class="features-list">
+                    <li>Campos pre-rellenados con tus datos de empresa</li>
+                    <li>Solicitud completa lista para editar</li>
+                    <li>Formato profesional y oficial</li>
+                    <li>Compatible con Microsoft Word y Excel</li>
+                    <li>Checklist de documentación incluido</li>
+                </ul>
+            </div>
+
+            <div class="download-grid">
+                <div class="download-card">
+                    <div class="download-icon">📄</div>
+                    <div class="download-name">Word (.DOCX)</div>
+                    <div class="download-desc">Editable en Microsoft Word. Ideal para hacer cambios.</div>
+                    <button class="download-btn" onclick="descargar('word')">⬇️ Descargar Word</button>
+                    <div class="plan-badge">Pro / Premium</div>
+                </div>
+
+                <div class="download-card">
+                    <div class="download-icon">📊</div>
+                    <div class="download-name">Excel (.XLSX)</div>
+                    <div class="download-desc">Hoja de cálculo con datos organizados por secciones.</div>
+                    <button class="download-btn" onclick="descargar('excel')">⬇️ Descargar Excel</button>
+                    <div class="plan-badge">Pro / Premium</div>
+                </div>
+
+                <div class="download-card">
+                    <div class="download-icon">📋</div>
+                    <div class="download-name">PDF</div>
+                    <div class="download-desc">Versión imprimible. No editable, solo lectura.</div>
+                    <button class="download-btn" onclick="descargar('pdf')">⬇️ Descargar PDF</button>
+                    <div class="plan-badge">Todos los planes</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <p><strong>💡 Consejo:</strong> Descarga primero en Word para editar cómodamente. Luego convierte a PDF si necesitas firmarlo digitalmente.</p>
+            </div>
+        </div>
+
+        <div class="main-card">
+            <div class="title">Plantillas adicionales</div>
+            <div class="subtitle">Documentos complementarios para tu solicitud</div>
+
+            <div class="download-grid">
+                <div class="download-card">
+                    <div class="download-icon">✓</div>
+                    <div class="download-name">Checklist</div>
+                    <div class="download-desc">Lista de documentación necesaria.</div>
+                    <button class="download-btn" onclick="descargar('checklist')">⬇️ Descargar</button>
+                </div>
+
+                <div class="download-card">
+                    <div class="download-icon">💰</div>
+                    <div class="download-name">Presupuesto</div>
+                    <div class="download-desc">Plantilla desglosado de costes.</div>
+                    <button class="download-btn" onclick="descargar('presupuesto')">⬇️ Descargar</button>
+                </div>
+
+                <div class="download-card">
+                    <div class="download-icon">📈</div>
+                    <div class="download-name">ROI Estimado</div>
+                    <div class="download-desc">Calculadora de retorno de inversión.</div>
+                    <button class="download-btn" onclick="descargar('roi')">⬇️ Descargar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function descargar(tipo) {
+            alert(`Descargando: ${tipo.toUpperCase()}\n\nEn una aplicación real, esto generaría el archivo automáticamente con tus datos.`);
+        }
+    </script>
+</body>
+</html>

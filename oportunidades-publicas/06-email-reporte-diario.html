@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte Diario - Oportunidades Públicas</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f7fa; color: #333; line-height: 1.6; }
+        .email-container { max-width: 600px; margin: 20px auto; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: linear-gradient(to right, #003d82 0%, #004a9e 100%); color: white; padding: 30px 20px; text-align: center; }
+        .header h1 { margin: 0; font-size: 1.5em; }
+        .header p { margin: 5px 0 0; opacity: 0.9; font-size: 0.9em; }
+        .content { padding: 30px 20px; }
+        .greeting { font-size: 1em; margin-bottom: 20px; }
+        .section { margin-bottom: 25px; }
+        .section-title { color: #003d82; font-weight: bold; font-size: 1.1em; border-bottom: 2px solid #ffc400; padding-bottom: 10px; margin-bottom: 15px; }
+        .opportunity { padding: 15px; background: #f8fafb; border-left: 4px solid #ffc400; margin-bottom: 12px; border-radius: 4px; }
+        .opportunity-title { font-weight: bold; color: #003d82; margin-bottom: 8px; font-size: 1em; }
+        .opportunity-meta { font-size: 0.9em; color: #666; }
+        .opportunity-meta span { display: inline-block; margin-right: 15px; margin-bottom: 5px; }
+        .cta-button { display: inline-block; padding: 12px 30px; background: #003d82; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; margin: 20px 0; }
+        .footer { background: #f8fafb; padding: 20px; text-align: center; font-size: 0.85em; color: #999; border-top: 1px solid #ddd; }
+        .footer-link { color: #003d82; text-decoration: none; }
+        .badge { display: inline-block; padding: 4px 8px; border-radius: 12px; font-size: 0.75em; font-weight: bold; margin-right: 8px; }
+        .badge-abierto { background: #e8f5e9; color: #2e7d32; }
+        .badge-relevancia { background: #e3f2fd; color: #1976d2; }
+        .divider { border: none; border-top: 1px solid #eee; margin: 25px 0; }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>📬 Reporte diario</h1>
+            <p>Oportunidades Públicas para ti - 20 de agosto de 2026 08:00</p>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="greeting">
+                <p>Hola Juan,</p>
+                <p>Hemos encontrado <strong>3 nuevas oportunidades</strong> que se ajustan a tu perfil (Energías Renovables, Andalucía, PYME). Aquí están ordenadas por relevancia:</p>
+            </div>
+
+            <!-- SECCIÓN: NUEVAS OPORTUNIDADES -->
+            <div class="section">
+                <div class="section-title">🆕 Nuevas oportunidades hoy</div>
+                
+                <div class="opportunity">
+                    <div class="opportunity-title">Subvención instalación placas solares</div>
+                    <div class="opportunity-meta">
+                        <span><span class="badge badge-abierto">ABIERTO</span></span>
+                        <span><span class="badge badge-relevancia">94% relevancia</span></span>
+                    </div>
+                    <div class="opportunity-meta">
+                        <span><strong>Organismo:</strong> Instituto IDEA</span><br>
+                        <span><strong>Importe:</strong> €50.000</span> | 
+                        <span><strong>Plazo:</strong> 40 días</span>
+                    </div>
+                </div>
+
+                <div class="opportunity">
+                    <div class="opportunity-title">Ayuda digitalización empresas</div>
+                    <div class="opportunity-meta">
+                        <span><span class="badge badge-abierto">ABIERTO</span></span>
+                        <span><span class="badge badge-relevancia">87% relevancia</span></span>
+                    </div>
+                    <div class="opportunity-meta">
+                        <span><strong>Organismo:</strong> Junta de Andalucía</span><br>
+                        <span><strong>Importe:</strong> €25.000</span> | 
+                        <span><strong>Plazo:</strong> 57 días</span>
+                    </div>
+                </div>
+
+                <div class="opportunity">
+                    <div class="opportunity-title">Subvención energía renovable térmica</div>
+                    <div class="opportunity-meta">
+                        <span><span class="badge badge-abierto">ABIERTO</span></span>
+                        <span><span class="badge badge-relevancia">91% relevancia</span></span>
+                    </div>
+                    <div class="opportunity-meta">
+                        <span><strong>Organismo:</strong> MITECO</span><br>
+                        <span><strong>Importe:</strong> €40.000</span> | 
+                        <span><strong>Plazo:</strong> 30 días</span>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- SECCIÓN: ACTUALIZACIONES -->
+            <div class="section">
+                <div class="section-title">📊 Estado de tus solicitudes</div>
+                <p><strong>Solicitud "Placas solares IDEA"</strong><br>
+                Estado: En revisión (desde hace 5 días)<br>
+                Previsión: ~25 de septiembre</p>
+            </div>
+
+            <!-- CTA -->
+            <center>
+                <a href="https://oportunidadespublicas.es/dashboard" class="cta-button">🔓 Ir al dashboard</a>
+            </center>
+
+            <p style="margin-top: 30px; text-align: center; color: #999; font-size: 0.9em;">
+                No quieres recibir estos reportes? <a href="#" style="color: #003d82; text-decoration: none;">Cambiar preferencias</a>
+            </p>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p>© 2026 Oportunidades Públicas. Tu solución automatizada de subvenciones.</p>
+            <p><a href="#" class="footer-link">Condiciones</a> | 
+               <a href="#" class="footer-link">Privacidad</a> | 
+               <a href="#" class="footer-link">Contacto</a></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+{
+  "workflows": [
+    {
+      "id": "daily-alert-workflow",
+      "name": "Daily Solicitud Alert",
+      "description": "Send daily email with new solicitudes matching user preferences",
+      "trigger": {
+        "type": "schedule",
+        "time": "08:00",
+        "timezone": "Europe/Madrid"
+      },
+      "steps": [
+        {
+          "action": "database.query",
+          "query": "SELECT users.id, users.email FROM alerts JOIN users ON alerts.user_id = users.id WHERE alerts.is_active = true"
+        },
+        {
+          "action": "sendgrid.send_email",
+          "template": "daily_alert"
+        }
+      ]
+    },
+    {
+      "id": "subscription-renewal-workflow",
+      "name": "Subscription Renewal Reminder",
+      "trigger": {
+        "type": "schedule",
+        "time": "10:00",
+        "frequency": "daily"
+      },
+      "steps": [
+        {
+          "action": "database.query",
+          "query": "SELECT users.*, subscriptions.* FROM subscriptions JOIN users WHERE current_period_end = CURRENT_DATE + INTERVAL '7 days'"
+        },
+        {
+          "action": "sendgrid.send_email",
+          "template": "subscription_renewing"
+        }
+      ]
+    },
+    {
+      "id": "payment-failure-workflow",
+      "name": "Payment Failure Recovery",
+      "trigger": {
+        "type": "webhook",
+        "event": "payment.failed"
+      }
+    },
+    {
+      "id": "bdns-sync-workflow",
+      "name": "BDNS Daily Sync",
+      "trigger": {
+        "type": "schedule",
+        "interval": "6 hours"
+      }
+    }
+  ]
+}

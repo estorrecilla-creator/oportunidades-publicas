@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido - Oportunidades Públicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%); min-height: 100vh; color: #2c3e50; }
+        
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        
+        /* HEADER */
+        .onboarding-header { text-align: center; color: white; margin-bottom: 50px; }
+        .onboarding-header h1 { font-size: 2.5em; margin-bottom: 15px; }
+        .onboarding-header p { font-size: 1.1em; opacity: 0.9; }
+        
+        /* STEPS */
+        .steps-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 50px; }
+        
+        .step-card { background: white; border-radius: 5px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: all 0.3s; }
+        .step-card:hover { transform: translateY(-8px); }
+        
+        .step-number { background: #d4af37; color: #1a2332; padding: 20px; text-align: center; font-size: 2.5em; font-weight: 800; }
+        
+        .step-content { padding: 30px; }
+        .step-title { font-size: 1.3em; color: #1a2332; margin-bottom: 15px; font-weight: 700; }
+        .step-description { color: #95a5a6; line-height: 1.8; margin-bottom: 20px; }
+        .step-icon { font-size: 3em; margin-bottom: 15px; }
+        
+        .step-details { background: #f8f9fa; padding: 15px; border-radius: 3px; font-size: 0.9em; color: #7f8c8d; }
+        .step-details ul { list-style: none; }
+        .step-details li { padding: 8px 0; padding-left: 25px; position: relative; }
+        .step-details li::before { content: "•"; position: absolute; left: 0; color: #d4af37; font-weight: bold; }
+        
+        /* VIDEO SECTION */
+        .video-section { background: white; border-radius: 5px; padding: 40px; margin-bottom: 50px; text-align: center; }
+        .video-placeholder { width: 100%; max-width: 600px; height: 350px; background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%); border-radius: 5px; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3em; }
+        .video-title { font-size: 1.4em; color: #1a2332; margin-bottom: 10px; font-weight: 700; }
+        .video-desc { color: #95a5a6; margin-bottom: 25px; }
+        
+        /* FEATURES */
+        .features-section { background: white; border-radius: 5px; padding: 40px; margin-bottom: 50px; }
+        .features-title { font-size: 1.8em; color: #1a2332; margin-bottom: 30px; font-weight: 700; text-align: center; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+        .feature-item { }
+        .feature-icon { font-size: 2.5em; margin-bottom: 12px; }
+        .feature-name { font-weight: 700; color: #1a2332; margin-bottom: 8px; }
+        .feature-desc { color: #95a5a6; font-size: 0.9em; }
+        
+        /* BUTTONS */
+        .action-buttons { text-align: center; }
+        .cta-primary { display: inline-block; padding: 16px 45px; background: #d4af37; color: #1a2332; border: none; border-radius: 3px; font-weight: 700; font-size: 1.05em; cursor: pointer; transition: all 0.3s; margin-right: 15px; text-decoration: none; }
+        .cta-primary:hover { background: #e5c158; }
+        .cta-secondary { display: inline-block; padding: 16px 45px; background: transparent; color: white; border: 2px solid white; border-radius: 3px; font-weight: 700; font-size: 1.05em; cursor: pointer; transition: all 0.3s; text-decoration: none; }
+        .cta-secondary:hover { background: rgba(255,255,255,0.1); }
+        
+        /* PROGRESS */
+        .progress-bar { height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin-bottom: 30px; overflow: hidden; }
+        .progress-fill { width: 33%; height: 100%; background: #d4af37; transition: width 0.3s; }
+        
+        @media (max-width: 768px) {
+            .onboarding-header h1 { font-size: 1.8em; }
+            .steps-container { grid-template-columns: 1fr; }
+            .cta-primary, .cta-secondary { display: block; margin: 10px 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- PROGRESS BAR -->
+    <div class="container" style="padding-top: 20px; padding-bottom: 0;">
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: 33%;"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- HEADER -->
+        <div class="onboarding-header">
+            <h1>👋 ¡Bienvenido a Oportunidades Públicas!</h1>
+            <p>Aprenderemos juntos cómo encontrar subvenciones en 5 minutos</p>
+        </div>
+
+        <!-- PASOS -->
+        <div class="steps-container">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-icon">📋</div>
+                    <div class="step-title">Completa tu perfil</div>
+                    <div class="step-description">Tus datos de empresa para personalizar búsquedas</div>
+                    <div class="step-details">
+                        <ul>
+                            <li>Nombre empresa</li>
+                            <li>Sector (elegido)</li>
+                            <li>Región/CCAA</li>
+                            <li>Tamaño empresa</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-icon">🔔</div>
+                    <div class="step-title">Activa alertas</div>
+                    <div class="step-description">Recibe oportunidades cada día a las 08:00</div>
+                    <div class="step-details">
+                        <ul>
+                            <li>Email automático</li>
+                            <li>3 oportunidades/día</li>
+                            <li>Solo relevantes</li>
+                            <li>Ordena por interés</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-icon">💼</div>
+                    <div class="step-title">Solicita subvenciones</div>
+                    <div class="step-description">Elige, descarga y presenta directamente</div>
+                    <div class="step-details">
+                        <ul>
+                            <li>Info completa</li>
+                            <li>Requisitos claros</li>
+                            <li>Descargas automáticas</li>
+                            <li>Timeline de seguimiento</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIDEO TUTORIAL -->
+        <div class="video-section">
+            <div class="video-placeholder">▶️</div>
+            <div class="video-title">Ver tutorial en video (2:30)</div>
+            <div class="video-desc">Aprende cómo funciona en menos de 3 minutos</div>
+            <button class="cta-primary">Ver video</button>
+        </div>
+
+        <!-- FEATURES -->
+        <div class="features-section">
+            <div class="features-title">Lo que incluye tu plan Profesional</div>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">🔍</div>
+                    <div class="feature-name">Búsqueda inteligente</div>
+                    <div class="feature-desc">Encuentra solo lo que te interesa con filtros avanzados</div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">⬇️</div>
+                    <div class="feature-name">Descarga automática</div>
+                    <div class="feature-desc">Word, Excel y PDF rellenos con tus datos</div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">💬</div>
+                    <div class="feature-name">Chat 24/7</div>
+                    <div class="feature-desc">Asesor disponible siempre para ayudarte</div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-name">Análisis ROI</div>
+                    <div class="feature-desc">Ve cuánto podrías conseguir por oportunidad</div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">📬</div>
+                    <div class="feature-name">Alertas diarias</div>
+                    <div class="feature-desc">Reporte personalizado cada día a las 8am</div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">📈</div>
+                    <div class="feature-name">Histórico</div>
+                    <div class="feature-desc">Ve qué empresas han conseguido qué ayudas</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div style="text-align: center; margin-bottom: 50px;">
+            <a href="05-perfil-usuario-completo.html" class="cta-primary">Completar mi perfil</a>
+            <a href="dashboard-profesional.html" class="cta-secondary">Ir directamente al dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

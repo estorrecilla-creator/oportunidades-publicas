@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error en el pago - Oportunidades Públicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f1f3f5; color: #2c3e50; }
+        
+        .container { max-width: 700px; margin: 0 auto; padding: 40px 20px; }
+        
+        .error-card { background: white; border-radius: 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow: hidden; }
+        
+        .error-header { padding: 50px 40px; background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); text-align: center; }
+        .error-icon { font-size: 4em; margin-bottom: 20px; }
+        .error-title { font-size: 2em; color: #c62828; margin-bottom: 10px; font-weight: 700; }
+        .error-subtitle { color: #d32f2f; opacity: 0.9; }
+        
+        .error-body { padding: 40px; }
+        
+        .error-code { background: #f8f9fa; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .code-label { font-size: 0.9em; color: #95a5a6; margin-bottom: 8px; }
+        .code-value { font-size: 1.4em; font-weight: 700; color: #1a2332; font-family: 'Courier New', monospace; letter-spacing: 1px; }
+        
+        .error-reason { background: #fff3cd; padding: 20px; border-radius: 5px; margin-bottom: 30px; border-left: 4px solid #ffc107; }
+        .reason-title { font-weight: 700; color: #856404; margin-bottom: 10px; }
+        .reason-text { color: #856404; line-height: 1.6; }
+        
+        .solutions { margin-bottom: 30px; }
+        .solutions-title { font-size: 1.2em; color: #1a2332; margin-bottom: 20px; font-weight: 700; }
+        .solutions-list { display: grid; gap: 15px; }
+        .solution-item { background: #f8f9fa; padding: 20px; border-radius: 5px; border-left: 3px solid #d4af37; }
+        .solution-step { font-weight: 700; color: #d4af37; margin-bottom: 5px; font-size: 0.9em; }
+        .solution-text { color: #95a5a6; }
+        
+        .faq-section { background: #f8f9fa; padding: 25px; border-radius: 5px; margin-bottom: 30px; }
+        .faq-title { font-weight: 700; color: #1a2332; margin-bottom: 15px; }
+        .faq-item { margin-bottom: 15px; }
+        .faq-item:last-child { margin-bottom: 0; }
+        .faq-q { font-weight: 600; color: #1a2332; margin-bottom: 5px; cursor: pointer; }
+        .faq-a { color: #95a5a6; font-size: 0.95em; display: none; }
+        .faq-item.open .faq-a { display: block; }
+        
+        .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .btn { padding: 14px 20px; border: none; border-radius: 3px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s; text-align: center; }
+        .btn-primary { background: #1a2332; color: white; grid-column: span 2; }
+        .btn-primary:hover { background: #0f1419; }
+        .btn-secondary { background: #d4af37; color: #1a2332; }
+        .btn-secondary:hover { background: #e5c158; }
+        
+        .support-section { text-align: center; margin-top: 30px; padding-top: 30px; border-top: 1px solid #ecf0f1; }
+        .support-section p { color: #95a5a6; margin-bottom: 15px; }
+        .support-link { color: #d4af37; text-decoration: none; font-weight: 600; }
+        .support-link:hover { text-decoration: underline; }
+        
+        @media (max-width: 600px) {
+            .action-buttons { grid-template-columns: 1fr; }
+            .btn-primary { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-card">
+            <!-- ERROR HEADER -->
+            <div class="error-header">
+                <div class="error-icon">❌</div>
+                <h1 class="error-title">Pago rechazado</h1>
+                <p class="error-subtitle">No pudimos procesar tu pago</p>
+            </div>
+
+            <!-- BODY -->
+            <div class="error-body">
+                <!-- ERROR CODE -->
+                <div class="error-code">
+                    <div class="code-label">Código de error:</div>
+                    <div class="code-value">CARD_DECLINED_402</div>
+                </div>
+
+                <!-- ERROR REASON -->
+                <div class="error-reason">
+                    <div class="reason-title">¿Por qué fue rechazado?</div>
+                    <div class="reason-text">
+                        Tu tarjeta fue rechazada por el banco. Esto puede ocurrir por varios motivos: fondos insuficientes, tarjeta vencida, límite de gasto alcanzado, o protecciones de fraude del banco.
+                    </div>
+                </div>
+
+                <!-- SOLUTIONS -->
+                <div class="solutions">
+                    <div class="solutions-title">¿Cómo solucionarlo?</div>
+                    <div class="solutions-list">
+                        <div class="solution-item">
+                            <div class="solution-step">1️⃣ Verifica tu tarjeta</div>
+                            <div class="solution-text">Asegúrate de que los datos son correctos: número, fecha de vencimiento y CVC.</div>
+                        </div>
+                        <div class="solution-item">
+                            <div class="solution-step">2️⃣ Contacta tu banco</div>
+                            <div class="solution-text">A veces el banco bloquea transacciones online. Llama a tu banco para autorizarlas.</div>
+                        </div>
+                        <div class="solution-item">
+                            <div class="solution-step">3️⃣ Intenta de nuevo</div>
+                            <div class="solution-text">En 5 minutos puedes reintentar con la misma tarjeta o una diferente.</div>
+                        </div>
+                        <div class="solution-item">
+                            <div class="solution-step">4️⃣ Usa otro método</div>
+                            <div class="solution-text">Puedes pagar por transferencia bancaria (sin comisiones). El equipo lo procesa en 2h.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ -->
+                <div class="faq-section">
+                    <div class="faq-title">Preguntas frecuentes:</div>
+                    <div class="faq-item">
+                        <div class="faq-q">¿Se me cobró dinero?</div>
+                        <div class="faq-a">No. Si el pago fue rechazado, tu tarjeta no fue cobrada. Solo verás un cargo temporal que desaparecerá en 3-5 días.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q">¿Cuántas veces puedo reintentar?</div>
+                        <div class="faq-a">Sin límite. Puedes reintentar tantas veces como necesites sin penalización.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q">¿Se pierden mis datos?</div>
+                        <div class="faq-a">No. Cuando logres pagar, podrás acceder al dashboard inmediatamente con los datos que ya guardamos.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q">¿Puedo pagar después?</div>
+                        <div class="faq-a">Claro. Tu solicitud de registro está guardada. Vuelve cuando puedas y continúa desde aquí.</div>
+                    </div>
+                </div>
+
+                <!-- ACTION BUTTONS -->
+                <div class="action-buttons">
+                    <a href="checkout-pago.html" class="btn btn-primary">Reintentar pago</a>
+                    <a href="#transferencia" class="btn btn-secondary">Pagar por transferencia</a>
+                </div>
+
+                <!-- SUPPORT -->
+                <div class="support-section">
+                    <p>¿Sigue sin funcionar?</p>
+                    <a href="#soporte" class="support-link">Contacta con soporte (respuesta en <5 min) →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADDITIONAL INFO -->
+        <div style="background: white; border-radius: 5px; padding: 25px; margin-top: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+            <h3 style="color: #1a2332; margin-bottom: 15px; font-weight: 700;">Métodos de pago disponibles:</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div style="padding: 15px; border: 1px solid #ecf0f1; border-radius: 5px;">
+                    <div style="font-weight: 700; color: #1a2332; margin-bottom: 5px;">💳 Tarjeta (Visa/MC)</div>
+                    <div style="color: #95a5a6; font-size: 0.9em;">Instantáneo</div>
+                </div>
+                <div style="padding: 15px; border: 1px solid #ecf0f1; border-radius: 5px;">
+                    <div style="font-weight: 700; color: #1a2332; margin-bottom: 5px;">🏦 Transferencia</div>
+                    <div style="color: #95a5a6; font-size: 0.9em;">En 2 horas</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.faq-q').forEach(q => {
+            q.addEventListener('click', function() {
+                this.parentElement.classList.toggle('open');
+            });
+        });
+    </script>
+</body>
+</html>

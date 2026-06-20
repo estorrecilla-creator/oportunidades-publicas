@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificaciones - Oportunidades Públicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7fa; }
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        .header { background: linear-gradient(to right, #003d82 0%, #004a9e 100%); color: white; padding: 20px 0; margin-bottom: 40px; border-bottom: 4px solid #ffc400; }
+        .header-content { padding: 0 40px; }
+        .filters { background: white; padding: 20px; border-radius: 4px; margin-bottom: 30px; display: flex; gap: 15px; flex-wrap: wrap; }
+        .filter-btn { padding: 10px 20px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 20px; cursor: pointer; transition: all 0.3s; font-weight: 600; font-size: 0.9em; }
+        .filter-btn.active { background: #003d82; color: white; border-color: #003d82; }
+        .notification { background: white; padding: 20px; border-radius: 4px; margin-bottom: 15px; border-left: 4px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; gap: 15px; }
+        .notification.solicitud { border-left-color: #2e7d32; }
+        .notification.estado { border-left-color: #1976d2; }
+        .notification.requerimiento { border-left-color: #e65100; }
+        .notification.sistema { border-left-color: #999; }
+        .notification-icon { font-size: 1.8em; min-width: 40px; text-align: center; }
+        .notification-content { flex: 1; }
+        .notification-title { font-weight: 700; color: #003d82; margin-bottom: 5px; }
+        .notification-text { color: #666; font-size: 0.95em; margin-bottom: 8px; }
+        .notification-time { font-size: 0.8em; color: #999; }
+        .notification-action { margin-top: 10px; }
+        .notification-btn { padding: 6px 12px; background: #003d82; color: white; border: none; border-radius: 3px; cursor: pointer; font-weight: 600; font-size: 0.85em; }
+        .notification-btn:hover { background: #002a5e; }
+        .empty { text-align: center; padding: 60px 20px; color: #999; }
+        .empty-icon { font-size: 3em; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>📬 Notificaciones</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterNotifications(this, 'all')">Todas</button>
+            <button class="filter-btn" onclick="filterNotifications(this, 'solicitud')">Solicitudes</button>
+            <button class="filter-btn" onclick="filterNotifications(this, 'estado')">Estados</button>
+            <button class="filter-btn" onclick="filterNotifications(this, 'requerimiento')">Requerimientos</button>
+        </div>
+
+        <!-- NOTIFICACIÓN 1 -->
+        <div class="notification solicitud" data-type="solicitud">
+            <div class="notification-icon">✅</div>
+            <div class="notification-content">
+                <div class="notification-title">Solicitud presentada correctamente</div>
+                <div class="notification-text">Tu solicitud "Subvención instalación placas solares" fue presentada en el sistema IDEA con número de referencia OP-2026-0847.</div>
+                <div class="notification-time">15 ago 2026, 14:32</div>
+            </div>
+        </div>
+
+        <!-- NOTIFICACIÓN 2 -->
+        <div class="notification estado" data-type="estado">
+            <div class="notification-icon">⏳</div>
+            <div class="notification-content">
+                <div class="notification-title">Cambio de estado: En revisión</div>
+                <div class="notification-text">Tu solicitud "Subvención instalación placas solares" ha pasado a estado "En revisión". Plazo estimado de resolución: 30 días.</div>
+                <div class="notification-time">16 ago 2026, 09:15</div>
+                <div class="notification-action">
+                    <button class="notification-btn" onclick="verSolicitud()">Ver solicitud</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- NOTIFICACIÓN 3 -->
+        <div class="notification requerimiento" data-type="requerimiento">
+            <div class="notification-icon">⚠️</div>
+            <div class="notification-content">
+                <div class="notification-title">Solicitud de información adicional</div>
+                <div class="notification-text">El organismo requiere clarificación sobre el alcance técnico del proyecto de placas solares. Debes responder en <strong>5 días</strong> (vence el 25 ago).</div>
+                <div class="notification-time">20 ago 2026, 11:42</div>
+                <div class="notification-action">
+                    <button class="notification-btn" onclick="responderRequerimiento()">📋 Responder requerimiento</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- NOTIFICACIÓN 4 -->
+        <div class="notification solicitud" data-type="solicitud">
+            <div class="notification-icon">📤</div>
+            <div class="notification-content">
+                <div class="notification-title">Respuesta enviada al organismo</div>
+                <div class="notification-text">Hemos presentado la información técnica adicional solicitada sobre tu proyecto de placas solares. El organismo confirmó recepción.</div>
+                <div class="notification-time">22 ago 2026, 16:28</div>
+            </div>
+        </div>
+
+        <!-- NOTIFICACIÓN 5 -->
+        <div class="notification estado" data-type="estado">
+            <div class="notification-icon">📊</div>
+            <div class="notification-content">
+                <div class="notification-title">Reporte diario enviado</div>
+                <div class="notification-text">Se ha enviado tu reporte diario con 3 nuevas oportunidades que coinciden con tu perfil. Búscalas en tu email.</div>
+                <div class="notification-time">20 ago 2026, 08:00</div>
+            </div>
+        </div>
+
+        <!-- NOTIFICACIÓN 6 -->
+        <div class="notification solicitud" data-type="solicitud">
+            <div class="notification-icon">💬</div>
+            <div class="notification-content">
+                <div class="notification-title">Chat: Respuesta del asesor</div>
+                <div class="notification-text">Tu pregunta sobre "Requisitos para ampliar cobertura de la solicitud" ha sido respondida. Revísala en el chat.</div>
+                <div class="notification-time">19 ago 2026, 10:15</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function filterNotifications(btn, type) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            document.querySelectorAll('.notification').forEach(notif => {
+                if (type === 'all' || notif.dataset.type === type) {
+                    notif.style.display = 'flex';
+                } else {
+                    notif.style.display = 'none';
+                }
+            });
+        }
+        function verSolicitud() { alert('Ir a solicitud'); }
+        function responderRequerimiento() { alert('Abriendo formulario de respuesta'); }
+    </script>
+</body>
+</html>

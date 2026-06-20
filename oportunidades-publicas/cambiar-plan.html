@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambiar plan - Oportunidades Públicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f1f3f5; color: #2c3e50; }
+        
+        .header { background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%); color: white; padding: 30px 0; border-bottom: 3px solid #d4af37; }
+        .header-content { max-width: 1100px; margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+        .logo-icon { width: 30px; height: 30px; background: #d4af37; border-radius: 3px; display: flex; align-items: center; justify-content: center; color: #1a2332; font-weight: 800; font-size: 0.75em; }
+        
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px; }
+        
+        .title { font-size: 2em; color: #1a2332; margin-bottom: 10px; }
+        .subtitle { color: #95a5a6; margin-bottom: 40px; }
+        
+        .current-plan { background: white; padding: 25px; border-radius: 5px; margin-bottom: 40px; border-left: 4px solid #d4af37; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .current-label { color: #95a5a6; font-size: 0.85em; }
+        .current-info { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; margin-top: 15px; }
+        .info-item { }
+        .info-value { font-size: 1.3em; font-weight: 700; color: #1a2332; }
+        .info-label { color: #95a5a6; font-size: 0.9em; margin-top: 5px; }
+        
+        .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-bottom: 40px; }
+        
+        .plan-card { background: white; border: 2px solid #ecf0f1; border-radius: 5px; padding: 30px; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .plan-card:hover { border-color: #d4af37; transform: translateY(-4px); }
+        .plan-card.current { border-color: #d4af37; background: #fffbf0; }
+        .plan-card.upgrade { border: 2px solid #d4af37; background: #fffbf0; }
+        
+        .plan-header { margin-bottom: 20px; }
+        .plan-name { font-size: 1.3em; color: #1a2332; font-weight: 700; margin-bottom: 8px; }
+        .plan-price { font-size: 2.2em; font-weight: 800; color: #d4af37; }
+        .plan-period { color: #95a5a6; font-size: 0.9em; }
+        
+        .plan-features { list-style: none; margin: 25px 0; }
+        .plan-features li { padding: 10px 0; padding-left: 25px; position: relative; color: #95a5a6; }
+        .plan-features li::before { content: "✓"; position: absolute; left: 0; color: #27ae60; font-weight: 700; }
+        
+        .plan-action { width: 100%; padding: 12px; border: none; border-radius: 3px; font-weight: 700; cursor: pointer; transition: all 0.3s; margin-top: 15px; }
+        .plan-action.select { background: #1a2332; color: white; }
+        .plan-action.select:hover { background: #0f1419; }
+        .plan-action.current { background: #f5f5f5; color: #95a5a6; cursor: default; }
+        .plan-action.upgrade { background: #d4af37; color: #1a2332; }
+        .plan-action.upgrade:hover { background: #e5c158; }
+        .plan-action.downgrade { background: #f5f5f5; color: #1a2332; border: 2px solid #ecf0f1; }
+        .plan-action.downgrade:hover { border-color: #d4af37; color: #d4af37; }
+        
+        .comparison { background: white; padding: 40px; border-radius: 5px; margin-bottom: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .comparison h2 { font-size: 1.5em; color: #1a2332; margin-bottom: 25px; }
+        
+        .comparison-table { width: 100%; border-collapse: collapse; }
+        .comparison-table th, .comparison-table td { padding: 15px; text-align: left; border-bottom: 1px solid #ecf0f1; }
+        .comparison-table th { background: #f8f9fa; font-weight: 700; color: #1a2332; }
+        .comparison-table tr:nth-child(even) { background: #f8f9fa; }
+        .check { color: #27ae60; }
+        .cross { color: #d32f2f; }
+        
+        .faq { background: #f8f9fa; padding: 40px; border-radius: 5px; }
+        .faq h2 { font-size: 1.5em; color: #1a2332; margin-bottom: 25px; }
+        .faq-item { margin-bottom: 20px; }
+        .faq-q { font-weight: 700; color: #1a2332; cursor: pointer; padding: 12px; background: white; border-radius: 3px; }
+        .faq-q:hover { background: white; color: #d4af37; }
+        .faq-a { padding: 12px; color: #95a5a6; display: none; }
+        .faq-item.open .faq-a { display: block; }
+        
+        .alert { padding: 15px; border-radius: 5px; margin-bottom: 25px; }
+        .alert-info { background: #d1ecf1; color: #0c5460; border-left: 4px solid #17a2b8; }
+        
+        @media (max-width: 1024px) {
+            .plans-grid { grid-template-columns: 1fr; }
+            .current-info { grid-template-columns: 1fr; }
+            .comparison-table { font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">OP</div>
+                <span>Oportunidades Públicas</span>
+            </div>
+            <a href="08-gestion-plan-pago.html" style="color: white; text-decoration: none;">← Volver</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- TITLE -->
+        <h1 class="title">Cambiar tu plan</h1>
+        <p class="subtitle">Upgrade, downgrade o mantén tu plan actual. Sin penalizaciones.</p>
+
+        <!-- CURRENT PLAN -->
+        <div class="current-plan">
+            <div class="current-label">Plan actual</div>
+            <div class="current-info">
+                <div class="info-item">
+                    <div class="info-value">Profesional</div>
+                    <div class="info-label">Plan</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-value">€59</div>
+                    <div class="info-label">Precio mensual</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-value">20 jul</div>
+                    <div class="info-label">Próxima renovación</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ALERT -->
+        <div class="alert alert-info">
+            <strong>ℹ️ Nota importante:</strong> Si cambias de plan, los cambios entrarán en vigor en tu próxima fecha de renovación (20 de julio). Hasta entonces, mantén todos los beneficios de tu plan actual.
+        </div>
+
+        <!-- PLANES -->
+        <div class="plans-grid">
+            <!-- BÁSICO -->
+            <div class="plan-card">
+                <div class="plan-header">
+                    <div class="plan-name">BÁSICO</div>
+                    <div class="plan-price">€19</div>
+                    <div class="plan-period">/mes</div>
+                </div>
+                <ul class="plan-features">
+                    <li>Búsqueda ilimitada</li>
+                    <li>Reporte diario 08:00</li>
+                    <li>Chat soporte básico</li>
+                    <li>3 alertas personalizadas</li>
+                </ul>
+                <button class="plan-action downgrade">Cambiar a Básico</button>
+                <div style="text-align: center; margin-top: 12px; color: #95a5a6; font-size: 0.85em;">
+                    Ahorro: €40/mes
+                </div>
+            </div>
+
+            <!-- PROFESIONAL (CURRENT) -->
+            <div class="plan-card current">
+                <div class="plan-header">
+                    <div class="plan-name">PROFESIONAL</div>
+                    <div class="plan-price">€59</div>
+                    <div class="plan-period">/mes</div>
+                </div>
+                <ul class="plan-features">
+                    <li>Todo en Básico</li>
+                    <li>Descarga Word/Excel/PDF</li>
+                    <li>Simulador ROI</li>
+                    <li>Chat asesor avanzado</li>
+                    <li>Datos históricos</li>
+                </ul>
+                <button class="plan-action current" disabled>Plan actual</button>
+            </div>
+
+            <!-- PREMIUM -->
+            <div class="plan-card upgrade">
+                <div class="plan-header">
+                    <div class="plan-name">PREMIUM</div>
+                    <div class="plan-price">€149</div>
+                    <div class="plan-period">/mes</div>
+                </div>
+                <ul class="plan-features">
+                    <li>Todo en Profesional</li>
+                    <li>Nosotros presentamos</li>
+                    <li>Timeline 24/7</li>
+                    <li>Seguimiento automático</li>
+                    <li>Asesor dedicado</li>
+                </ul>
+                <button class="plan-action upgrade">Upgrade a Premium</button>
+                <div style="text-align: center; margin-top: 12px; color: #d4af37; font-size: 0.85em; font-weight: 700;">
+                    +€90/mes • Diferencial total
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPARATIVA -->
+        <div class="comparison">
+            <h2>Comparativa de planes</h2>
+            <table class="comparison-table">
+                <tr>
+                    <th>Funcionalidad</th>
+                    <th>Básico</th>
+                    <th>Profesional</th>
+                    <th>Premium</th>
+                </tr>
+                <tr>
+                    <td>Búsqueda de subvenciones</td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                </tr>
+                <tr>
+                    <td>Alertas diarias ilimitadas</td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                </tr>
+                <tr>
+                    <td>Descargas (Word/Excel/PDF)</td>
+                    <td><span class="cross">✗</span></td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                </tr>
+                <tr>
+                    <td>Chat asesor 24/7</td>
+                    <td><span class="cross">✗</span></td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                </tr>
+                <tr>
+                    <td>Nosotros presentamos</td>
+                    <td><span class="cross">✗</span></td>
+                    <td><span class="cross">✗</span></td>
+                    <td><span class="check">✓</span></td>
+                </tr>
+                <tr>
+                    <td>Seguimiento automático</td>
+                    <td><span class="cross">✗</span></td>
+                    <td><span class="cross">✗</span></td>
+                    <td><span class="check">✓</span></td>
+                </tr>
+                <tr>
+                    <td>Asesor dedicado</td>
+                    <td><span class="cross">✗</span></td>
+                    <td><span class="cross">✗</span></td>
+                    <td><span class="check">✓</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- FAQ -->
+        <div class="faq">
+            <h2>Preguntas frecuentes</h2>
+            
+            <div class="faq-item open">
+                <div class="faq-q">¿Cuándo entra en vigor el cambio?</div>
+                <div class="faq-a">El cambio de plan entra en vigor en tu próxima fecha de renovación (20 de julio). Hasta entonces, disfrutas de todos los beneficios de tu plan actual sin cambios.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q">¿Me reembolsan la diferencia si downgrade?</div>
+                <div class="faq-a">No. El ciclo actual sigue hasta su fecha de renovación. Cuando se renueve, se te cobrará el nuevo precio. Los cambios de plan no generan reembolsos.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q">¿Pierdo datos si downgrade?</div>
+                <div class="faq-a">No. Todos tus datos de solicitudes, búsquedas e historial se mantienen. Solo pierdes acceso a funcionalidades del plan actual (como descargas o chat premium).</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q">¿Puedo cambiar de plan después?</div>
+                <div class="faq-a">Claro. Puedes cambiar tu plan cuando quieras. Los cambios entran en vigor en la próxima renovación.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q">¿Cómo cancelo completamente?</div>
+                <div class="faq-a">Puedes cancelar la suscripción desde Configuración → Plan → Cancelar. La cancelación toma efecto al final del ciclo actual.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle FAQ items
+        document.querySelectorAll('.faq-q').forEach(q => {
+            q.addEventListener('click', function() {
+                this.parentElement.classList.toggle('open');
+            });
+        });
+
+        // Plan change handlers
+        document.querySelectorAll('.plan-action:not(:disabled)').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const planName = this.parentElement.querySelector('.plan-name').textContent;
+                alert(`Tu cambio de plan a "${planName}" se procesará en la próxima renovación (20 de julio).`);
+            });
+        });
+    </script>
+</body>
+</html>

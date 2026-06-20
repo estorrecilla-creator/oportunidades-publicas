@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso - Oportunidades Públicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; color: #2c3e50; }
+        
+        .container { width: 100%; max-width: 450px; padding: 20px; }
+        
+        .login-card { background: white; border-radius: 5px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); overflow: hidden; }
+        
+        .login-header { background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%); color: white; padding: 40px 30px; text-align: center; }
+        .login-logo { width: 50px; height: 50px; background: #d4af37; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #1a2332; font-weight: 800; font-size: 1.2em; margin: 0 auto 20px; }
+        .login-header h1 { font-size: 1.8em; margin-bottom: 8px; }
+        .login-header p { opacity: 0.9; font-size: 0.95em; }
+        
+        .login-body { padding: 40px 30px; }
+        
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; font-weight: 600; color: #1a2332; margin-bottom: 8px; }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid #ecf0f1; border-radius: 3px; font-family: inherit; font-size: 0.95em; transition: all 0.3s; }
+        .form-group input:focus { outline: none; border-color: #d4af37; box-shadow: 0 0 0 3px rgba(212,175,55,0.1); }
+        
+        .remember-forgot { display: flex; justify-content: space-between; align-items: center; font-size: 0.9em; margin-bottom: 25px; }
+        .remember-forgot label { margin: 0; font-weight: 400; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .remember-forgot a { color: #d4af37; text-decoration: none; }
+        .remember-forgot a:hover { text-decoration: underline; }
+        
+        .cta-login { width: 100%; padding: 14px; background: #1a2332; color: white; border: none; border-radius: 3px; font-weight: 700; font-size: 1em; cursor: pointer; transition: all 0.3s; margin-bottom: 15px; }
+        .cta-login:hover { background: #0f1419; }
+        
+        .login-divider { text-align: center; margin: 25px 0; color: #95a5a6; font-size: 0.9em; }
+        .login-divider::before, .login-divider::after { content: ""; display: inline-block; width: 40%; height: 1px; background: #ecf0f1; margin: 0 10px; }
+        
+        .cta-register { width: 100%; padding: 14px; background: #d4af37; color: #1a2332; border: none; border-radius: 3px; font-weight: 700; font-size: 1em; cursor: pointer; transition: all 0.3s; }
+        .cta-register:hover { background: #e5c158; }
+        
+        .login-footer { text-align: center; margin-top: 20px; font-size: 0.85em; color: #95a5a6; }
+        
+        .alert { padding: 12px; border-radius: 3px; margin-bottom: 20px; display: none; }
+        .alert.error { background: #ffebee; color: #c62828; border-left: 3px solid #c62828; }
+        .alert.success { background: #e8f5e9; color: #2e7d32; border-left: 3px solid #2e7d32; }
+        
+        @media (max-width: 480px) {
+            .login-card { border-radius: 0; }
+            .login-body { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-card">
+            <!-- HEADER -->
+            <div class="login-header">
+                <div class="login-logo">OP</div>
+                <h1>Acceso</h1>
+                <p>Gestiona tus subvenciones</p>
+            </div>
+
+            <!-- BODY -->
+            <div class="login-body">
+                <div class="alert error" id="errorAlert"></div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="tu@empresa.es" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" placeholder="••••••••" required>
+                    </div>
+
+                    <div class="remember-forgot">
+                        <label>
+                            <input type="checkbox" checked>
+                            <span>Recuérdame</span>
+                        </label>
+                        <a href="#resetear">¿Olvidaste tu contraseña?</a>
+                    </div>
+
+                    <button type="submit" class="cta-login">Acceder</button>
+                </form>
+
+                <div class="login-divider">O</div>
+
+                <a href="01-seleccionar-nicho.html" style="display: block;">
+                    <button type="button" class="cta-register">Crear cuenta nueva</button>
+                </a>
+
+                <div class="login-footer">
+                    <p>¿Problemas para acceder?<br><a href="#soporte" style="color: #d4af37;">Contacta con soporte</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Simulación simple
+            if (email && password.length >= 6) {
+                // En producción: llamar a API de login
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('loggedIn', 'true');
+                
+                // Redirigir a dashboard
+                window.location.href = 'dashboard-profesional.html';
+            } else {
+                showError('Email y contraseña requeridos');
+            }
+        });
+        
+        function showError(msg) {
+            const alert = document.getElementById('errorAlert');
+            alert.textContent = msg;
+            alert.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

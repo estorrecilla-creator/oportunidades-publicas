@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Oportunidades Públicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f1f3f5; color: #2c3e50; }
+        
+        .header { background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%); color: white; padding: 40px 0; border-bottom: 3px solid #d4af37; }
+        .header-content { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .header p { opacity: 0.9; }
+        
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px; display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
+        
+        /* LEFT COLUMN */
+        .form-section { background: white; padding: 40px; border-radius: 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .form-title { font-size: 1.5em; color: #1a2332; margin-bottom: 25px; font-weight: 700; }
+        
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; font-weight: 600; color: #1a2332; margin-bottom: 8px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ecf0f1; border-radius: 3px; font-family: inherit; font-size: 0.95em; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #d4af37; box-shadow: 0 0 0 3px rgba(212,175,55,0.1); }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        
+        .cta-submit { width: 100%; padding: 14px; background: #d4af37; color: #1a2332; border: none; border-radius: 3px; font-weight: 700; cursor: pointer; transition: all 0.3s; }
+        .cta-submit:hover { background: #e5c158; }
+        
+        .alert { padding: 12px; border-radius: 3px; margin-bottom: 20px; display: none; }
+        .alert-success { background: #e8f5e9; color: #2e7d32; border-left: 3px solid #2e7d32; }
+        
+        /* RIGHT COLUMN */
+        .contact-info { }
+        
+        .info-card { background: white; padding: 25px; border-radius: 5px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 4px solid #d4af37; }
+        .info-icon { font-size: 1.8em; margin-bottom: 10px; }
+        .info-title { font-weight: 700; color: #1a2332; margin-bottom: 8px; }
+        .info-content { color: #95a5a6; font-size: 0.95em; }
+        .info-content a { color: #d4af37; text-decoration: none; }
+        .info-content a:hover { text-decoration: underline; }
+        
+        .hours-table { width: 100%; margin-top: 8px; font-size: 0.9em; }
+        .hours-table tr { border-bottom: 1px solid #ecf0f1; }
+        .hours-table td { padding: 6px 0; }
+        .hours-table td:last-child { text-align: right; color: #1a2332; font-weight: 600; }
+        
+        .faq-section { background: white; padding: 25px; border-radius: 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .faq-section h3 { color: #1a2332; margin-bottom: 15px; font-weight: 700; }
+        .faq-item { margin-bottom: 12px; }
+        .faq-q { font-weight: 600; color: #1a2332; cursor: pointer; padding: 8px; background: #f8f9fa; border-radius: 3px; }
+        .faq-a { display: none; padding: 8px; color: #95a5a6; font-size: 0.9em; }
+        .faq-item.open .faq-a { display: block; }
+        
+        @media (max-width: 1024px) {
+            .container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-content">
+            <h1>Contacto</h1>
+            <p>¿Preguntas o sugerencias? Nos encantaría escucharte.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- LEFT: FORM -->
+        <div class="form-section">
+            <h2 class="form-title">Envíanos un mensaje</h2>
+            
+            <div class="alert alert-success" id="successAlert">
+                ✓ Tu mensaje ha sido enviado. Te responderemos en menos de 2 horas.
+            </div>
+
+            <form id="contactForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nombre">Nombre completo</label>
+                        <input type="text" id="nombre" placeholder="Juan Carlos" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="tu@empresa.es" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="empresa">Empresa (opcional)</label>
+                    <input type="text" id="empresa" placeholder="TecnoEficiencia SL">
+                </div>
+
+                <div class="form-group">
+                    <label for="tipo">Tipo de consulta</label>
+                    <select id="tipo" required>
+                        <option value="">Selecciona...</option>
+                        <option value="soporte">Soporte técnico</option>
+                        <option value="funcionalidad">Solicitud de funcionalidad</option>
+                        <option value="factura">Facturación/Pagos</option>
+                        <option value="partnership">Partnership/Colaboración</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="asunto">Asunto</label>
+                    <input type="text" id="asunto" placeholder="Breve resumen de tu consulta" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="mensaje">Mensaje</label>
+                    <textarea id="mensaje" placeholder="Cuéntanos con detalle..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 400;">
+                        <input type="checkbox" id="politica" required>
+                        <span>He leído y acepto la <a href="politica-privacidad.html" style="color: #d4af37;">política de privacidad</a></span>
+                    </label>
+                </div>
+
+                <button type="submit" class="cta-submit">Enviar mensaje</button>
+            </form>
+        </div>
+
+        <!-- RIGHT: INFO -->
+        <div class="contact-info">
+            <!-- EMAIL -->
+            <div class="info-card">
+                <div class="info-icon">✉️</div>
+                <div class="info-title">Email</div>
+                <div class="info-content">
+                    soporte@oportunidadespublicas.es<br>
+                    <small>Respuesta en <2 horas</small>
+                </div>
+            </div>
+
+            <!-- TELÉFONO -->
+            <div class="info-card">
+                <div class="info-icon">☎️</div>
+                <div class="info-title">Teléfono</div>
+                <div class="info-content">
+                    +34 954 123 456<br>
+                    <small>Lun-Vie 09:00-18:00</small>
+                </div>
+            </div>
+
+            <!-- DIRECCIÓN -->
+            <div class="info-card">
+                <div class="info-icon">📍</div>
+                <div class="info-title">Dirección</div>
+                <div class="info-content">
+                    Calle Principal, 42<br>
+                    41001 Sevilla, España
+                </div>
+            </div>
+
+            <!-- HORARIO -->
+            <div class="info-card">
+                <div class="info-icon">⏰</div>
+                <div class="info-title">Horario 24/7</div>
+                <div class="info-content">
+                    <table class="hours-table">
+                        <tr><td>Lunes-Viernes</td><td>09:00-21:00</td></tr>
+                        <tr><td>Sábado</td><td>10:00-18:00</td></tr>
+                        <tr><td>Domingo</td><td>11:00-17:00</td></tr>
+                    </table>
+                    <small style="color: #95a5a6; margin-top: 8px; display: block;">Chat disponible 24/7 para Premium</small>
+                </div>
+            </div>
+
+            <!-- FAQ -->
+            <div class="faq-section">
+                <h3>Respuestas rápidas</h3>
+                
+                <div class="faq-item">
+                    <div class="faq-q">¿Cuál es el tiempo de respuesta?</div>
+                    <div class="faq-a">Respondemos en menos de 2 horas. Para temas urgentes, llama directamente al teléfono de soporte.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q">¿Tienen soporte por chat?</div>
+                    <div class="faq-a">Clientes Premium tienen chat 24/7. El resto puede contactar por email o teléfono.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q">¿Hablan otros idiomas?</div>
+                    <div class="faq-a">Respondemos en español, inglés y francés. Solicita el idioma en tu email.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            
+            // Simulación de envío
+            console.log('Enviando:', { nombre, email });
+            
+            // Mostrar alerta de éxito
+            const alert = document.getElementById('successAlert');
+            alert.style.display = 'block';
+            
+            // Limpiar formulario
+            this.reset();
+            
+            // Desaparecer alerta después de 5 segundos
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        });
+        
+        // Toggle FAQ
+        document.querySelectorAll('.faq-q').forEach(q => {
+            q.addEventListener('click', function() {
+                this.parentElement.classList.toggle('open');
+            });
+        });
+    </script>
+</body>
+</html>

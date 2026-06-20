@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oportunidades Públicas - Subvenciones Automatizadas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #2c3e50; line-height: 1.6; }
+        
+        /* HEADER */
+        .header { background: #1a2332; color: white; padding: 20px 0; border-bottom: 3px solid #d4af37; }
+        .header-content { max-width: 1200px; margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 15px; font-weight: 700; }
+        .logo-icon { width: 35px; height: 35px; background: #d4af37; border-radius: 3px; display: flex; align-items: center; justify-content: center; color: #1a2332; font-weight: 800; font-size: 0.9em; }
+        .header h1 { font-size: 1.2em; font-weight: 700; }
+        .nav-btn { padding: 10px 25px; background: white; color: #1a2332; border: none; border-radius: 3px; cursor: pointer; font-weight: 600; }
+        
+        /* HERO */
+        .hero { background: linear-gradient(to right, #1a2332 0%, #2c3e50 100%); color: white; padding: 100px 40px; text-align: center; }
+        .hero-content { max-width: 900px; margin: 0 auto; }
+        .hero h1 { font-size: 3.2em; margin-bottom: 25px; font-weight: 700; line-height: 1.2; letter-spacing: -0.5px; }
+        .hero-subtitle { font-size: 1.25em; margin-bottom: 40px; opacity: 0.95; font-weight: 300; }
+        .cta-primary { display: inline-block; padding: 16px 45px; background: #d4af37; color: #1a2332; border: none; border-radius: 3px; cursor: pointer; font-weight: 700; font-size: 1.05em; transition: all 0.3s; }
+        .cta-primary:hover { background: #e5c158; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(212,175,55,0.3); }
+        
+        /* STATS */
+        .stats-container { max-width: 1100px; margin: -60px auto 0; position: relative; z-index: 2; padding: 0 40px; }
+        .stats { background: white; padding: 50px 40px; border-radius: 5px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
+        .stat { text-align: center; }
+        .stat-number { font-size: 2.8em; color: #1a2332; font-weight: 800; }
+        .stat-label { color: #7f8c8d; margin-top: 8px; font-weight: 500; }
+        
+        /* TESTIMONIOS */
+        .testimonials { padding: 80px 40px; background: white; }
+        .section-container { max-width: 1100px; margin: 0 auto; }
+        .section-title { font-size: 2.3em; color: #1a2332; margin-bottom: 50px; font-weight: 700; text-align: center; }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 30px; }
+        .testimonial { background: #f8f9fa; padding: 40px; border-radius: 5px; border-top: 3px solid #d4af37; }
+        .testimonial-header { display: flex; gap: 15px; margin-bottom: 25px; align-items: flex-start; }
+        .testimonial-avatar { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid #d4af37; flex-shrink: 0; }
+        .testimonial-info { }
+        .testimonial-name { font-weight: 700; color: #1a2332; }
+        .testimonial-position { font-size: 0.9em; color: #7f8c8d; }
+        .testimonial-company { font-size: 0.85em; color: #95a5a6; margin-top: 3px; }
+        .testimonial-text { color: #2c3e50; font-style: italic; margin-bottom: 20px; line-height: 1.8; }
+        .testimonial-result { background: white; padding: 15px; border-radius: 3px; border-left: 3px solid #27ae60; }
+        .result-label { font-size: 0.85em; color: #7f8c8d; margin-bottom: 5px; }
+        .result-value { font-size: 1.5em; color: #27ae60; font-weight: 700; }
+        .testimonial-stars { color: #d4af37; margin-bottom: 10px; font-size: 1em; }
+        
+        /* TEAM */
+        .team { padding: 80px 40px; background: #f8f9fa; }
+        .team-title { font-size: 2.3em; color: #1a2332; margin-bottom: 50px; font-weight: 700; text-align: center; }
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .team-member { background: white; border-radius: 5px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: all 0.3s; }
+        .team-member:hover { transform: translateY(-8px); box-shadow: 0 12px 30px rgba(0,0,0,0.15); }
+        .member-photo { width: 100%; height: 280px; object-fit: cover; border-bottom: 3px solid #d4af37; }
+        .member-info { padding: 30px; }
+        .member-name { font-size: 1.2em; color: #1a2332; font-weight: 700; margin-bottom: 5px; }
+        .member-role { color: #d4af37; font-weight: 600; margin-bottom: 12px; font-size: 0.95em; }
+        .member-bio { color: #7f8c8d; font-size: 0.95em; line-height: 1.7; }
+        .member-expertise { margin-top: 15px; padding-top: 15px; border-top: 1px solid #ecf0f1; }
+        .expertise-label { font-size: 0.85em; color: #95a5a6; margin-bottom: 8px; }
+        .expertise-items { display: flex; gap: 8px; flex-wrap: wrap; }
+        .expertise-tag { background: #d4af37; color: #1a2332; padding: 4px 10px; border-radius: 3px; font-size: 0.8em; font-weight: 600; }
+        
+        /* PRICING */
+        .pricing { padding: 80px 40px; background: white; }
+        .pricing-title { font-size: 2.3em; color: #1a2332; margin-bottom: 50px; font-weight: 700; text-align: center; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 30px; }
+        .plan { background: #f8f9fa; padding: 45px; border-radius: 5px; border-top: 4px solid #d4af37; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .plan.featured { border-top-color: #1a2332; background: #1a2332; color: white; transform: scale(1.05); }
+        .plan.featured .plan-name { color: #d4af37; }
+        .plan.featured .plan-price { color: #d4af37; }
+        .plan.featured .plan-features li { color: #ecf0f1; border-bottom-color: rgba(255,255,255,0.1); }
+        .plan.featured .plan-btn { background: #d4af37; color: #1a2332; }
+        .plan.featured .plan-btn:hover { background: #e5c158; }
+        .plan-name { font-size: 1.3em; color: #1a2332; font-weight: 700; margin-bottom: 10px; }
+        .plan-price { font-size: 2.8em; color: #1a2332; font-weight: 800; margin-bottom: 5px; }
+        .plan-period { color: #7f8c8d; font-size: 0.9em; margin-bottom: 30px; }
+        .plan-features { list-style: none; margin-bottom: 30px; }
+        .plan-features li { padding: 12px 0; color: #2c3e50; border-bottom: 1px solid #ecf0f1; display: flex; gap: 10px; }
+        .plan-features li:before { content: "✓"; color: #27ae60; font-weight: 700; font-size: 1.1em; min-width: 20px; }
+        .plan-btn { width: 100%; padding: 14px; background: #1a2332; color: white; border: none; border-radius: 3px; font-weight: 700; cursor: pointer; transition: all 0.3s; }
+        .plan-btn:hover { background: #0f1419; }
+        
+        /* FOOTER */
+        .footer { background: #1a2332; color: white; padding: 40px; text-align: center; }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2em; }
+            .stats { grid-template-columns: 1fr; gap: 20px; }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .team-grid { grid-template-columns: 1fr; }
+            .plan.featured { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">OP</div>
+                <h1>Oportunidades Públicas</h1>
+            </div>
+            <button class="nav-btn">Acceso</button>
+        </div>
+    </div>
+
+    <!-- HERO -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Encuentra ayudas.<br>Nosotros nos encargamos del resto.</h1>
+            <p class="hero-subtitle">Acceso automatizado a subvenciones públicas. Sin comisiones. Sin sorpresas.</p>
+            <button class="cta-primary">Comenzar gratis →</button>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-container">
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number">€4.2M</div>
+                <div class="stat-label">En subvenciones conseguidas en 2026</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">847</div>
+                <div class="stat-label">Empresas activas</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">94%</div>
+                <div class="stat-label">Tasa de aprobación (Premium)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TESTIMONIOS -->
+    <div class="testimonials">
+        <div class="section-container">
+            <h2 class="section-title">Historias reales de clientes</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <div class="testimonial-header">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop" alt="Juan Carlos" class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <div class="testimonial-name">Juan Carlos Rodríguez</div>
+                            <div class="testimonial-position">CEO & Fundador</div>
+                            <div class="testimonial-company">TecnoEficiencia SL</div>
+                        </div>
+                    </div>
+                    <div class="testimonial-text">"Hace 3 meses no sabía cómo buscar subvenciones. Hoy tenemos €180.000 en trámite. El reporte diario es increíble."</div>
+                    <div class="testimonial-result">
+                        <div class="result-label">Resultado real</div>
+                        <div class="result-value">€45.000 conseguidos</div>
+                    </div>
+                </div>
+
+                <div class="testimonial">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <div class="testimonial-header">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop" alt="María Pérez" class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <div class="testimonial-name">María Pérez López</div>
+                            <div class="testimonial-position">Autónoma</div>
+                            <div class="testimonial-company">PerezConsult</div>
+                        </div>
+                    </div>
+                    <div class="testimonial-text">"Creí que como autónoma no tendría opciones. Encontré 6 subvenciones específicas. Increíble."</div>
+                    <div class="testimonial-result">
+                        <div class="result-label">Resultado real</div>
+                        <div class="result-value">6 solicitudes aprobadas</div>
+                    </div>
+                </div>
+
+                <div class="testimonial">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <div class="testimonial-header">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop" alt="Andrés Fernández" class="testimonial-avatar">
+                        <div class="testimonial-info">
+                            <div class="testimonial-name">Andrés Fernández</div>
+                            <div class="testimonial-position">Director General</div>
+                            <div class="testimonial-company">ManualCraft SL</div>
+                        </div>
+                    </div>
+                    <div class="testimonial-text">"Plan Premium vale cada euro. Ellos presentan, yo subo documentos. Diferencial total vs competencia."</div>
+                    <div class="testimonial-result">
+                        <div class="result-label">Resultado real</div>
+                        <div class="result-value">€92.000 conseguidos</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEAM -->
+    <div class="team">
+        <div class="section-container">
+            <h2 class="team-title">Nuestro equipo te asesora 24/7</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=400&fit=crop" alt="Salva Vázquez" class="member-photo">
+                    <div class="member-info">
+                        <div class="member-name">Salva Vázquez</div>
+                        <div class="member-role">Fundador & CEO</div>
+                        <div class="member-bio">10+ años en subvenciones públicas. Especialista en automatización de procesos administrativos complejos.</div>
+                        <div class="member-expertise">
+                            <div class="expertise-label">Especialidades:</div>
+                            <div class="expertise-items">
+                                <span class="expertise-tag">Automatización</span>
+                                <span class="expertise-tag">BDNS</span>
+                                <span class="expertise-tag">Presentaciones</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-member">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&h=400&fit=crop" alt="Carlos Álvarez" class="member-photo">
+                    <div class="member-info">
+                        <div class="member-name">Carlos Álvarez Ruiz</div>
+                        <div class="member-role">Asesor Legal & Compliance</div>
+                        <div class="member-bio">Experto en RGPD y regulaciones públicas. Garantiza cumplimiento normativo en cada solicitud.</div>
+                        <div class="member-expertise">
+                            <div class="expertise-label">Especialidades:</div>
+                            <div class="expertise-items">
+                                <span class="expertise-tag">RGPD</span>
+                                <span class="expertise-tag">Normativa</span>
+                                <span class="expertise-tag">Compliance</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-member">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&h=400&fit=crop" alt="Laura Serrano" class="member-photo">
+                    <div class="member-info">
+                        <div class="member-name">Laura Serrano Gómez</div>
+                        <div class="member-role">Directora de Soporte Premium</div>
+                        <div class="member-bio">Responde 24/7. Especializada en casos complejos, seguimiento de solicitudes y resolución de requerimientos.</div>
+                        <div class="member-expertise">
+                            <div class="expertise-label">Especialidades:</div>
+                            <div class="expertise-items">
+                                <span class="expertise-tag">Casos complejos</span>
+                                <span class="expertise-tag">Seguimiento</span>
+                                <span class="expertise-tag">Premium 24/7</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRICING -->
+    <div class="pricing">
+        <div class="section-container">
+            <h2 class="pricing-title">Planes transparentes. Sin sorpresas.</h2>
+            <div class="pricing-grid">
+                <div class="plan">
+                    <div class="plan-name">BÁSICO</div>
+                    <div class="plan-price">€19</div>
+                    <div class="plan-period">/mes, sin compromiso</div>
+                    <ul class="plan-features">
+                        <li>Búsqueda ilimitada</li>
+                        <li>Reporte diario 08:00</li>
+                        <li>Chat soporte básico</li>
+                        <li>3 alertas personalizadas</li>
+                    </ul>
+                    <button class="plan-btn">Comenzar</button>
+                </div>
+
+                <div class="plan featured">
+                    <div class="plan-name">PROFESIONAL</div>
+                    <div class="plan-price">€59</div>
+                    <div class="plan-period">/mes, más popular</div>
+                    <ul class="plan-features">
+                        <li>Todo en Básico</li>
+                        <li>Descarga Word/Excel/PDF</li>
+                        <li>Simulador ROI</li>
+                        <li>Chat asesor avanzado</li>
+                        <li>Datos adjudicados históricos</li>
+                    </ul>
+                    <button class="plan-btn">Elegir plan</button>
+                </div>
+
+                <div class="plan">
+                    <div class="plan-name">PREMIUM</div>
+                    <div class="plan-price">€149</div>
+                    <div class="plan-period">/mes, automatizado</div>
+                    <ul class="plan-features">
+                        <li>Todo en Profesional</li>
+                        <li>Nosotros presentamos</li>
+                        <li>Timeline premium 24/7</li>
+                        <li>Seguimiento automático</li>
+                        <li>Asesor dedicado</li>
+                    </ul>
+                    <button class="plan-btn">Probar Premium</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <p>© 2026 Oportunidades Públicas. La plataforma de subvenciones más confiable de España.</p>
+    </div>
+</body>
+</html>

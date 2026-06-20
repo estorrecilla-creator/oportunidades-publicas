@@ -1,0 +1,34 @@
+{
+  "templates": [
+    {
+      "id": "welcome",
+      "name": "Welcome Email",
+      "subject": "¡Bienvenido a Oportunidades Públicas!"
+    },
+    {
+      "id": "daily_alert",
+      "name": "Daily Solicitud Alert",
+      "subject": "📊 Nuevas oportunidades para tu empresa"
+    },
+    {
+      "id": "payment_confirmation",
+      "name": "Payment Confirmation",
+      "subject": "✅ Pago recibido"
+    },
+    {
+      "id": "payment_failed",
+      "name": "Payment Failed",
+      "subject": "⚠️ Error en el pago"
+    },
+    {
+      "id": "subscription_renewing",
+      "name": "Subscription Renewing",
+      "subject": "💳 Tu suscripción se renueva pronto"
+    },
+    {
+      "id": "reset_password",
+      "name": "Reset Password",
+      "subject": "Resetear contraseña"
+    }
+  ]
+}

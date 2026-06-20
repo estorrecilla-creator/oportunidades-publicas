@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Interactiva - Oportunidades Públicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f1f3f5; color: #2c3e50; }
+        
+        .header { background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%); color: white; padding: 50px 0; text-align: center; border-bottom: 3px solid #d4af37; }
+        .header h1 { font-size: 2.2em; margin-bottom: 10px; }
+        .header p { font-size: 1.05em; opacity: 0.9; }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        
+        .demo-intro { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 40px; }
+        .demo-intro h2 { color: #d4af37; margin-bottom: 15px; }
+        .demo-intro p { line-height: 1.8; margin-bottom: 15px; color: #555; }
+        
+        .tour-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; margin-bottom: 50px; }
+        
+        .tour-steps { background: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); height: fit-content; position: sticky; top: 20px; }
+        .tour-title { font-size: 1.3em; font-weight: 700; color: #1a2332; margin-bottom: 25px; }
+        .step { padding: 15px; margin-bottom: 12px; border-radius: 6px; cursor: pointer; transition: all 0.3s; border-left: 4px solid transparent; }
+        .step:hover { background: #f8f9fa; }
+        .step.active { background: #d4af37; color: white; border-left-color: #c4a02e; }
+        .step-number { font-weight: 700; margin-right: 10px; }
+        
+        .demo-content { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .demo-section { display: none; }
+        .demo-section.active { display: block; animation: fadeIn 0.3s; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .demo-header { background: linear-gradient(135deg, #d4af37 0%, #c4a02e 100%); color: white; padding: 20px 30px; font-size: 1.1em; font-weight: 700; }
+        .demo-body { padding: 40px; }
+        
+        /* SEARCH DEMO */
+        .search-box { display: flex; gap: 10px; margin-bottom: 30px; }
+        .search-box input { flex: 1; padding: 12px; border: 2px solid #ecf0f1; border-radius: 4px; font-size: 1em; }
+        .search-box button { padding: 12px 30px; background: #d4af37; color: #1a2332; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; }
+        .search-box button:hover { background: #c4a02e; }
+        
+        .filters { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px; }
+        .filter-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #1a2332; }
+        .filter-group select { width: 100%; padding: 10px; border: 1px solid #ecf0f1; border-radius: 4px; font-size: 1em; }
+        
+        .results-list { }
+        .result-item { background: #f8f9fa; padding: 20px; margin-bottom: 15px; border-radius: 6px; border-left: 4px solid #d4af37; cursor: pointer; transition: all 0.3s; }
+        .result-item:hover { background: #ecf0f1; transform: translateX(5px); }
+        .result-title { font-weight: 700; color: #1a2332; margin-bottom: 8px; }
+        .result-meta { font-size: 0.9em; color: #95a5a6; margin-bottom: 8px; }
+        .result-desc { color: #555; }
+        
+        /* SOLICITUD DEMO */
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #1a2332; }
+        .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ecf0f1; border-radius: 4px; font-size: 1em; font-family: inherit; }
+        .form-group textarea { resize: vertical; min-height: 100px; }
+        
+        /* TIMELINE DEMO */
+        .timeline { position: relative; padding: 20px 0; }
+        .timeline-item { display: flex; margin-bottom: 30px; position: relative; padding-left: 40px; }
+        .timeline-item::before { content: '✓'; position: absolute; left: 0; width: 30px; height: 30px; background: #27ae60; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .timeline-item.active::before { background: #d4af37; color: #1a2332; }
+        .timeline-item.pending::before { content: '○'; background: transparent; border: 2px solid #95a5a6; color: #95a5a6; }
+        .timeline-content h4 { color: #1a2332; margin-bottom: 5px; }
+        .timeline-content p { color: #555; font-size: 0.9em; }
+        
+        /* EXPORT DEMO */
+        .export-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .export-btn { padding: 20px; background: #f8f9fa; border: 2px solid #ecf0f1; border-radius: 6px; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .export-btn:hover { border-color: #d4af37; background: #f1f3f5; }
+        .export-icon { font-size: 2em; margin-bottom: 10px; }
+        .export-label { font-weight: 600; color: #1a2332; }
+        
+        /* CTA */
+        .cta-footer { background: linear-gradient(135deg, #d4af37 0%, #e5c158 100%); color: #1a2332; padding: 40px; text-align: center; margin-top: 50px; border-radius: 8px; }
+        .cta-footer h3 { font-size: 1.5em; margin-bottom: 15px; }
+        .cta-btn { background: #1a2332; color: white; border: none; padding: 15px 40px; border-radius: 4px; font-weight: 700; cursor: pointer; font-size: 1em; }
+        .cta-btn:hover { background: #2c3e50; }
+        
+        @media (max-width: 1024px) {
+            .tour-grid { grid-template-columns: 1fr; }
+            .tour-steps { position: static; }
+            .filters { grid-template-columns: 1fr; }
+            .export-options { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <h1>Prueba Oportunidades Públicas</h1>
+        <p>Haz un tour interactivo de 5 pasos. Sin necesidad de registrarse.</p>
+    </div>
+
+    <div class="container">
+        <!-- INTRO -->
+        <div class="demo-intro">
+            <h2>¿Cómo funciona?</h2>
+            <p>
+                A continuación verás cómo funciona Oportunidades Públicas paso a paso. 
+                Cada sección es interactiva y simula lo que ves cuando entras en tu dashboard.
+            </p>
+            <p>
+                <strong>Tiempo total: 3-5 minutos</strong>. Después, podrás crear tu cuenta gratuita para acceso completo.
+            </p>
+        </div>
+
+        <!-- TOUR LAYOUT -->
+        <div class="tour-grid">
+            <!-- PASOS -->
+            <div class="tour-steps">
+                <div class="tour-title">Tu Tour</div>
+                <div class="step active" onclick="switchStep(0)"><span class="step-number">1️⃣</span> Buscar Solicitudes</div>
+                <div class="step" onclick="switchStep(1)"><span class="step-number">2️⃣</span> Gestionar Solicitud</div>
+                <div class="step" onclick="switchStep(2)"><span class="step-number">3️⃣</span> Seguimiento</div>
+                <div class="step" onclick="switchStep(3)"><span class="step-number">4️⃣</span> Descargar</div>
+                <div class="step" onclick="switchStep(4)"><span class="step-number">5️⃣</span> Listo para Empezar</div>
+            </div>
+
+            <!-- CONTENIDO -->
+            <div class="demo-content">
+                <!-- STEP 1: BUSCAR -->
+                <div class="demo-section active">
+                    <div class="demo-header">PASO 1: Buscar Solicitudes</div>
+                    <div class="demo-body">
+                        <p style="margin-bottom: 25px; color: #555;">
+                            Encuentra oportunidades de financiación automáticamente según tu sector y región.
+                        </p>
+                        <div class="search-box">
+                            <input type="text" placeholder="Buscar solicitudes..." value="Ayuda transformación digital">
+                            <button onclick="alert('Búsqueda simulada ✓')">Buscar</button>
+                        </div>
+                        
+                        <div class="filters">
+                            <div class="filter-group">
+                                <label>Sector:</label>
+                                <select>
+                                    <option>Todas (15)</option>
+                                    <option selected>Tecnología (3)</option>
+                                    <option>Manufactura (2)</option>
+                                    <option>Servicios (5)</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label>Región:</label>
+                                <select>
+                                    <option>Todas (15)</option>
+                                    <option selected>Andalucía (8)</option>
+                                    <option>Cataluña (4)</option>
+                                    <option>Madrid (3)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="results-list">
+                            <div class="result-item">
+                                <div class="result-title">💰 Ayuda Transformación Digital - JUNTA ANDALUCÍA</div>
+                                <div class="result-meta">Convocatoria: 2024-Q2 | Deadline: 30 Junio 2024 | €10K-€50K</div>
+                                <div class="result-desc">Financiación para pequeñas empresas que quieran digitalizarse. Cobertura: Software, hardware, consultoría.</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-title">🏢 Programa PYME Exportadora - ICEX</div>
+                                <div class="result-meta">Convocatoria: 2024-Q3 | Deadline: 15 Julio 2024 | €20K-€100K</div>
+                                <div class="result-desc">Apoyo para empresas que quieren vender al exterior. Incluye asesoría y subsidios de viajes.</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-title">♻️ Sostenibilidad e Industria Verde - MITECO</div>
+                                <div class="result-meta">Convocatoria: 2024-Q2 | Deadline: 22 Junio 2024 | €50K-€200K</div>
+                                <div class="result-desc">Financiación para proyectos de sostenibilidad y eficiencia energética en industrias.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 2: SOLICITUD -->
+                <div class="demo-section">
+                    <div class="demo-header">PASO 2: Crear Solicitud</div>
+                    <div class="demo-body">
+                        <p style="margin-bottom: 25px; color: #555;">
+                            Una vez encuentras la oportunidad perfecta, rellena la solicitud en minutos. Oportunidades usa tus datos existentes para pre-llenar campos.
+                        </p>
+                        <div class="form-group">
+                            <label>📋 Título de tu Proyecto</label>
+                            <input type="text" value="Transformación Digital de Procesos - ACME SL" readonly style="background: #f8f9fa; cursor: not-allowed;">
+                        </div>
+                        <div class="form-group">
+                            <label>📝 Descripción (tu equipo completa esto)</label>
+                            <textarea placeholder="Describe tu proyecto..." style="color: #95a5a6;">En ACME SL queremos digitalizar nuestros procesos de producción e inventario implementando un ERP moderno...</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>💵 Inversión Total</label>
+                            <input type="text" value="€45,000" readonly style="background: #f8f9fa; cursor: not-allowed;">
+                        </div>
+                        <div style="background: #c8e6c9; padding: 15px; border-radius: 4px; color: #2e7d32;">
+                            <strong>✓ DATOS PRE-LLENADOS DESDE TU PERFIL</strong><br>
+                            <small>Empresa, sector, ubicación, datos fiscales. En Premium, también generamos descripción automáticamente.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 3: TIMELINE -->
+                <div class="demo-section">
+                    <div class="demo-header">PASO 3: Seguimiento en Tiempo Real</div>
+                    <div class="demo-body">
+                        <p style="margin-bottom: 25px; color: #555;">
+                            Sigue el estado de tu solicitud en cada fase. Notificaciones automáticas cuando hay cambios.
+                        </p>
+                        <div class="timeline">
+                            <div class="timeline-item active">
+                                <div class="timeline-content">
+                                    <h4>✅ Solicitud Presentada</h4>
+                                    <p>Tu solicitud fue enviada exitosamente a la convocatoria el 10 Junio 2024</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item active">
+                                <div class="timeline-content">
+                                    <h4>✅ Admisión Comprobada</h4>
+                                    <p>Tu solicitud cumple todos los requisitos administrativos (18 Junio 2024)</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item active">
+                                <div class="timeline-content">
+                                    <h4>✅ En Evaluación</h4>
+                                    <p>El comité está revisando tu proyecto (25 Junio 2024)</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item pending">
+                                <div class="timeline-content">
+                                    <h4>⏳ Esperando Decisión</h4>
+                                    <p>Resultado esperado: 2 Julio 2024</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item pending">
+                                <div class="timeline-content">
+                                    <h4>⏳ Formalización</h4>
+                                    <p>Si es aprobado, completaremos trámites finales</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 4: DESCARGAR -->
+                <div class="demo-section">
+                    <div class="demo-header">PASO 4: Descargar Documentos</div>
+                    <div class="demo-body">
+                        <p style="margin-bottom: 25px; color: #555;">
+                            Descarga tu solicitud en múltiples formatos. Todo pre-formateado y listo para presentar.
+                        </p>
+                        <div class="export-options">
+                            <div class="export-btn" onclick="alert('Descargando solicitud.docx...')">
+                                <div class="export-icon">📄</div>
+                                <div class="export-label">Word (.docx)</div>
+                            </div>
+                            <div class="export-btn" onclick="alert('Descargando solicitud.xlsx...')">
+                                <div class="export-icon">📊</div>
+                                <div class="export-label">Excel (.xlsx)</div>
+                            </div>
+                            <div class="export-btn" onclick="alert('Descargando solicitud.pdf...')">
+                                <div class="export-icon">📕</div>
+                                <div class="export-label">PDF</div>
+                            </div>
+                        </div>
+                        <div style="background: #fff3cd; padding: 15px; border-radius: 4px; margin-top: 20px; color: #856404;">
+                            <strong>💡 EN PREMIUM:</strong> Presentamos automáticamente sin que tengas que hacer nada. Nosotros nos encargamos de todo.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 5: CTA -->
+                <div class="demo-section">
+                    <div class="demo-header">PASO 5: ¡Ya Estás Listo!</div>
+                    <div class="demo-body">
+                        <p style="margin-bottom: 25px; color: #555;">
+                            Esto es solo una muestra de lo que puedes hacer con Oportunidades Públicas. 
+                            Acceso completo con:
+                        </p>
+                        <ul style="margin-bottom: 30px; padding-left: 30px; line-height: 2;">
+                            <li>✅ Acceso ilimitado a todas las oportunidades</li>
+                            <li>✅ Reportes diarios personalizados</li>
+                            <li>✅ Seguimiento automático</li>
+                            <li>✅ Descarga en múltiples formatos</li>
+                            <li>✅ Soporte por chat 24/7</li>
+                            <li>✅ En Premium: Presentación automática + Asesor dedicado</li>
+                        </ul>
+                        <div style="text-align: center;">
+                            <button class="cta-btn" onclick="window.location='/register'">CREAR CUENTA GRATIS (14 DÍAS)</button>
+                            <p style="margin-top: 15px; font-size: 0.9em; color: #555;">Sin tarjeta de crédito requerida. Cancelar en cualquier momento.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FINAL CTA -->
+        <div class="cta-footer">
+            <h3>¿Te gustó lo que viste?</h3>
+            <p style="margin-bottom: 25px;">Prueba Oportunidades Públicas gratis durante 14 días. Acceso completo a todo.</p>
+            <button class="cta-btn" onclick="window.location='/register'">Empezar Ahora →</button>
+        </div>
+    </div>
+
+    <script>
+        function switchStep(index) {
+            // Hide all sections
+            document.querySelectorAll('.demo-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            
+            // Show selected
+            document.querySelectorAll('.demo-section')[index].classList.add('active');
+            document.querySelectorAll('.step')[index].classList.add('active');
+            
+            // Scroll to top of content on mobile
+            if (window.innerWidth < 1024) {
+                document.querySelector('.demo-content').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago Confirmado - Oportunidades Públicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f1f3f5; color: #2c3e50; }
+        
+        .container { max-width: 700px; margin: 0 auto; padding: 40px 20px; }
+        
+        .success-card { background: white; border-radius: 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow: hidden; text-align: center; }
+        
+        .success-header { padding: 50px 40px; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); }
+        .success-icon { font-size: 4em; margin-bottom: 20px; }
+        .success-title { font-size: 2em; color: #27ae60; margin-bottom: 10px; font-weight: 700; }
+        .success-subtitle { color: #2e7d32; opacity: 0.9; }
+        
+        .success-body { padding: 40px; }
+        
+        .confirmation-number { background: #f8f9fa; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .conf-label { font-size: 0.9em; color: #95a5a6; margin-bottom: 8px; }
+        .conf-value { font-size: 1.4em; font-weight: 700; color: #1a2332; font-family: 'Courier New', monospace; }
+        
+        .order-details { background: #f8f9fa; padding: 25px; border-radius: 5px; margin-bottom: 30px; text-align: left; }
+        .detail-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #ecf0f1; }
+        .detail-row:last-child { border-bottom: none; }
+        .detail-label { color: #95a5a6; }
+        .detail-value { font-weight: 700; color: #1a2332; }
+        
+        .timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 30px 0; }
+        .timeline-item { text-align: center; }
+        .timeline-step { width: 50px; height: 50px; margin: 0 auto 10px; border-radius: 50%; background: #e8f5e9; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #27ae60; }
+        .timeline-item.active .timeline-step { background: #27ae60; color: white; }
+        .timeline-label { font-size: 0.85em; color: #95a5a6; }
+        .timeline-item.active .timeline-label { color: #27ae60; font-weight: 700; }
+        
+        .next-steps { background: #e3f2fd; padding: 25px; border-radius: 5px; margin-bottom: 30px; text-align: left; }
+        .next-steps-title { font-weight: 700; color: #1565c0; margin-bottom: 15px; }
+        .next-steps-list { list-style: none; }
+        .next-steps-list li { padding: 8px 0; padding-left: 30px; position: relative; color: #1565c0; }
+        .next-steps-list li::before { content: "✓"; position: absolute; left: 0; font-weight: 700; }
+        
+        .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .btn { padding: 14px 20px; border: none; border-radius: 3px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s; }
+        .btn-primary { background: #1a2332; color: white; grid-column: span 2; }
+        .btn-primary:hover { background: #0f1419; }
+        .btn-secondary { background: #d4af37; color: #1a2332; }
+        .btn-secondary:hover { background: #e5c158; }
+        
+        .email-info { background: #fff3cd; padding: 15px; border-radius: 5px; margin-bottom: 20px; border-left: 3px solid #ffc107; color: #856404; font-size: 0.9em; }
+        
+        .support-link { text-align: center; margin-top: 30px; padding-top: 30px; border-top: 1px solid #ecf0f1; }
+        .support-link a { color: #d4af37; text-decoration: none; }
+        .support-link a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-card">
+            <!-- SUCCESS HEADER -->
+            <div class="success-header">
+                <div class="success-icon">✅</div>
+                <h1 class="success-title">¡Pago confirmado!</h1>
+                <p class="success-subtitle">Tu suscripción está activa</p>
+            </div>
+
+            <!-- BODY -->
+            <div class="success-body">
+                <!-- CONFIRMATION NUMBER -->
+                <div class="confirmation-number">
+                    <div class="conf-label">Número de referencia:</div>
+                    <div class="conf-value">OP-2026-071439</div>
+                </div>
+
+                <!-- ORDER DETAILS -->
+                <div class="order-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Plan</span>
+                        <span class="detail-value">Profesional</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Precio mensual</span>
+                        <span class="detail-value">€59,00</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">IVA (21%)</span>
+                        <span class="detail-value">€12,39</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Total pagado</span>
+                        <span class="detail-value" style="color: #27ae60;">€71,39</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Fecha pago</span>
+                        <span class="detail-value">20 de junio de 2026</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Próxima renovación</span>
+                        <span class="detail-value">20 de julio de 2026</span>
+                    </div>
+                </div>
+
+                <!-- TIMELINE -->
+                <div class="timeline">
+                    <div class="timeline-item active">
+                        <div class="timeline-step">1</div>
+                        <div class="timeline-label">Pago procesado</div>
+                    </div>
+                    <div class="timeline-item active">
+                        <div class="timeline-step">2</div>
+                        <div class="timeline-label">Cuenta activada</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-step">3</div>
+                        <div class="timeline-label">Acceso dashboard</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-step">4</div>
+                        <div class="timeline-label">Primera alerta</div>
+                    </div>
+                </div>
+
+                <!-- EMAIL INFO -->
+                <div class="email-info">
+                    📧 Hemos enviado una confirmación a <strong>tu@empresa.es</strong><br>
+                    Incluye factura, acceso y primeros pasos
+                </div>
+
+                <!-- NEXT STEPS -->
+                <div class="next-steps">
+                    <div class="next-steps-title">Próximos pasos:</div>
+                    <ul class="next-steps-list">
+                        <li>Accede a tu dashboard con tu email</li>
+                        <li>Completa tu perfil y preferencias</li>
+                        <li>Recibe primera alerta en 24h (08:00)</li>
+                        <li>Empieza a buscar subvenciones</li>
+                    </ul>
+                </div>
+
+                <!-- ACTION BUTTONS -->
+                <div class="action-buttons">
+                    <a href="login.html" class="btn btn-primary">Ir a mi dashboard</a>
+                    <a href="#descargar" class="btn btn-secondary">Descargar factura</a>
+                </div>
+
+                <!-- SUPPORT -->
+                <div class="support-link">
+                    <p>¿Tienes dudas?</p>
+                    <a href="#soporte">Contacta con nuestro equipo 24/7 →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

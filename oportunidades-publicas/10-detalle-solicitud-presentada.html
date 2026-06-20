@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle Solicitud - Oportunidades Públicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7fa; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+        .header { background: linear-gradient(to right, #003d82 0%, #004a9e 100%); color: white; padding: 20px 0; margin-bottom: 40px; border-bottom: 4px solid #ffc400; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; padding: 0 40px; }
+        .main-card { background: white; padding: 30px; border-radius: 4px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 4px solid #ffc400; }
+        .title { font-size: 1.5em; color: #003d82; margin-bottom: 10px; font-weight: 700; }
+        .subtitle { color: #999; margin-bottom: 20px; }
+        .meta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .meta-item { padding: 15px; background: #f8fafb; border-radius: 3px; }
+        .meta-label { color: #999; font-size: 0.85em; margin-bottom: 5px; }
+        .meta-value { color: #003d82; font-weight: 700; }
+        .section { background: white; padding: 25px; border-radius: 4px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.1em; color: #003d82; margin-bottom: 15px; font-weight: 700; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .docs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .doc-item { padding: 15px; background: #f8fafb; border-radius: 3px; border: 1px solid #ddd; }
+        .doc-icon { font-size: 1.8em; margin-bottom: 10px; }
+        .doc-name { font-weight: 600; color: #003d82; margin-bottom: 5px; }
+        .doc-size { color: #999; font-size: 0.8em; }
+        .button-group { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 25px; }
+        .btn { padding: 12px 25px; border: none; border-radius: 3px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .btn-primary { background: #003d82; color: white; }
+        .btn-primary:hover { background: #002a5e; }
+        .btn-secondary { background: #f0f0f0; color: #333; border: 1px solid #ddd; }
+        .status-badge { display: inline-block; padding: 6px 12px; background: #fff3e0; color: #e65100; border-radius: 3px; font-weight: 600; font-size: 0.85em; }
+        .timeline-vertical { position: relative; padding-left: 30px; }
+        .timeline-item { position: relative; padding-bottom: 20px; margin-bottom: 20px; }
+        .timeline-item:before { content: ''; position: absolute; left: -30px; top: 0; width: 20px; height: 20px; background: #2e7d32; border: 3px solid white; border-radius: 50%; box-shadow: 0 0 0 2px #2e7d32; }
+        .timeline-item.pending:before { background: #ccc; box-shadow: 0 0 0 2px #ccc; }
+        .timeline-label { font-weight: 700; color: #003d82; }
+        .timeline-desc { color: #666; font-size: 0.9em; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>Detalle Solicitud</h1>
+            <button style="padding: 10px 20px; background: white; color: #003d82; border: none; border-radius: 3px; cursor: pointer; font-weight: 600;">← Volver</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- INFO PRINCIPAL -->
+        <div class="main-card">
+            <div class="title">Subvención instalación placas solares</div>
+            <div class="subtitle">Instituto para la Diversificación y Ahorro de la Energía (IDEA)</div>
+            <div style="margin-bottom: 20px;">
+                <span class="status-badge">EN REVISIÓN</span>
+            </div>
+            <div class="meta-grid">
+                <div class="meta-item">
+                    <div class="meta-label">Nº Referencia</div>
+                    <div class="meta-value">OP-2026-0847</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Importe solicitado</div>
+                    <div class="meta-value">€45.000</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Presentación</div>
+                    <div class="meta-value">15 ago 2026</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Estado</div>
+                    <div class="meta-value" style="color: #e65100;">En revisión</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INFORMACIÓN GENERAL -->
+        <div class="section">
+            <div class="section-title">Información de la solicitud</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                <div>
+                    <p style="color: #999; font-size: 0.9em; margin-bottom: 5px;">Organismo</p>
+                    <p style="color: #333; font-weight: 600;">Instituto para la Diversificación y Ahorro de la Energía</p>
+                </div>
+                <div>
+                    <p style="color: #999; font-size: 0.9em; margin-bottom: 5px;">Convocatoria</p>
+                    <p style="color: #333; font-weight: 600;">Subvenciones Energia Solar 2026</p>
+                </div>
+                <div>
+                    <p style="color: #999; font-size: 0.9em; margin-bottom: 5px;">Cobertura estimada</p>
+                    <p style="color: #333; font-weight: 600;">80% (€36.000)</p>
+                </div>
+                <div>
+                    <p style="color: #999; font-size: 0.9em; margin-bottom: 5px;">Plazo original</p>
+                    <p style="color: #333; font-weight: 600;">30 ago 2026</p>
+                </div>
+            </div>
+            <p style="color: #666; font-size: 0.95em;">Descripción del proyecto: Instalación de 25 kWp de paneles solares fotovoltaicos en la cubierta de nuestro centro de operaciones en Sevilla, con sistema de monitorización inteligente.</p>
+        </div>
+
+        <!-- DOCUMENTACIÓN CARGADA -->
+        <div class="section">
+            <div class="section-title">✓ Documentación presentada</div>
+            <div class="docs-grid">
+                <div class="doc-item">
+                    <div class="doc-icon">📄</div>
+                    <div class="doc-name">Solicitud</div>
+                    <div class="doc-size">450 KB</div>
+                </div>
+                <div class="doc-item">
+                    <div class="doc-icon">📊</div>
+                    <div class="doc-name">Presupuesto</div>
+                    <div class="doc-size">320 KB</div>
+                </div>
+                <div class="doc-item">
+                    <div class="doc-icon">📐</div>
+                    <div class="doc-name">Planos técnicos</div>
+                    <div class="doc-size">2.3 MB</div>
+                </div>
+                <div class="doc-item">
+                    <div class="doc-icon">✓</div>
+                    <div class="doc-name">CIF y Registro</div>
+                    <div class="doc-size">180 KB</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TIMELINE DE ESTADO -->
+        <div class="section">
+            <div class="section-title">🔄 Progreso del trámite</div>
+            <div class="timeline-vertical">
+                <div class="timeline-item">
+                    <div class="timeline-label">Solicitud presentada</div>
+                    <div class="timeline-desc">Tu solicitud fue presentada correctamente en el sistema IDEA. Nº OP-2026-0847</div>
+                    <div class="timeline-desc" style="color: #999; font-size: 0.8em; margin-top: 10px;">15 ago 2026, 14:32</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-label">Cambio a revisión</div>
+                    <div class="timeline-desc">El organismo ha iniciado la evaluación de tu solicitud. Plazo: 30-45 días.</div>
+                    <div class="timeline-desc" style="color: #999; font-size: 0.8em; margin-top: 10px;">16 ago 2026, 09:15</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-label">Requerimiento de información</div>
+                    <div class="timeline-desc">Solicitaron clarificación sobre alcance técnico. Respondimos en plazo.</div>
+                    <div class="timeline-desc" style="color: #999; font-size: 0.8em; margin-top: 10px;">20-22 ago 2026</div>
+                </div>
+                <div class="timeline-item pending">
+                    <div class="timeline-label">Resolución estimada</div>
+                    <div class="timeline-desc">El organismo emitirá resolución (aprobada/denegada). Fecha estimada: 25 septiembre.</div>
+                    <div class="timeline-desc" style="color: #999; font-size: 0.8em; margin-top: 10px;">Previsión: ~25 sep 2026</div>
+                </div>
+                <div class="timeline-item pending">
+                    <div class="timeline-label">Justificación (si aprobada)</div>
+                    <div class="timeline-desc">Plazo 60 días para presentar documentación de realización del proyecto.</div>
+                    <div class="timeline-desc" style="color: #999; font-size: 0.8em; margin-top: 10px;">Previsión: Oct-Nov 2026</div>
+                </div>
+                <div class="timeline-item pending">
+                    <div class="timeline-label">Pago</div>
+                    <div class="timeline-desc">Ingreso del dinero en tu cuenta. Plazo: 30-60 días tras validación.</div>
+                    <div class="timeline-desc" style="color: #999; font-size: 0.8em; margin-top: 10px;">Previsión: Dic 2026-Ene 2027</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACCIONES -->
+        <div class="section">
+            <div class="section-title">Acciones disponibles</div>
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="contactarOrganismo()">📞 Contactar organismo</button>
+                <button class="btn btn-primary" onclick="descargarDocumentacion()">📥 Descargar documentación</button>
+                <button class="btn btn-secondary" onclick="verTimeline()">📊 Ver timeline detallado</button>
+            </div>
+        </div>
+
+        <!-- SOPORTE -->
+        <div class="section">
+            <div class="section-title">¿Necesitas ayuda?</div>
+            <p style="color: #666; margin-bottom: 15px;">Nuestro asesor está disponible 24/7 para resolver dudas sobre tu solicitud.</p>
+            <button class="btn btn-primary" onclick="abrirChat()">💬 Abrir chat</button>
+        </div>
+    </div>
+
+    <script>
+        function contactarOrganismo() { alert('Abriendo formulario de contacto con organismo'); }
+        function descargarDocumentacion() { alert('Descargando ZIP con toda la documentación'); }
+        function verTimeline() { alert('Abriendo vista detallada del timeline'); }
+        function abrirChat() { alert('Abriendo chat de soporte'); }
+    </script>
+</body>
+</html>

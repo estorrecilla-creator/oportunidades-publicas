@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeline de Solicitud - Oportunidades Públicas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* ============ HEADER ============ */
+        .header {
+            background: linear-gradient(to right, #003d82 0%, #004a9e 100%);
+            color: white;
+            padding: 20px 0;
+            border-bottom: 4px solid #ffc400;
+            margin-bottom: 40px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #003d82;
+        }
+
+        .header-button {
+            padding: 10px 20px;
+            background: white;
+            color: #003d82;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* ============ SOLICITUD HEADER ============ */
+        .solicitud-info {
+            background: white;
+            padding: 30px;
+            border-radius: 4px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-left: 4px solid #ffc400;
+        }
+
+        .solicitud-title {
+            font-size: 1.5em;
+            color: #003d82;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .solicitud-org {
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        .solicitud-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .meta-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8fafb;
+            border-radius: 3px;
+        }
+
+        .meta-label {
+            color: #999;
+            font-size: 0.85em;
+            margin-bottom: 5px;
+        }
+
+        .meta-value {
+            color: #003d82;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        /* ============ TIMELINE VISUAL ============ */
+        .timeline-container {
+            background: white;
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+        }
+
+        .timeline-title {
+            font-size: 1.3em;
+            color: #003d82;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        /* Timeline en horizontal para desktop */
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: 0;
+        }
+
+        .timeline.with-completed::before {
+            background: linear-gradient(to right, #2e7d32 0%, #2e7d32 60%, #e0e0e0 60%, #e0e0e0 100%);
+        }
+
+        .timeline-item {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .timeline-dot {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border: 3px solid #ddd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: all 0.3s;
+        }
+
+        .timeline-item.completed .timeline-dot {
+            background: #2e7d32;
+            border-color: #2e7d32;
+            color: white;
+        }
+
+        .timeline-item.active .timeline-dot {
+            background: #003d82;
+            border-color: #003d82;
+            color: white;
+            box-shadow: 0 0 0 6px rgba(0,61,130,0.2);
+        }
+
+        .timeline-label {
+            text-align: center;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .timeline-date {
+            text-align: center;
+            font-size: 0.85em;
+            color: #999;
+            min-height: 40px;
+        }
+
+        /* ============ DETALLES POR FASE ============ */
+        .phases-detail {
+            margin-top: 40px;
+        }
+
+        .phase-card {
+            background: #f8fafb;
+            padding: 25px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ddd;
+            transition: all 0.3s;
+        }
+
+        .phase-card.completed {
+            background: #e8f5e9;
+            border-left-color: #2e7d32;
+        }
+
+        .phase-card.active {
+            background: white;
+            border-left-color: #003d82;
+            border: 2px solid #003d82;
+            border-left: 4px solid #003d82;
+            box-shadow: 0 4px 12px rgba(0,61,130,0.1);
+        }
+
+        .phase-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .phase-title {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #003d82;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .phase-status {
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .status-active {
+            background: #bbdefb;
+            color: #0d47a1;
+        }
+
+        .status-pending {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .phase-description {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .phase-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .phase-detail-item {
+            padding: 12px;
+            background: white;
+            border-radius: 3px;
+        }
+
+        .phase-detail-label {
+            color: #999;
+            font-size: 0.8em;
+            margin-bottom: 5px;
+        }
+
+        .phase-detail-value {
+            color: #003d82;
+            font-weight: 700;
+        }
+
+        .phase-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .phase-btn {
+            padding: 10px 15px;
+            background: #003d82;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85em;
+            transition: background 0.3s;
+        }
+
+        .phase-btn:hover {
+            background: #002a5e;
+        }
+
+        /* ============ NOTIFICACIONES ============ */
+        .notifications-section {
+            background: white;
+            padding: 25px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .notifications-title {
+            font-size: 1.1em;
+            color: #003d82;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .notification-item {
+            padding: 15px;
+            background: #f8fafb;
+            border-radius: 3px;
+            margin-bottom: 12px;
+            border-left: 3px solid #2e7d32;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-text {
+            color: #333;
+            font-size: 0.95em;
+            margin-bottom: 5px;
+        }
+
+        .notification-time {
+            color: #999;
+            font-size: 0.8em;
+        }
+
+        .notification-icon {
+            font-size: 1.3em;
+            margin-right: 10px;
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .timeline {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .timeline::before {
+                left: 24px;
+                top: 50px;
+                height: auto;
+                width: 2px;
+                bottom: 0;
+                right: auto;
+            }
+
+            .timeline-item {
+                align-items: flex-start;
+                margin-bottom: 60px;
+                padding-left: 70px;
+            }
+
+            .timeline-dot {
+                position: absolute;
+                left: 0;
+                margin-bottom: 0;
+            }
+
+            .timeline-label,
+            .timeline-date {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="logo">OP</div>
+                <div>
+                    <h1 style="font-size: 1.2em;">Timeline de Solicitud</h1>
+                </div>
+            </div>
+            <button class="header-button">← Volver</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- INFO SOLICITUD -->
+        <div class="solicitud-info">
+            <div class="solicitud-title">Subvención instalación placas solares</div>
+            <div class="solicitud-org">Instituto para la Diversificación y Ahorro de la Energía (IDEA)</div>
+            <div class="solicitud-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Número de referencia</div>
+                    <div class="meta-value">OP-2026-0847</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Importe solicitado</div>
+                    <div class="meta-value">€45.000</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Fecha presentación</div>
+                    <div class="meta-value">15 ago 2026</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Estado actual</div>
+                    <div class="meta-value" style="color: #e65100;">En revisión</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TIMELINE VISUAL -->
+        <div class="timeline-container">
+            <h2 class="timeline-title">Progreso de tu solicitud</h2>
+
+            <!-- TIMELINE HORIZONTAL -->
+            <div class="timeline with-completed">
+                <div class="timeline-item completed">
+                    <div class="timeline-dot">✓</div>
+                    <div class="timeline-label">Presentada</div>
+                    <div class="timeline-date">15 ago 2026</div>
+                </div>
+                <div class="timeline-item active">
+                    <div class="timeline-dot">⏳</div>
+                    <div class="timeline-label">En revisión</div>
+                    <div class="timeline-date">Ahora</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">3</div>
+                    <div class="timeline-label">Resuelta</div>
+                    <div class="timeline-date">~25 sep</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">4</div>
+                    <div class="timeline-label">Justificación</div>
+                    <div class="timeline-date">~60 días</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">5</div>
+                    <div class="timeline-label">Cobrada</div>
+                    <div class="timeline-date">~120 días</div>
+                </div>
+            </div>
+
+            <!-- DETALLES POR FASE -->
+            <div class="phases-detail">
+                <!-- FASE 1: PRESENTADA -->
+                <div class="phase-card completed">
+                    <div class="phase-header">
+                        <div class="phase-title">✓ Fase 1: Solicitud presentada</div>
+                        <div class="phase-status status-completed">COMPLETADO</div>
+                    </div>
+                    <div class="phase-description">
+                        Tu solicitud ha sido presentada correctamente al organismo. Se ha asignado el número de referencia OP-2026-0847 para seguimiento.
+                    </div>
+                    <div class="phase-details">
+                        <div class="phase-detail-item">
+                            <div class="phase-detail-label">Fecha presentación</div>
+                            <div class="phase-detail-value">15 ago 2026</div>
+                        </div>
+                        <div class="phase-detail-item">
+                            <div class="phase-detail-label">Aceptación</div>
+                            <div class="phase-detail-value">Registrada</div>
+                        </div>
+                        <div class="phase-detail-item">
+                            <div class="phase-detail-label">Nº referencia</div>
+                            <div class="phase-detail-value">OP-2026-0847</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FASE 2: EN REVISIÓN (ACTIVA) -->
+                <div class="phase-card active">
+                    <div class="phase-header">
+                        <div class="phase-title">⏳ Fase 2: En revisión por el organismo</div>
+                        <div class="phase-status status-active">EN CURSO</div>
+                    </div>
+                    <div class="phase-description">
+                        El organismo está evaluando tu solicitud. Este proceso suele durar 30-45 días. Te notificaremos en tiempo real cuando haya cambios.
+                    </div>
+                    <div class="phase-details">
+                        <div class="phase-detail-item">
+                            <div class="phase-detail-label">Inicio revisión</div>
+                            <div class="phase-detail-value">16 ago 2026</div>
+                        </div>
+                        <div class="phase-detail-item">
+                            <div class="phase-detail-label">Previsión resolución</div>
+                            <div class="phase-detail-value">~25 sep 2026</div>
+                        </div>
+                        <div class="phase-detail-item">
+                            <div class="phase-detail-label">Progreso estimado</div>
+                            <div class="phase-detail-value">50%</div>
+                        </div>
+                    </div>
+                    <div class="phase-actions">
+                        <button class="phase-btn">📞 Contactar organismo</button>
+                        <button class="phase-btn">📎 Ver documentación enviada</button>
+                    </div>
+                </div>
+
+                <!-- FASE 3: RESUELTA -->
+                <div class="phase-card">
+                    <div class="phase-header">
+                        <div class="phase-title">3. Resolución del organismo</div>
+                        <div class="phase-status status-pending">PENDIENTE</div>
+                    </div>
+                    <div class="phase-description">
+                        El organismo notificará si tu solicitud ha sido aprobada o denegada. Te lo comunicaremos inmediatamente por email y WhatsApp.
+                    </div>
+                    <div class="phase-details">
+                        <div class="phase-detail-item">
+                            <div class="phase-detail-label">Previsión</div>
+                            <div class="phase-detail-value">~25 sep 2026</div>
+                        </div>
+                        <div class="phase-detail-item">
+                            <div class="phase-detail-label">Probabilidad aprobación</div>
+                            <div class="phase-detail-value">94% (IA)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FASE 4: JUSTIFICACIÓN -->
+                <div class="phase-card">
+                    <div class="phase-header">
+                        <div class="phase-title">4. Justificación (si aprobada)</div>
+                        <div class="phase-status status-pending">PENDIENTE</div>
+                    </div>
+                    <div class="phase-description">
+                        Una vez aprobada, tendrás un plazo de 60 días para presentar documentación que acredite la realización del proyecto.
+                    </div>
+                    <div class="phase-details">
+                        <div class="phase-detail-item">
+                            <div class="phase-detail-label">Plazo</div>
+                            <div class="phase-detail-value">60 días</div>
+                        </div>
+                        <div class="phase-detail-item">
+                            <div class="phase-detail-label">Documentación</div>
+                            <div class="phase-detail-value">Facturas + fotos</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FASE 5: COBRADA -->
+                <div class="phase-card">
+                    <div class="phase-header">
+                        <div class="phase-title">5. Dinero en tu cuenta</div>
+                        <div class="phase-status status-pending">PENDIENTE</div>
+                    </div>
+                    <div class="phase-description">
+                        Después de validar tu documentación de justificación, el organismo ingresará el importe en tu cuenta bancaria (plazo: 30-60 días).
+                    </div>
+                    <div class="phase-details">
+                        <div class="phase-detail-item">
+                            <div class="phase-detail-label">Importe esperado</div>
+                            <div class="phase-detail-value">€36.000</div>
+                        </div>
+                        <div class="phase-detail-item">
+                            <div class="phase-detail-label">Plazo pago</div>
+                            <div class="phase-detail-value">30-60 días</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NOTIFICACIONES -->
+        <div class="notifications-section">
+            <h2 class="notifications-title">📬 Últimas actualizaciones</h2>
+            
+            <div class="notification-item">
+                <div class="notification-icon">✓</div>
+                <div class="notification-content">
+                    <div class="notification-text"><strong>Solicitud presentada correctamente</strong> - Tu solicitud fue registrada en el sistema oficial IDEA.</div>
+                    <div class="notification-time">15 ago 2026, 14:32</div>
+                </div>
+            </div>
+
+            <div class="notification-item">
+                <div class="notification-icon">⏳</div>
+                <div class="notification-content">
+                    <div class="notification-text"><strong>Cambio de estado: En revisión</strong> - El organismo ha iniciado la evaluación de tu solicitud.</div>
+                    <div class="notification-time">16 ago 2026, 09:15</div>
+                </div>
+            </div>
+
+            <div class="notification-item">
+                <div class="notification-icon">ℹ️</div>
+                <div class="notification-content">
+                    <div class="notification-text"><strong>Solicitud de información adicional</strong> - El organismo requiere clarificación sobre el alcance técnico del proyecto. Debes responder en 5 días.</div>
+                    <div class="notification-time">20 ago 2026, 11:42</div>
+                </div>
+            </div>
+
+            <div class="notification-item">
+                <div class="notification-icon">📤</div>
+                <div class="notification-content">
+                    <div class="notification-text"><strong>Respuesta enviada</strong> - Hemos presentado la información adicional que requería el organismo.</div>
+                    <div class="notification-time">22 ago 2026, 16:28</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

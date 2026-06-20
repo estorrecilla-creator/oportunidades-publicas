@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Plan - Oportunidades Públicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7fa; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+        .header { background: linear-gradient(to right, #003d82 0%, #004a9e 100%); color: white; padding: 20px 0; margin-bottom: 40px; border-bottom: 4px solid #ffc400; }
+        .header-content { padding: 0 40px; }
+        .section { background: white; padding: 30px; border-radius: 4px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.3em; color: #003d82; margin-bottom: 20px; font-weight: 700; }
+        .plan-info { background: #e3f2fd; padding: 20px; border-radius: 4px; margin-bottom: 20px; border-left: 4px solid #1976d2; }
+        .plan-name { font-size: 1.5em; color: #003d82; font-weight: 700; }
+        .plan-price { font-size: 1.3em; color: #1976d2; font-weight: 700; margin-top: 5px; }
+        .renewal-date { color: #666; font-size: 0.9em; margin-top: 10px; }
+        .features-list { list-style: none; margin: 20px 0; }
+        .features-list li { padding: 8px 0; color: #666; display: flex; gap: 10px; }
+        .features-list li:before { content: "✓"; color: #2e7d32; font-weight: bold; }
+        .plan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .plan-card { padding: 25px; border: 2px solid #e0e0e0; border-radius: 4px; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .plan-card:hover { border-color: #003d82; box-shadow: 0 4px 12px rgba(0,61,130,0.1); }
+        .plan-card.current { border-color: #ffc400; background: #fffbf0; }
+        .plan-card h3 { color: #003d82; margin-bottom: 10px; font-size: 1.2em; }
+        .plan-price-card { font-size: 1.8em; color: #003d82; font-weight: 700; margin-bottom: 15px; }
+        .plan-btn { padding: 10px 25px; background: #003d82; color: white; border: none; border-radius: 3px; cursor: pointer; font-weight: 600; width: 100%; transition: background 0.3s; }
+        .plan-btn:hover { background: #002a5e; }
+        .plan-btn.current { background: #f0f0f0; color: #333; cursor: default; }
+        .button-group { display: flex; gap: 15px; flex-wrap: wrap; }
+        .btn { padding: 12px 30px; border: none; border-radius: 3px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .btn-primary { background: #003d82; color: white; }
+        .btn-primary:hover { background: #002a5e; }
+        .btn-danger { background: #c60c30; color: white; }
+        .btn-danger:hover { background: #a00a25; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); align-items: center; justify-content: center; z-index: 1000; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; padding: 40px; border-radius: 4px; max-width: 500px; width: 90%; }
+        .modal-title { color: #003d82; font-size: 1.5em; margin-bottom: 20px; }
+        .modal-text { color: #666; margin-bottom: 25px; }
+        .modal-buttons { display: flex; gap: 15px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>Gestión de Plan y Pago</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- PLAN ACTUAL -->
+        <div class="section">
+            <div class="section-title">Tu plan actual</div>
+            <div class="plan-info">
+                <div class="plan-name">PLAN PROFESIONAL</div>
+                <div class="plan-price">€59/mes</div>
+                <div class="renewal-date">Próxima renovación: 20 de septiembre de 2026</div>
+            </div>
+            <div>
+                <div style="font-weight: 700; color: #003d82; margin-bottom: 12px;">Incluye:</div>
+                <ul class="features-list">
+                    <li>Búsqueda ilimitada de oportunidades</li>
+                    <li>Reporte diario personalizado</li>
+                    <li>Descarga de solicitud (Word/Excel)</li>
+                    <li>Simulador ROI</li>
+                    <li>Chat asesor avanzado</li>
+                    <li>Acceso a datos adjudicados</li>
+                </ul>
+            </div>
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="openModal('cambiar')">Cambiar de plan</button>
+                <button class="btn btn-danger" onclick="openModal('cancelar')">Cancelar suscripción</button>
+            </div>
+        </div>
+
+        <!-- CAMBIAR DE PLAN -->
+        <div class="section">
+            <div class="section-title">Cambiar a otro plan</div>
+            <div class="plan-grid">
+                <div class="plan-card">
+                    <h3>BÁSICO</h3>
+                    <div class="plan-price-card">€19</div>
+                    <p style="color: #666; margin-bottom: 15px;">/mes</p>
+                    <ul class="features-list" style="text-align: left;">
+                        <li>Búsqueda</li>
+                        <li>Reporte diario</li>
+                        <li>Chat básico</li>
+                    </ul>
+                    <button class="plan-btn" onclick="cambiarPlan('basico')">Cambiar a Básico</button>
+                </div>
+
+                <div class="plan-card current">
+                    <h3>PROFESIONAL</h3>
+                    <div class="plan-price-card">€59</div>
+                    <p style="color: #666; margin-bottom: 15px;">/mes</p>
+                    <p style="color: #ffc400; font-weight: 700; margin-bottom: 15px;">✓ Plan actual</p>
+                    <button class="plan-btn current" disabled>Plan actual</button>
+                </div>
+
+                <div class="plan-card">
+                    <h3>PREMIUM</h3>
+                    <div class="plan-price-card">€149</div>
+                    <p style="color: #666; margin-bottom: 15px;">/mes</p>
+                    <ul class="features-list" style="text-align: left;">
+                        <li>Todo Profesional</li>
+                        <li>Nosotros presentamos</li>
+                        <li>Seguimiento 24/7</li>
+                    </ul>
+                    <button class="plan-btn" onclick="cambiarPlan('premium')">Cambiar a Premium</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- HISTORIAL DE PAGOS -->
+        <div class="section">
+            <div class="section-title">Historial de pagos</div>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #ddd;">
+                            <th style="padding: 12px;">Fecha</th>
+                            <th style="padding: 12px;">Concepto</th>
+                            <th style="padding: 12px;">Plan</th>
+                            <th style="padding: 12px;">Importe</th>
+                            <th style="padding: 12px;">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 12px;">20 ago 2026</td>
+                            <td style="padding: 12px;">Suscripción mensual</td>
+                            <td style="padding: 12px;">Profesional</td>
+                            <td style="padding: 12px;">€59</td>
+                            <td style="padding: 12px; color: #2e7d32; font-weight: 600;">Pagado</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 12px;">20 jul 2026</td>
+                            <td style="padding: 12px;">Suscripción mensual</td>
+                            <td style="padding: 12px;">Profesional</td>
+                            <td style="padding: 12px;">€59</td>
+                            <td style="padding: 12px; color: #2e7d32; font-weight: 600;">Pagado</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- MÉTODO DE PAGO -->
+        <div class="section">
+            <div class="section-title">Método de pago</div>
+            <div style="background: #f8fafb; padding: 20px; border-radius: 4px; margin-bottom: 20px;">
+                <p><strong>💳 Tarjeta de crédito</strong></p>
+                <p style="color: #666; margin-top: 10px;">Visa terminada en 4242</p>
+                <p style="color: #666; font-size: 0.9em;">Caduca: 12/2028</p>
+            </div>
+            <button class="btn btn-primary">Cambiar tarjeta</button>
+        </div>
+    </div>
+
+    <!-- MODAL CAMBIAR PLAN -->
+    <div id="modalCambiar" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">Cambiar a Premium</div>
+            <div class="modal-text">
+                <p>Tu cambio será inmediato.</p>
+                <p style="margin-top: 15px;"><strong>Nuevo precio:</strong> €149/mes</p>
+                <p><strong>Próxima renovación:</strong> 20 de septiembre de 2026</p>
+                <p style="margin-top: 15px; color: #999; font-size: 0.9em;">Se prorrateará el pago: €90 (diferencia de los días restantes)</p>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-primary" style="flex: 1;" onclick="confirmarCambio()">Confirmar cambio</button>
+                <button class="btn" style="flex: 1; background: #f0f0f0; color: #333;" onclick="closeModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CANCELAR -->
+    <div id="modalCancelar" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">Cancelar suscripción</div>
+            <div class="modal-text">
+                <p>Se te enviarán confirmaciones por email.</p>
+                <p style="margin-top: 15px; color: #c60c30;"><strong>⚠️ Perderás acceso a:</strong></p>
+                <ul class="features-list" style="margin-top: 10px;">
+                    <li>Descarga de solicitudes</li>
+                    <li>Chat avanzado</li>
+                    <li>Todos los servicios Premium</li>
+                </ul>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-danger" style="flex: 1;" onclick="confirmarCancelacion()">Cancelar suscripción</button>
+                <button class="btn" style="flex: 1; background: #f0f0f0; color: #333;" onclick="closeModal()">Mantener plan</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(type) {
+            if (type === 'cambiar') document.getElementById('modalCambiar').classList.add('active');
+            if (type === 'cancelar') document.getElementById('modalCancelar').classList.add('active');
+        }
+        function closeModal() {
+            document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+        }
+        function cambiarPlan(plan) {
+            alert(`Cambio a plan ${plan.toUpperCase()}`);
+            openModal('cambiar');
+        }
+        function confirmarCambio() {
+            alert('Plan cambiado exitosamente a Premium');
+            closeModal();
+        }
+        function confirmarCancelacion() {
+            alert('Tu suscripción ha sido cancelada');
+            closeModal();
+        }
+    </script>
+</body>
+</html>

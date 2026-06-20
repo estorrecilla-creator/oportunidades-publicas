@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Búsqueda de Oportunidades - Oportunidades Públicas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ============ HEADER ============ */
+        .header {
+            background: linear-gradient(to right, #003d82 0%, #004a9e 100%);
+            color: white;
+            padding: 20px 0;
+            border-bottom: 4px solid #ffc400;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #003d82;
+        }
+
+        .header-text h1 {
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .header-button {
+            padding: 10px 20px;
+            background: white;
+            color: #003d82;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* ============ MAIN LAYOUT ============ */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 30px;
+            padding: 40px;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* ============ SIDEBAR FILTROS ============ */
+        .sidebar {
+            background: white;
+            padding: 25px;
+            border-radius: 4px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .sidebar-title {
+            color: #003d82;
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-size: 1em;
+        }
+
+        .filter-group {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .filter-group:last-child {
+            border-bottom: none;
+        }
+
+        .filter-label {
+            color: #003d82;
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 0.9em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .filter-reset {
+            font-size: 0.75em;
+            color: #999;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            text-decoration: underline;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .filter-option input[type="checkbox"] {
+            margin-right: 8px;
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+        }
+
+        .filter-option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .filter-option input[type="range"] {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .range-values {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.85em;
+            color: #999;
+        }
+
+        /* ============ MAIN CONTENT ============ */
+        .main-content {
+            background: white;
+            padding: 30px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        /* SEARCH BAR */
+        .search-section {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 1em;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: #003d82;
+            box-shadow: 0 0 0 3px rgba(0,61,130,0.1);
+        }
+
+        .search-button {
+            padding: 14px 30px;
+            background: #003d82;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .search-button:hover {
+            background: #002a5e;
+        }
+
+        /* RESULTS INFO -->
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .results-count {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .sort-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .sort-btn {
+            padding: 8px 15px;
+            background: #f8fafb;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+
+        .sort-btn.active {
+            background: #003d82;
+            color: white;
+            border-color: #003d82;
+        }
+
+        /* RESULTS CARDS */
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .result-card {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: all 0.3s;
+            background: white;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .result-card:hover {
+            border-color: #003d82;
+            box-shadow: 0 4px 12px rgba(0,61,130,0.1);
+        }
+
+        .result-card.highlighted {
+            border-left: 4px solid #ffc400;
+            background: #fffbf0;
+        }
+
+        .result-left {
+            min-width: 0;
+        }
+
+        .result-title {
+            font-size: 1.05em;
+            font-weight: 700;
+            color: #003d82;
+            margin-bottom: 8px;
+            word-break: break-word;
+        }
+
+        .result-org {
+            color: #999;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .result-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+
+        .badge-open {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .badge-subvencion {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .badge-licitacion {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .result-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            padding: 12px;
+            background: #f8fafb;
+            border-radius: 3px;
+            text-align: center;
+        }
+
+        .detail-label {
+            color: #999;
+            font-size: 0.8em;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            color: #003d82;
+            font-weight: 700;
+            font-size: 1em;
+        }
+
+        .result-description {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .result-right {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-width: 150px;
+        }
+
+        .relevance-badge {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 12px;
+            border-radius: 3px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .relevance-label {
+            font-size: 0.75em;
+            color: #666;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .btn-action {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85em;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .btn-details {
+            background: white;
+            color: #003d82;
+            border: 2px solid #003d82;
+        }
+
+        .btn-details:hover {
+            background: #f8fafb;
+        }
+
+        .btn-create {
+            background: #003d82;
+            color: white;
+        }
+
+        .btn-create:hover {
+            background: #002a5e;
+        }
+
+        /* ============ EMPTY STATE ============ */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            color: #003d82;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .result-card {
+                grid-template-columns: 1fr;
+            }
+
+            .result-details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .result-right {
+                flex-direction: row;
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .main-layout {
+                padding: 20px;
+            }
+
+            .search-section {
+                flex-direction: column;
+            }
+
+            .result-details {
+                grid-template-columns: 1fr;
+            }
+
+            .result-badges {
+                flex-direction: column;
+            }
+
+            .badge {
+                display: block;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="logo">OP</div>
+                <div class="header-text">
+                    <h1>Oportunidades Públicas</h1>
+                </div>
+            </div>
+            <button class="header-button">← Volver al dashboard</button>
+        </div>
+    </div>
+
+    <!-- MAIN LAYOUT -->
+    <div class="main-layout">
+        <!-- SIDEBAR FILTROS -->
+        <div class="sidebar">
+            <div class="sidebar-title">⚙️ Filtros</div>
+
+            <!-- FILTRO TIPO -->
+            <div class="filter-group">
+                <div class="filter-label">
+                    Tipo
+                    <button class="filter-reset" onclick="resetFilter('tipo')">Limpiar</button>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="subvenciones">
+                    <label for="subvenciones">Subvenciones</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="licitaciones">
+                    <label for="licitaciones">Licitaciones</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="ayudas">
+                    <label for="ayudas">Ayudas</label>
+                </div>
+            </div>
+
+            <!-- FILTRO IMPORTE -->
+            <div class="filter-group">
+                <div class="filter-label">
+                    Importe
+                    <button class="filter-reset" onclick="resetFilter('importe')">Limpiar</button>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="menor-5">
+                    <label for="menor-5">Menor €5.000</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="5-20">
+                    <label for="5-20">€5.000 - €20.000</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="20-50">
+                    <label for="20-50">€20.000 - €50.000</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="mayor-50">
+                    <label for="mayor-50">Mayor €50.000</label>
+                </div>
+            </div>
+
+            <!-- FILTRO PLAZO -->
+            <div class="filter-group">
+                <div class="filter-label">
+                    Plazo
+                    <button class="filter-reset" onclick="resetFilter('plazo')">Limpiar</button>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="plazo-7">
+                    <label for="plazo-7">Menos de 7 días</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="plazo-30">
+                    <label for="plazo-30">Menos de 30 días</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="plazo-60">
+                    <label for="plazo-60">Menos de 60 días</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="plazo-otro">
+                    <label for="plazo-otro">Más de 60 días</label>
+                </div>
+            </div>
+
+            <!-- FILTRO RELEVANCIA -->
+            <div class="filter-group">
+                <div class="filter-label">Relevancia mínima</div>
+                <div class="filter-option">
+                    <input type="range" id="relevancia" min="0" max="100" value="0" style="width: 100%;">
+                    <div class="range-values">
+                        <span>0%</span>
+                        <span id="relevancia-value">0%</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <!-- SEARCH BAR -->
+            <div class="search-section">
+                <input type="text" class="search-input" placeholder="Busca por palabra clave: 'solar', 'digitalización', etc...">
+                <button class="search-button">🔍 Buscar</button>
+            </div>
+
+            <!-- RESULTS HEADER -->
+            <div class="results-header">
+                <div class="results-count">Se encontraron <strong>12 oportunidades</strong> que coinciden con tu perfil</div>
+                <div class="sort-options">
+                    <button class="sort-btn active" onclick="setSorting(this, 'relevancia')">Relevancia ↓</button>
+                    <button class="sort-btn" onclick="setSorting(this, 'reciente')">Reciente</button>
+                    <button class="sort-btn" onclick="setSorting(this, 'importe')">Mayor importe</button>
+                    <button class="sort-btn" onclick="setSorting(this, 'plazo')">Plazo ↑</button>
+                </div>
+            </div>
+
+            <!-- RESULTS GRID -->
+            <div class="results-grid">
+                <!-- RESULTADO 1 - DESTACADO -->
+                <div class="result-card highlighted">
+                    <div class="result-left">
+                        <div class="result-title">Subvención instalación placas solares</div>
+                        <div class="result-org">Instituto para la Diversificación y Ahorro de la Energía (IDEA)</div>
+                        <div class="result-badges">
+                            <div class="badge badge-open">ABIERTO</div>
+                            <div class="badge badge-subvencion">SUBVENCIÓN</div>
+                        </div>
+                        <div class="result-details">
+                            <div class="detail-item">
+                                <div class="detail-label">IMPORTE</div>
+                                <div class="detail-value">€50.000</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">PLAZO</div>
+                                <div class="detail-value">40 días</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">COBERTURA</div>
+                                <div class="detail-value">80%</div>
+                            </div>
+                        </div>
+                        <div class="result-description">
+                            Programa de apoyo para la instalación de sistemas de energía solar en empresas pequeñas y medianas. Cubre hasta el 80% de la inversión realizada.
+                        </div>
+                    </div>
+                    <div class="result-right">
+                        <div class="relevance-badge">
+                            <div>94%</div>
+                            <div class="relevance-label">Relevancia</div>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn-action btn-details" onclick="verDetalles()">Ver detalles</button>
+                            <button class="btn-action btn-create" onclick="crearSolicitud()">Crear solicitud</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RESULTADO 2 -->
+                <div class="result-card">
+                    <div class="result-left">
+                        <div class="result-title">Ayuda digitalización empresas 2026</div>
+                        <div class="result-org">Junta de Andalucía - Consejería de Transformación Digital</div>
+                        <div class="result-badges">
+                            <div class="badge badge-open">ABIERTO</div>
+                            <div class="badge badge-subvencion">AYUDA</div>
+                        </div>
+                        <div class="result-details">
+                            <div class="detail-item">
+                                <div class="detail-label">IMPORTE</div>
+                                <div class="detail-value">€25.000</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">PLAZO</div>
+                                <div class="detail-value">57 días</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">COBERTURA</div>
+                                <div class="detail-value">75%</div>
+                            </div>
+                        </div>
+                        <div class="result-description">
+                            Ayudas para proyectos de transformación digital en pequeñas y medianas empresas de Andalucía. Incluye software, hardware y servicios de consultoría.
+                        </div>
+                    </div>
+                    <div class="result-right">
+                        <div class="relevance-badge">
+                            <div>87%</div>
+                            <div class="relevance-label">Relevancia</div>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn-action btn-details" onclick="verDetalles()">Ver detalles</button>
+                            <button class="btn-action btn-create" onclick="crearSolicitud()">Crear solicitud</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RESULTADO 3 -->
+                <div class="result-card">
+                    <div class="result-left">
+                        <div class="result-title">Licitación obra reforma municipal</div>
+                        <div class="result-org">Ayuntamiento de Sevilla</div>
+                        <div class="result-badges">
+                            <div class="badge badge-open">ABIERTO</div>
+                            <div class="badge badge-licitacion">LICITACIÓN</div>
+                        </div>
+                        <div class="result-details">
+                            <div class="detail-item">
+                                <div class="detail-label">IMPORTE</div>
+                                <div class="detail-value">€150.000</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">PLAZO</div>
+                                <div class="detail-value">45 días</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">TIPO</div>
+                                <div class="detail-value">Pública</div>
+                            </div>
+                        </div>
+                        <div class="result-description">
+                            Licitación pública para la reforma integral de un centro municipal. Se requiere experiencia previa comprobada en obras similares.
+                        </div>
+                    </div>
+                    <div class="result-right">
+                        <div class="relevance-badge">
+                            <div>72%</div>
+                            <div class="relevance-label">Relevancia</div>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn-action btn-details" onclick="verDetalles()">Ver detalles</button>
+                            <button class="btn-action btn-create" onclick="crearSolicitud()">Crear solicitud</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RESULTADO 4 -->
+                <div class="result-card">
+                    <div class="result-left">
+                        <div class="result-title">Subvención energía renovable térmica</div>
+                        <div class="result-org">Ministerio para la Transición Ecológica (MITECO)</div>
+                        <div class="result-badges">
+                            <div class="badge badge-open">ABIERTO</div>
+                            <div class="badge badge-subvencion">SUBVENCIÓN</div>
+                        </div>
+                        <div class="result-details">
+                            <div class="detail-item">
+                                <div class="detail-label">IMPORTE</div>
+                                <div class="detail-value">€40.000</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">PLAZO</div>
+                                <div class="detail-value">30 días</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">COBERTURA</div>
+                                <div class="detail-value">60%</div>
+                            </div>
+                        </div>
+                        <div class="result-description">
+                            Programa de apoyo a la instalación de sistemas de energía solar térmica. Dirigido a empresas de sectores específicos con comprobada experiencia.
+                        </div>
+                    </div>
+                    <div class="result-right">
+                        <div class="relevance-badge">
+                            <div>91%</div>
+                            <div class="relevance-label">Relevancia</div>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn-action btn-details" onclick="verDetalles()">Ver detalles</button>
+                            <button class="btn-action btn-create" onclick="crearSolicitud()">Crear solicitud</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const relevanciaSlider = document.getElementById('relevancia');
+        const relevanciaValue = document.getElementById('relevancia-value');
+
+        relevanciaSlider.addEventListener('input', function() {
+            relevanciaValue.textContent = this.value + '%';
+        });
+
+        function resetFilter(filterType) {
+            console.log('Limpiar filtro:', filterType);
+            // Aquí iría la lógica de limpiar filtros
+        }
+
+        function setSorting(element, sortType) {
+            document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            console.log('Ordenar por:', sortType);
+        }
+
+        function verDetalles() {
+            alert('Te llevamos a la página de detalles');
+            // window.location.href = 'detalle-solicitud-completo.html';
+        }
+
+        function crearSolicitud() {
+            alert('Abrimos el formulario de creación');
+            // Abre modal de creación
+        }
+    </script>
+</body>
+</html>

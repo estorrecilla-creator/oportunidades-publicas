@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Oportunidades Públicas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 2px solid #d0d0d0;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .tab-button {
+            padding: 16px 30px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-button.active {
+            color: #003d82;
+            border-bottom-color: #003d82;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ============ HEADER ============ */
+        .header {
+            background: linear-gradient(to right, #003d82 0%, #004a9e 100%);
+            color: white;
+            padding: 20px 0;
+            border-bottom: 4px solid #ffc400;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-official {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+        }
+
+        .logo-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .header-text h1 {
+            font-size: 1.4em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .header-text p {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+
+        .header-button {
+            padding: 12px 28px;
+            background: #ffc400;
+            color: #003d82;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: background 0.3s;
+        }
+
+        .header-button:hover {
+            background: #ffb300;
+        }
+
+        /* ============ LANDING PAGE ============ */
+        .hero {
+            background: linear-gradient(135deg, #f8fafb 0%, #e8eef5 100%);
+            padding: 100px 60px;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 2.8em;
+            color: #003d82;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 50px;
+            line-height: 1.6;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-primary {
+            padding: 16px 50px;
+            background: #003d82;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            font-weight: 600;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .cta-primary:hover {
+            background: #002a5e;
+        }
+
+        .cta-secondary {
+            padding: 16px 50px;
+            border: 2px solid #003d82;
+            color: #003d82;
+            background: white;
+            border-radius: 3px;
+            font-weight: 600;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cta-secondary:hover {
+            background: #f8fafb;
+        }
+
+        .info-boxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+            padding-top: 60px;
+            border-top: 2px solid #ddd;
+        }
+
+        .info-box {
+            background: white;
+            padding: 30px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .info-box h3 {
+            color: #003d82;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .info-box p {
+            color: #666;
+            line-height: 1.7;
+        }
+
+        /* ============ REGISTRO MODAL ============ */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 50px;
+            border-radius: 4px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .modal-content h2 {
+            color: #003d82;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 1em;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #003d82;
+            box-shadow: 0 0 0 3px rgba(0,61,130,0.1);
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .form-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 3px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-register {
+            background: #003d82;
+            color: white;
+        }
+
+        .btn-register:hover {
+            background: #002a5e;
+        }
+
+        .btn-cancel {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-cancel:hover {
+            background: #e0e0e0;
+        }
+
+        /* ============ DASHBOARD ============ */
+        .dashboard-header {
+            background: white;
+            padding: 25px 60px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dashboard-title {
+            color: #003d82;
+            font-size: 1.5em;
+            font-weight: 700;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-sector {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .logout-btn {
+            padding: 10px 20px;
+            background: #c60c30;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #a00a25;
+        }
+
+        .dashboard-content {
+            padding: 40px 60px;
+            background: #f8fafb;
+            min-height: 100vh;
+        }
+
+        .filters {
+            background: white;
+            padding: 25px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: #003d82;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .filter-btn:hover {
+            background: #002a5e;
+        }
+
+        /* SECCIONES */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.4em;
+            color: #003d82;
+            margin-bottom: 20px;
+            font-weight: 700;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #ffc400;
+        }
+
+        .section-subtitle {
+            font-size: 0.95em;
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        .opportunities-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .opportunity-card {
+            background: white;
+            padding: 25px;
+            border-radius: 4px;
+            border-left: 4px solid #ffc400;
+            transition: box-shadow 0.3s;
+        }
+
+        .opportunity-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .opportunity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .opportunity-title {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #003d82;
+            flex: 1;
+        }
+
+        .opportunity-badge {
+            padding: 6px 12px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            white-space: nowrap;
+            margin-left: 15px;
+        }
+
+        .opportunity-badge.adjudicated {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .opportunity-org {
+            color: #999;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .opportunity-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+            padding: 20px 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+
+        .detail {
+            text-align: center;
+        }
+
+        .detail-label {
+            color: #999;
+            font-size: 0.85em;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #003d82;
+        }
+
+        .opportunity-description {
+            color: #666;
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+
+        .opportunity-conditions {
+            background: #f8fafb;
+            padding: 15px;
+            border-radius: 3px;
+            margin: 15px 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .opportunity-conditions strong {
+            color: #003d82;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state h3 {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: #1a2a3a;
+            color: #999;
+            padding: 40px 60px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 1024px) {
+            .header-content,
+            .dashboard-content {
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+
+            .hero {
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2em;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .cta-primary,
+            .cta-secondary {
+                width: 100%;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .filters {
+                flex-direction: column;
+            }
+
+            .filter-group {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- TABS -->
+    <div class="tabs">
+        <button class="tab-button active" onclick="showTab(0)">INICIO</button>
+        <button class="tab-button" onclick="showTab(1)">PANEL DE CONTROL</button>
+    </div>
+
+    <!-- ============ LANDING PAGE ============ -->
+    <div class="tab-content active">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="logo-official">
+                        <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="20" y="30" width="60" height="60" fill="#003d82"/>
+                            <rect x="25" y="35" width="50" height="50" fill="#004a9e"/>
+                            <rect x="30" y="40" width="8" height="8" fill="#ffc400"/>
+                            <rect x="42" y="40" width="8" height="8" fill="#ffc400"/>
+                            <rect x="54" y="40" width="8" height="8" fill="#ffc400"/>
+                            <rect x="30" y="52" width="8" height="8" fill="#ffc400"/>
+                            <rect x="42" y="52" width="8" height="8" fill="#ffc400"/>
+                            <rect x="54" y="52" width="8" height="8" fill="#ffc400"/>
+                            <rect x="30" y="64" width="8" height="8" fill="#ffc400"/>
+                            <rect x="42" y="64" width="8" height="8" fill="#ffc400"/>
+                            <rect x="54" y="64" width="8" height="8" fill="#ffc400"/>
+                            <rect x="44" y="72" width="12" height="18" fill="#ffc400"/>
+                            <polygon points="15,30 50,10 85,30" fill="#8B4513"/>
+                        </svg>
+                    </div>
+                    <div class="header-text">
+                        <h1>OPORTUNIDADES PÚBLICAS</h1>
+                        <p>Acceso directo a subvenciones y licitaciones</p>
+                    </div>
+                </div>
+                <button class="header-button" onclick="openRegister()">REGISTRARSE</button>
+            </div>
+        </div>
+
+        <!-- HERO -->
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Encuentra todas las oportunidades de financiación pública</h1>
+                <p class="hero-subtitle">Subvenciones, licitaciones y ayudas públicas actualizadas diariamente. Recibe en tu bandeja las que se ajusten a tu sector.</p>
+
+                <div class="cta-buttons">
+                    <button class="cta-primary" onclick="openRegister()">REGISTRARSE AHORA</button>
+                    <button class="cta-secondary" onclick="showTab(1)">VER EJEMPLO</button>
+                </div>
+
+                <div class="info-boxes">
+                    <div class="info-box">
+                        <h3>Oportunidades diarias</h3>
+                        <p>Nuevas convocatorias cada día filtradas según tu sector. No pierdas ninguna oportunidad de financiación.</p>
+                    </div>
+                    <div class="info-box">
+                        <h3>Datos reales adjudicadas</h3>
+                        <p>Conoce qué empresas consiguieron subvenciones similares y en qué condiciones. Información de 6-12 meses atrás.</p>
+                    </div>
+                    <div class="info-box">
+                        <h3>Asesor disponible</h3>
+                        <p>Consulta requisitos, procedimientos y documentación necesaria. Respuestas instantáneas a tus preguntas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ DASHBOARD ============ -->
+    <div class="tab-content">
+        <!-- HEADER -->
+        <div class="dashboard-header">
+            <div class="dashboard-title">Panel de Control</div>
+            <div class="user-info">
+                <div class="user-sector">
+                    <strong>Sector:</strong> Energías Renovables
+                </div>
+                <button class="logout-btn">CERRAR SESIÓN</button>
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="dashboard-content">
+            <!-- FILTROS -->
+            <div class="filters">
+                <div class="filter-group">
+                    <label>Tipo</label>
+                    <select>
+                        <option>Todas</option>
+                        <option>En vigor</option>
+                        <option>Adjudicadas</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Importe mínimo</label>
+                    <select>
+                        <option>Todas</option>
+                        <option>>€10.000</option>
+                        <option>>€50.000</option>
+                        <option>>€100.000</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Período</label>
+                    <select>
+                        <option>Últimas 24h</option>
+                        <option>Última semana</option>
+                        <option>Último mes</option>
+                        <option>Últimos 6 meses</option>
+                        <option>Último año</option>
+                    </select>
+                </div>
+                <button class="filter-btn">BUSCAR</button>
+            </div>
+
+            <!-- SECCIÓN EN VIGOR -->
+            <div class="section">
+                <div class="section-title">🔴 EN VIGOR (Plazo abierto)</div>
+                <div class="section-subtitle">Nuevas oportunidades para solicitar - Actualizado hoy</div>
+
+                <div class="opportunities-grid">
+                    <!-- CARD 1 -->
+                    <div class="opportunity-card">
+                        <div class="opportunity-header">
+                            <div class="opportunity-title">Subvención para instalación de placas solares</div>
+                            <div class="opportunity-badge">ABIERTO</div>
+                        </div>
+                        <div class="opportunity-org">Instituto para la Diversificación y Ahorro de la Energía (IDEA) - Nacional</div>
+                        
+                        <div class="opportunity-details">
+                            <div class="detail">
+                                <div class="detail-label">Dotación</div>
+                                <div class="detail-value">€50.000</div>
+                            </div>
+                            <div class="detail">
+                                <div class="detail-label">Cobertura</div>
+                                <div class="detail-value">80%</div>
+                            </div>
+                            <div class="detail">
+                                <div class="detail-label">Fecha límite</div>
+                                <div class="detail-value">30 ago 2026</div>
+                            </div>
+                            <div class="detail">
+                                <div class="detail-label">Plazo</div>
+                                <div class="detail-value">40 días</div>
+                            </div>
+                        </div>
+
+                        <div class="opportunity-description">
+                            Ayuda para la instalación de sistemas de energía solar térmica o fotovoltaica en empresas pequeñas y medianas del sector industrial.
+                        </div>
+
+                        <div class="opportunity-conditions">
+                            <strong>Requisitos:</strong> Empresa activa, estar al corriente con Hacienda, inversión mínima €15.000
+                        </div>
+                    </div>
+
+                    <!-- CARD 2 -->
+                    <div class="opportunity-card">
+                        <div class="opportunity-header">
+                            <div class="opportunity-title">Ayuda para digitalización de procesos</div>
+                            <div class="opportunity-badge">ABIERTO</div>
+                        </div>
+                        <div class="opportunity-org">Junta de Andalucía - Sevilla, Córdoba</div>
+                        
+                        <div class="opportunity-details">
+                            <div class="detail">
+                                <div class="detail-label">Dotación</div>
+                                <div class="detail-value">€25.000</div>
+                            </div>
+                            <div class="detail">
+                                <div class="detail-label">Cobertura</div>
+                                <div class="detail-value">75%</div>
+                            </div>
+                            <div class="detail">
+                                <div class="detail-label">Fecha límite</div>
+                                <div class="detail-value">15 sep 2026</div>
+                            </div>
+                            <div class="detail">
+                                <div class="detail-label">Plazo</div>
+                                <div class="detail-value">57 días</div>
+                            </div>
+                        </div>
+
+                        <div class="opportunity-description">
+                            Ayuda para la transformación digital de pequeñas y medianas empresas. Incluye software, consultoría e implementación de sistemas.
+                        </div>
+
+                        <div class="opportunity-conditions">
+                            <strong>Requisitos:</strong> PYMEs de menos de 250 empleados, presupuesto mínimo €8.000, estar registrado en DIRCE
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN ADJUDICADAS -->
+            <div class="section">
+                <div class="section-title">✅ ADJUDICADAS (Últimos 6-12 meses)</div>
+                <div class="section-subtitle">Información de quién las consiguió y en qué condiciones - Para tu análisis de mercado</div>
+
+                <div class="opportunities-grid">
+                    <!-- CARD 1 -->
+                    <div class="opportunity-card">
+                        <div class="opportunity-header">
+                            <div class="opportunity-title">Subvención innovación energética 2025</div>
+                            <div class="opportunity-badge adjudicated">ADJUDICADA</div>
+                        </div>
+                        <div class="opportunity-org">Ministerio de Transición Ecológica - Nacional</div>
+                        
+                        <div class="opportunity-details">
+                            <div class="detail">
+                                <div class="detail-label">Importe</div>
+                                <div class="detail-value">€120.000</div>
+                            </div>
+                            <div class="detail">
+                                <div class="detail-label">Adjudicación</div>
+                                <div class="detail-value">€95.200</div>
+                            </div>
+                            <div class="detail">
+                                <div class="detail-label">Cobertura</div>
+                                <div class="detail-value">79%</div>
+                            </div>
+                            <div class="detail">
+                                <div class="detail-label">Fecha</div>
+                                <div class="detail-value">Mayo 2025</div>
+                            </div>
+                        </div>
+
+                        <div class="opportunity-description">
+                            <strong>Ganador:</strong> Solaris Energías Renovables SL (Córdoba)<br>
+                            <strong>Proyecto:</strong> Instalación de sistema híbrido solar-eólico en polígono industrial
+                        </div>
+
+                        <div class="opportunity-conditions">
+                            <strong>Condiciones conseguidas:</strong> Inversión total €120.650, cuota de cofinanciación propia 20.8%, plazo ejecución 18 meses, ubicación en zona de expansión industrial
+                        </div>
+                    </div>
+
+                    <!-- CARD 2 -->
+                    <div class="opportunity-card">
+                        <div class="opportunity-header">
+                            <div class="opportunity-title">Ayuda eficiencia energética empresas 2025</div>
+                            <div class="opportunity-badge adjudicated">ADJUDICADA</div>
+                        </div>
+                        <div class="opportunity-org">Junta de Andalucía - Consejería de Economía</div>
+                        
+                        <div class="opportunity-details">
+                            <div class="detail">
+                                <div class="detail-label">Importe</div>
+                                <div class="detail-value">€80.000</div>
+                            </div>
+                            <div class="detail">
+                                <div class="detail-label">Adjudicación</div>
+                                <div class="detail-value">€60.400</div>
+                            </div>
+                            <div class="detail">
+                                <div class="detail-label">Cobertura</div>
+                                <div class="detail-value">75%</div>
+                            </div>
+                            <div class="detail">
+                                <div class="detail-label">Fecha</div>
+                                <div class="detail-value">Abril 2025</div>
+                            </div>
+                        </div>
+
+                        <div class="opportunity-description">
+                            <strong>Ganador:</strong> TecnoEficiencia Andaluza SL (Sevilla)<br>
+                            <strong>Proyecto:</strong> Auditoría energética y cambio de iluminación LED en 3 sedes
+                        </div>
+
+                        <div class="opportunity-conditions">
+                            <strong>Condiciones conseguidas:</strong> Inversión total €80.533, empresa con menos de 50 empleados, ahorro energético estimado 35%, plazo 12 meses
+                        </div>
+                    </div>
+
+                    <!-- CARD 3 -->
+                    <div class="opportunity-card">
+                        <div class="opportunity-header">
+                            <div class="opportunity-title">Digitalización PYMEs sector industrial 2024</div>
+                            <div class="opportunity-badge adjudicated">ADJUDICADA</div>
+                        </div>
+                        <div class="opportunity-org">Diputación de Córdoba - Área de Desarrollo Económico</div>
+                        
+                        <div class="opportunity-details">
+                            <div class="detail">
+                                <div class="detail-label">Importe</div>
+                                <div class="detail-value">€50.000</div>
+                            </div>
+                            <div class="detail">
+                                <div class="detail-label">Adjudicación</div>
+                                <div class="detail-value">€42.500</div>
+                            </div>
+                            <div class="detail">
+                                <div class="detail-label">Cobertura</div>
+                                <div class="detail-value">85%</div>
+                            </div>
+                            <div class="detail">
+                                <div class="detail-label">Fecha</div>
+                                <div class="detail-value">Enero 2025</div>
+                            </div>
+                        </div>
+
+                        <div class="opportunity-description">
+                            <strong>Ganador:</strong> Innovatech Cordobesa SL (Córdoba)<br>
+                            <strong>Proyecto:</strong> Implantación de ERP y sistema de gestión web
+                        </div>
+
+                        <div class="opportunity-conditions">
+                            <strong>Condiciones conseguidas:</strong> Inversión €50.000, empresa con 15 empleados, plazo 8 meses, incluye formación del personal, proveedor local
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL REGISTRO -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <h2>Registrarse</h2>
+            
+            <form>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="tu@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" placeholder="••••••••" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Confirmar contraseña</label>
+                    <input type="password" placeholder="••••••••" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Tu sector de actividad</label>
+                    <select required>
+                        <option value="">Selecciona un sector</option>
+                        <option value="energia">Energías Renovables</option>
+                        <option value="construccion">Construcción</option>
+                        <option value="industria">Industria y Manufactura</option>
+                        <option value="tecnologia">Tecnología e Informática</option>
+                        <option value="sanitario">Sector Sanitario</option>
+                        <option value="educacion">Educación y Formación</option>
+                        <option value="transporte">Transporte y Logística</option>
+                        <option value="agricultura">Agricultura y Alimentación</option>
+                        <option value="comercio">Comercio y Retail</option>
+                        <option value="turismo">Turismo y Hostelería</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Provincia</label>
+                    <select required>
+                        <option value="">Selecciona una provincia</option>
+                        <option value="almeria">Almería</option>
+                        <option value="cadiz">Cádiz</option>
+                        <option value="cordoba">Córdoba</option>
+                        <option value="granada">Granada</option>
+                        <option value="jaen">Jaén</option>
+                        <option value="malaga">Málaga</option>
+                        <option value="sevilla">Sevilla</option>
+                        <option value="huelva">Huelva</option>
+                    </select>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="submit" class="btn-register">REGISTRARME</button>
+                    <button type="button" class="btn-cancel" onclick="closeRegister()">CANCELAR</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showTab(index) {
+            const contents = document.querySelectorAll('.tab-content');
+            const buttons = document.querySelectorAll('.tab-button');
+            
+            contents.forEach(c => c.classList.remove('active'));
+            buttons.forEach(b => b.classList.remove('active'));
+            
+            contents[index].classList.add('active');
+            buttons[index].classList.add('active');
+            
+            window.scrollTo(0, 0);
+        }
+
+        function openRegister() {
+            document.getElementById('registerModal').classList.add('active');
+        }
+
+        function closeRegister() {
+            document.getElementById('registerModal').classList.remove('active');
+        }
+
+        window.onclick = function(e) {
+            const modal = document.getElementById('registerModal');
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>
