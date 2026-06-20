@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 Panel de Administración - Oportunidades Públicas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #1a1a2e; color: #eee; min-height: 100vh; }
+        .admin-layout { display: flex; min-height: 100vh; }
+        .admin-sidebar { width: 250px; background: #0f3460; padding: 20px; position: fixed; height: 100vh; overflow-y: auto; }
+        .admin-logo { font-size: 24px; margin-bottom: 30px; color: #16c784; font-weight: bold; }
+        .admin-nav { list-style: none; }
+        .admin-nav li { margin-bottom: 15px; }
+        .admin-nav a { display: block; padding: 12px 15px; color: #ccc; text-decoration: none; border-radius: 8px; transition: all 0.3s; cursor: pointer; }
+        .admin-nav a:hover, .admin-nav a.active { background: #16c784; color: #0f3460; }
+        .admin-main { margin-left: 250px; flex: 1; padding: 30px; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: #0f3460; padding: 20px; border-radius: 10px; }
+        .admin-header h1 { font-size: 28px; color: #16c784; }
+        .logout-admin { background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-box { background: #0f3460; padding: 20px; border-radius: 10px; border-left: 4px solid #16c784; }
+        .stat-number { font-size: 36px; font-weight: bold; color: #16c784; }
+        .stat-label { color: #999; font-size: 14px; margin-top: 5px; }
+        .admin-card { background: #0f3460; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+        .admin-card h2 { color: #16c784; margin-bottom: 15px; font-size: 20px; border-bottom: 2px solid #16c784; padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #16c784; color: #0f3460; padding: 12px; text-align: left; font-weight: 600; }
+        td { padding: 12px; border-bottom: 1px solid #333; }
+        tr:hover { background: #1a2a3e; }
+        .badge { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; }
+        .badge-completed { background: #16c784; color: #0f3460; }
+        .badge-pending { background: #f39c12; color: white; }
+        .badge-failed { background: #e74c3c; color: white; }
+        .badge-premium { background: #9b59b6; color: white; }
+        .action-btn { padding: 6px 12px; margin: 0 2px; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; }
+        .btn-edit { background: #3498db; color: white; }
+        .btn-delete { background: #e74c3c; color: white; }
+        .btn-view { background: #16c784; color: #0f3460; }
+        .search-box { margin-bottom: 15px; }
+        .search-box input { padding: 10px; background: #1a1a2e; border: 2px solid #16c784; border-radius: 8px; color: #eee; width: 300px; }
+        .hidden { display: none !important; }
+        .login-container { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .login-card { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); width: 400px; }
+        .login-card h1 { color: #333; margin-bottom: 30px; text-align: center; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; color: #333; font-weight: 600; margin-bottom: 8px; }
+        .form-group input { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; }
+        .form-group input:focus { outline: none; border-color: #667eea; }
+        .login-btn { width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px; }
+        .error-msg { color: #e74c3c; margin-bottom: 15px; padding: 10px; background: rgba(231,76,60,0.1); border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <!-- LOGIN -->
+    <div id="loginSection" class="login-container">
+        <div class="login-card">
+            <h1>🔐 Admin Panel</h1>
+            <div id="loginError" class="error-msg hidden"></div>
+            <form onsubmit="adminLogin(event)">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="adminEmail" placeholder="admin@oportunidades.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="adminPassword" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="login-btn">Acceder al Panel</button>
+            </form>
+            <p style="text-align: center; margin-top: 20px; color: #666; font-size: 14px;">
+                Demo: admin@oportunidades.com / admin123
+            </p>
+        </div>
+    </div>
+
+    <!-- ADMIN PANEL -->
+    <div id="adminPanel" class="admin-layout hidden">
+        <!-- SIDEBAR -->
+        <div class="admin-sidebar">
+            <div class="admin-logo">🔐 Admin</div>
+            <ul class="admin-nav">
+                <li><a onclick="showAdminSection('dashboard')" class="admin-link active">📊 Dashboard</a></li>
+                <li><a onclick="showAdminSection('users')" class="admin-link">👥 Usuarios</a></li>
+                <li><a onclick="showAdminSection('payments')" class="admin-link">💳 Pagos</a></li>
+                <li><a onclick="showAdminSection('visits')" class="admin-link">📈 Visitas</a></li>
+                <li><a onclick="showAdminSection('logs')" class="admin-link">📋 Logs</a></li>
+                <li style="margin-top: 30px;"><a onclick="adminLogout()" class="admin-link">🚪 Salir</a></li>
+            </ul>
+        </div>
+
+        <!-- MAIN -->
+        <div class="admin-main">
+            <div class="admin-header">
+                <h1 id="sectionTitle">Dashboard</h1>
+                <button class="logout-admin" onclick="adminLogout()">Cerrar Sesión</button>
+            </div>
+
+            <!-- DASHBOARD -->
+            <div id="dashboardSection" class="section">
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-number" id="totalUsersCount">0</div>
+                        <div class="stat-label">Usuarios Registrados</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="totalPaymentsCount">0</div>
+                        <div class="stat-label">Transacciones Totales</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="completedPaymentsCount">0</div>
+                        <div class="stat-label">Pagos Completados</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="totalRevenueCount">€0</div>
+                        <div class="stat-label">Ingresos Totales</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="totalVisitsCount">0</div>
+                        <div class="stat-label">Visitas al Sitio</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="conversionRateCount">0%</div>
+                        <div class="stat-label">Tasa de Conversión</div>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <h2>📊 Resumen de Pagos</h2>
+                    <table>
+                        <tr>
+                            <th>Estado</th>
+                            <th>Cantidad</th>
+                            <th>Porcentaje</th>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-completed">Completados</span></td>
+                            <td id="completedCount">0</td>
+                            <td id="completedPercent">0%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-pending">Pendientes</span></td>
+                            <td id="pendingCount">0</td>
+                            <td id="pendingPercent">0%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-failed">Fallidos</span></td>
+                            <td id="failedCount">0</td>
+                            <td id="failedPercent">0%</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- USUARIOS -->
+            <div id="usersSection" class="section hidden">
+                <div class="search-box">
+                    <input type="text" id="userSearch" placeholder="🔍 Buscar por email..." onkeyup="filterUsers()">
+                </div>
+                <div class="admin-card">
+                    <h2>👥 Lista de Usuarios</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>Nombre</th>
+                                <th>Empresa</th>
+                                <th>Plan</th>
+                                <th>Registro</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersList"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PAGOS -->
+            <div id="paymentsSection" class="section hidden">
+                <div class="search-box">
+                    <select id="paymentFilter" onchange="filterPayments()">
+                        <option value="">Todos los pagos</option>
+                        <option value="completed">Completados</option>
+                        <option value="pending">Pendientes</option>
+                        <option value="failed">Fallidos</option>
+                    </select>
+                </div>
+                <div class="admin-card">
+                    <h2>💳 Historial de Pagos</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Plan</th>
+                                <th>Monto</th>
+                                <th>Estado</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody id="paymentsList"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- VISITAS -->
+            <div id="visitsSection" class="section hidden">
+                <div class="admin-card">
+                    <h2>📈 Análisis de Visitas</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Página</th>
+                                <th>Visitas</th>
+                                <th>Porcentaje</th>
+                            </tr>
+                        </thead>
+                        <tbody id="visitsList"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- LOGS -->
+            <div id="logsSection" class="section hidden">
+                <div class="admin-card">
+                    <h2>📋 Registro de Auditoría</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Acción</th>
+                                <th>Usuario</th>
+                                <th>Página</th>
+                                <th>Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logsList"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://oportunidades-publicas-production.up.railway.app';
+        let adminToken = null;
+
+        async function adminLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+
+            try {
+                const res = await fetch(`${API_URL}/api/admin/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    adminToken = data.token;
+                    localStorage.setItem('adminToken', adminToken);
+                    document.getElementById('loginSection').classList.add('hidden');
+                    document.getElementById('adminPanel').classList.remove('hidden');
+                    loadDashboard();
+                } else {
+                    document.getElementById('loginError').textContent = '❌ Credenciales inválidas';
+                    document.getElementById('loginError').classList.remove('hidden');
+                }
+            } catch (error) {
+                document.getElementById('loginError').textContent = '❌ Error de conexión';
+                document.getElementById('loginError').classList.remove('hidden');
+            }
+        }
+
+        async function loadDashboard() {
+            try {
+                const res = await fetch(`${API_URL}/api/admin/dashboard`, {
+                    headers: { 'Authorization': `Bearer ${adminToken}` }
+                });
+                const data = await res.json();
+
+                document.getElementById('totalUsersCount').textContent = data.totalUsers || 0;
+                document.getElementById('totalPaymentsCount').textContent = data.totalPayments || 0;
+                document.getElementById('completedPaymentsCount').textContent = data.completedPayments || 0;
+                document.getElementById('totalRevenueCount').textContent = '€' + (data.totalRevenue || '0.00');
+                document.getElementById('totalVisitsCount').textContent = data.totalVisits || 0;
+                document.getElementById('conversionRateCount').textContent = data.conversionRate || '0%';
+
+                const completed = data.completedPayments || 0;
+                const pending = (data.totalPayments || 0) - completed;
+                const total = data.totalPayments || 1;
+
+                document.getElementById('completedCount').textContent = completed;
+                document.getElementById('completedPercent').textContent = ((completed / total) * 100).toFixed(0) + '%';
+                document.getElementById('pendingCount').textContent = pending;
+                document.getElementById('pendingPercent').textContent = ((pending / total) * 100).toFixed(0) + '%';
+                document.getElementById('failedCount').textContent = '0';
+                document.getElementById('failedPercent').textContent = '0%';
+
+                loadUsers();
+                loadPayments();
+                loadVisits();
+                loadLogs();
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+            }
+        }
+
+        async function loadUsers() {
+            try {
+                const res = await fetch(`${API_URL}/api/admin/users`, {
+                    headers: { 'Authorization': `Bearer ${adminToken}` }
+                });
+                const data = await res.json();
+
+                let html = '';
+                data.users.forEach(u => {
+                    const regDate = new Date(u.createdAt).toLocaleDateString('es-ES');
+                    const plan = u.isPremium ? '<span class="badge badge-premium">Premium</span>' : '<span class="badge">Gratis</span>';
+                    html += `<tr>
+                        <td>${u.email}</td>
+                        <td>${u.firstName} ${u.lastName}</td>
+                        <td>${u.company || '-'}</td>
+                        <td>${plan}</td>
+                        <td>${regDate}</td>
+                        <td>
+                            <button class="action-btn btn-view" onclick="viewUser('${u.id}')">Ver</button>
+                            <button class="action-btn btn-edit" onclick="editUser('${u.id}')">Editar</button>
+                            <button class="action-btn btn-delete" onclick="deleteUser('${u.id}')">Eliminar</button>
+                        </td>
+                    </tr>`;
+                });
+                document.getElementById('usersList').innerHTML = html;
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+
+        async function loadPayments() {
+            try {
+                const res = await fetch(`${API_URL}/api/admin/payments`, {
+                    headers: { 'Authorization': `Bearer ${adminToken}` }
+                });
+                const data = await res.json();
+
+                let html = '';
+                data.payments.forEach(p => {
+                    const badge = `<span class="badge badge-${p.status}">${p.status}</span>`;
+                    const date = new Date(p.created_at).toLocaleDateString('es-ES');
+                    html += `<tr>
+                        <td>${p.user_id}</td>
+                        <td>${p.plan}</td>
+                        <td>€${p.amount || '0.00'}</td>
+                        <td>${badge}</td>
+                        <td>${date}</td>
+                    </tr>`;
+                });
+                document.getElementById('paymentsList').innerHTML = html;
+            } catch (error) {
+                console.error('Error loading payments:', error);
+            }
+        }
+
+        async function loadVisits() {
+            try {
+                const res = await fetch(`${API_URL}/api/admin/analytics/visits`, {
+                    headers: { 'Authorization': `Bearer ${adminToken}` }
+                });
+                const data = await res.json();
+
+                let html = '';
+                let total = data.totalVisits || 1;
+                Object.entries(data.byPage).forEach(([page, visits]) => {
+                    html += `<tr>
+                        <td>${page}</td>
+                        <td>${visits}</td>
+                        <td>${((visits / total) * 100).toFixed(1)}%</td>
+                    </tr>`;
+                });
+                document.getElementById('visitsList').innerHTML = html;
+            } catch (error) {
+                console.error('Error loading visits:', error);
+            }
+        }
+
+        async function loadLogs() {
+            try {
+                const res = await fetch(`${API_URL}/api/admin/logs`, {
+                    headers: { 'Authorization': `Bearer ${adminToken}` }
+                });
+                const data = await res.json();
+
+                let html = '';
+                data.logs.slice(-50).forEach(log => {
+                    const date = new Date(log.timestamp).toLocaleString('es-ES');
+                    html += `<tr>
+                        <td>${log.page}</td>
+                        <td>${log.userId || 'Anonymous'}</td>
+                        <td>${log.page}</td>
+                        <td>${date}</td>
+                    </tr>`;
+                });
+                document.getElementById('logsList').innerHTML = html;
+            } catch (error) {
+                console.error('Error loading logs:', error);
+            }
+        }
+
+        function showAdminSection(section) {
+            document.querySelectorAll('.section').forEach(el => el.classList.add('hidden'));
+            document.getElementById(section + 'Section').classList.remove('hidden');
+            document.querySelectorAll('.admin-link').forEach(el => el.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const titles = {
+                dashboard: 'Dashboard',
+                users: 'Gestión de Usuarios',
+                payments: 'Historial de Pagos',
+                visits: 'Análisis de Visitas',
+                logs: 'Registro de Auditoría'
+            };
+            document.getElementById('sectionTitle').textContent = titles[section];
+        }
+
+        function filterUsers() {
+            // Implementar filtro de usuarios
+        }
+
+        function filterPayments() {
+            // Implementar filtro de pagos
+        }
+
+        function viewUser(userId) {
+            alert('Ver detalles de: ' + userId);
+        }
+
+        function editUser(userId) {
+            alert('Editar usuario: ' + userId);
+        }
+
+        function deleteUser(userId) {
+            if (confirm('¿Eliminar usuario?')) {
+                alert('Usuario eliminado: ' + userId);
+            }
+        }
+
+        function adminLogout() {
+            localStorage.removeItem('adminToken');
+            adminToken = null;
+            document.getElementById('loginSection').classList.remove('hidden');
+            document.getElementById('adminPanel').classList.add('hidden');
+            document.getElementById('adminEmail').value = '';
+            document.getElementById('adminPassword').value = '';
+        }
+
+        window.addEventListener('load', () => {
+            const token = localStorage.getItem('adminToken');
+            if (token) {
+                adminToken = token;
+                document.getElementById('loginSection').classList.add('hidden');
+                document.getElementById('adminPanel').classList.remove('hidden');
+                loadDashboard();
+            }
+        });
+    </script>
+</body>
+</html>
