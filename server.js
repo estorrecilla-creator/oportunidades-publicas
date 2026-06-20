@@ -11,7 +11,11 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(helmet());
+// Helmet con CSP desactivado para scripts inline
+app.use(helmet({
+  contentSecurityPolicy: false
+}));
+
 app.use(compression());
 app.use(cors({ origin: '*', credentials: true }));
 
@@ -27,19 +31,9 @@ app.use(express.static(path.join(__dirname, '.')));
 // USUARIOS PREDEFINIDOS
 // ============================================
 
-const users = new Map([
-  ['test@test.com', {
-    id: 'user123',
-    email: 'test@test.com',
-    password_hash: '$2a$12$7ZqX0QdKvJ3qx8Q8q8Q8O.OqX8Q8Q8Q8Q8Q8Q8Q8Q8Q8Q8Q8Q8Q8Q', // test1234
-    firstName: 'Test',
-    lastName: 'User',
-    isPremium: false,
-    createdAt: new Date()
-  }]
-]);
+let users = new Map();
 
-// Crear usuario de prueba correctamente
+// Crear usuarios de prueba
 (async () => {
   const hashedPassword = await bcryptjs.hash('test1234', 12);
   users.set('test@test.com', {
@@ -213,7 +207,6 @@ app.post('/api/webhooks/stripe', (req, res) => {
 app.post('/api/admin/login', async (req, res) => {
   const { email, password } = req.body;
   
-  // Admin credentials
   if (email === 'admin@oportunidades.com' && password === 'admin123') {
     const token = generateToken('admin1', 'admin');
     return res.json({ success: true, token, admin: { email, role: 'admin' } });
@@ -254,7 +247,7 @@ app.get('/api/admin/logs', authenticateToken, (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ API v3.0.0 Online`);
+  console.log(`✅ API v3.0.0 Online - CSP Fixed`);
   console.log(`🔐 Admin: admin@oportunidades.com / admin123`);
   console.log(`👤 Test: test@test.com / test1234`);
 });
