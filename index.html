@@ -1,262 +1,347 @@
 <!DOCTYPE html>
-<html idioma="es">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oportunidades Públicas - Subvenciones Automáticas</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7fa; padding: 40px 20px; }
-        .container { max-width: 1000px; margin: 0 auto; }
-        
-        .header { 
-            background: linear-gradient(to right, #003d82 0%, #004a9e 100%); 
-            color: white; 
-            padding: 40px; 
-            border-radius: 4px; 
-            margin-bottom: 40px; 
-            border-bottom: 4px solid #ffc400; 
-            text-align: center; 
-        }
-        
-        .header h1 { font-size: 2.5em; margin-bottom: 10px; font-weight: 800; }
-        .header p { font-size: 1.1em; opacity: 0.95; }
-        
-        .urgency-bar {
-            background: linear-gradient(90deg, #d4af37 0%, #e5c158 100%);
-            color: #1a2332;
-            padding: 12px;
-            text-align: center;
-            font-weight: 700;
-            margin-bottom: 40px;
-            border-radius: 4px;
-        }
-        
-        .section { 
-            background: white; 
-            padding: 80px 20px; 
-            text-align: center; 
-            margin-bottom: 40px;
-            border-radius: 4px;
-        }
-        
-        .section h2 { 
-            font-size: 2.2em; 
-            color: #1a2332; 
-            margin-bottom: 20px; 
-            font-weight: 700;
-        }
-        
-        .section p { 
-            font-size: 1.1em; 
-            color: #555; 
-            line-height: 1.6; 
-            margin-bottom: 30px;
-        }
-        
-        .btn { 
-            background: #d4af37; 
-            color: #1a2332; 
-            border: none; 
-            padding: 18px 50px; 
-            font-size: 1.1em; 
-            font-weight: 700; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            transition: all 0.3s;
-        }
-        
-        .btn:hover { 
-            background: #c4a02e; 
-            transform: translateY(-5px); 
-            box-shadow: 0 8px 25px rgba(0,61,130,0.2);
-        }
-        
-        .features { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 30px; 
-            margin: 60px 0;
-        }
-        
-        .feature-card {
-            background: white;
-            padding: 30px;
-            border-radius: 4px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            text-align: center;
-            transition: all 0.3s;
-        }
-        
-        .feature-card:hover {
-            box-shadow: 0 8px 25px rgba(0,61,130,0.15);
-            transform: translateY(-5px);
-        }
-        
-        .feature-card h3 { 
-            color: #003d82; 
-            margin-bottom: 15px; 
-            font-weight: 700;
-            font-size: 1.3em;
-        }
-        
-        .feature-card p { 
-            color: #666; 
-            font-size: 0.95em;
-        }
-        
-        .cta-section {
-            background: linear-gradient(135deg, #003d82 0%, #2c3e50 100%);
-            color: white;
-            padding: 80px 20px;
-            text-align: center;
-            border-radius: 4px;
-            margin: 60px 0;
-        }
-        
-        .cta-section h2 { 
-            font-size: 2em; 
-            margin-bottom: 20px;
-        }
-        
-        .cta-section p {
-            font-size: 1.1em;
-            margin-bottom: 30px;
-            opacity: 0.95;
-        }
-        
-        .cta-btn {
-            background: #d4af37;
-            color: #003d82;
-            padding: 18px 50px;
-            font-weight: 700;
-            font-size: 1.1em;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .cta-btn:hover {
-            background: #e5c158;
-            transform: scale(1.05);
-        }
-        
-        .footer {
-            text-align: center;
-            color: #666;
-            padding: 40px 20px;
-            border-top: 1px solid #ddd;
-            margin-top: 60px;
-        }
-        
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin: 60px 0;
-        }
-        
-        .stat-item {
-            background: white;
-            padding: 30px;
-            border-radius: 4px;
-            text-align: center;
-        }
-        
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: 800;
-            color: #d4af37;
-            margin-bottom: 10px;
-        }
-        
-        .stat-label {
-            color: #666;
-            font-size: 1em;
-        }
-        
-        @media (max-width: 768px) {
-            .features { grid-template-columns: 1fr; }
-            .stats { grid-template-columns: 1fr; }
-            .header h1 { font-size: 1.8em; }
-            .section h2 { font-size: 1.6em; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oportunidades Públicas - Subvenciones & Licitaciones</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+    }
+    
+    .container {
+      max-width: 500px;
+      width: 90%;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      padding: 40px;
+      display: none;
+    }
+    
+    .card.active {
+      display: block;
+      animation: slideIn 0.3s ease;
+    }
+    
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .header h1 {
+      font-size: 28px;
+      color: #667eea;
+      margin-bottom: 10px;
+    }
+    
+    .header p {
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #333;
+      font-size: 14px;
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+    
+    input:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .toggle-text {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .toggle-text button {
+      background: none;
+      color: #667eea;
+      padding: 0;
+      text-decoration: underline;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      box-shadow: none;
+    }
+    
+    .error {
+      background: #fee;
+      color: #c33;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      border-left: 4px solid #c33;
+    }
+    
+    .dashboard {
+      display: none;
+    }
+    
+    .dashboard.active {
+      display: block;
+    }
+    
+    .user-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+    }
+    
+    .logout-btn {
+      background: #e74c3c !important;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🚀 OPORTUNIDADES PÚBLICAS</h1>
-            <p>Encuentra todas las subvenciones y licitaciones públicas en segundos</p>
+  <div class="container">
+    <div class="card active" id="loginCard">
+      <div class="header">
+        <h1>🔐 Iniciar Sesión</h1>
+        <p>Accede a Oportunidades Públicas</p>
+      </div>
+      
+      <div id="loginError" class="error" style="display: none;"></div>
+      
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" required placeholder="tu@email.com">
         </div>
         
-        <div class="urgency-bar">
-            🔥 50% DESCUENTO PARA LOS PRIMEROS 100 USUARIOS - ¡Hoy solamente!
+        <div class="form-group">
+          <label for="loginPassword">Contraseña</label>
+          <input type="password" id="loginPassword" required placeholder="••••••••">
         </div>
         
-        <div class="section">
-            <h2>Consigue Subvenciones Públicas Sin Esfuerzos</h2>
-            <p>La IA busca, entiende y organiza TODAS las oportunidades de financiación pública para tu empresa. En segundos.</p>
-            <button class="btn" onclick="window.location='/register'">EMPEZAR GRATIS</button>
-            
-            <div class="stats">
-                <div class="stat-item">
-                    <div class="stat-number">847</div>
-                    <div class="stat-label">empresas usando Oportunidades Públicas</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">€6x</div>
-                    <div class="stat-label">ROI promedio en ayudas conseguidas</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">94%</div>
-                    <div class="stat-label">Tasa de aprobación en 1ª solicitud</div>
-                </div>
-            </div>
-        </div>
-        
-        <div style="background: white; padding: 60px 20px; border-radius: 4px; margin-bottom: 40px;">
-            <h2 style="color: #1a2332; font-size: 2.2em; margin-bottom: 40px; font-weight: 700; text-align: center;">¿Cómo Funciona?</h2>
-            <div class="features">
-                <div class="feature-card">
-                    <h3>🔍 1. Busca</h3>
-                    <p>Nuestra IA analiza 500+ oportunidades de financiación pública CADA DÍA. Encuentra aquellas que encajan con tu empresa.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>📋 2. Entiende</h3>
-                    <p>Traduce textos legales a español simple. Explica requisitos, tiempos, montos. Todo en tu dashboard.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>⚡ 3. Solicita</h3>
-                    <p>Rellena solicitudes en MINUTOS (no horas). En Premium, presentamos automáticamente por ti.</p>
-                </div>
-            </div>
-        </div>
-        
-        <div class="cta-section">
-            <h2>Listo para conseguir tu primera subvención?</h2>
-            <p>14 días de prueba gratis. Sin tarjeta de crédito. Cancela cuando quieras.</p>
-            <button class="cta-btn" onclick="window.location='/register'">EMPEZAR AHORA</button>
-        </div>
-        
-        <div class="footer">
-            <p>✅ 15 páginas HTML • 100% responsive • Diseño profesional</p>
-            <p style="margin-top: 20px; font-size: 0.9em;">
-                <a href="/pricing" style="color: #003d82; text-decoration: none;">Planes</a> • 
-                <a href="/about-us" style="color: #003d82; text-decoration: none;">Nosotros</a> • 
-                <a href="/contacto" style="color: #003d82; text-decoration: none;">Contacto</a>
-            </p>
-        </div>
+        <button type="submit">Iniciar Sesión</button>
+      </form>
+      
+      <div class="toggle-text">
+        ¿No tienes cuenta? <button onclick="toggleCard('registerCard', 'loginCard')">Registrate aquí</button>
+      </div>
     </div>
     
-    <script>
-        // Animar contador de usuarios
-        let count = 800;
-        setInterval(() => {
-            count += Math.floor(Math.random() * 3);
-            document.querySelector('.stat-number').textContent = count;
-        }, 5000);
-    </script>
+    <div class="card" id="registerCard">
+      <div class="header">
+        <h1>📝 Crear Cuenta</h1>
+        <p>Únete a Oportunidades Públicas</p>
+      </div>
+      
+      <div id="registerError" class="error" style="display: none;"></div>
+      
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="registerEmail">Email</label>
+          <input type="email" id="registerEmail" required placeholder="tu@email.com">
+        </div>
+        
+        <div class="form-group">
+          <label for="registerPassword">Contraseña</label>
+          <input type="password" id="registerPassword" required placeholder="••••••••">
+        </div>
+        
+        <div class="form-group">
+          <label for="firstName">Nombre</label>
+          <input type="text" id="firstName" placeholder="Tu nombre">
+        </div>
+        
+        <div class="form-group">
+          <label for="lastName">Apellido</label>
+          <input type="text" id="lastName" placeholder="Tu apellido">
+        </div>
+        
+        <div class="form-group">
+          <label for="companyName">Empresa (opcional)</label>
+          <input type="text" id="companyName" placeholder="Tu empresa">
+        </div>
+        
+        <button type="submit">Crear Cuenta</button>
+      </form>
+      
+      <div class="toggle-text">
+        ¿Ya tienes cuenta? <button onclick="toggleCard('loginCard', 'registerCard')">Inicia sesión aquí</button>
+      </div>
+    </div>
+    
+    <div class="card dashboard" id="dashboard">
+      <div class="user-header">
+        <h2>👤 Bienvenido, <span id="userName">Usuario</span></h2>
+        <p id="userEmail">email@example.com</p>
+      </div>
+      
+      <p style="margin-bottom: 20px;">Dashboard - Próximas funcionalidades en desarrollo</p>
+      
+      <button class="logout-btn" onclick="logout()">Cerrar Sesión</button>
+    </div>
+  </div>
+  
+  <script>
+    const API_URL = 'https://oportunidades-publicas-production.up.railway.app';
+    
+    function toggleCard(showId, hideId) {
+      document.getElementById(hideId).classList.remove('active');
+      document.getElementById(showId).classList.add('active');
+    }
+    
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const data = {
+        email: document.getElementById('registerEmail').value,
+        password: document.getElementById('registerPassword').value,
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        companyName: document.getElementById('companyName').value,
+        profileType: 'freelancer'
+      };
+      
+      try {
+        const response = await fetch(`${API_URL}/api/auth/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          localStorage.setItem('token', result.token);
+          localStorage.setItem('user', JSON.stringify(result.user));
+          showDashboard(result.user);
+        } else {
+          document.getElementById('registerError').textContent = result.error || 'Error';
+          document.getElementById('registerError').style.display = 'block';
+        }
+      } catch (error) {
+        document.getElementById('registerError').textContent = 'Error: ' + error.message;
+        document.getElementById('registerError').style.display = 'block';
+      }
+    });
+    
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const data = {
+        email: document.getElementById('loginEmail').value,
+        password: document.getElementById('loginPassword').value
+      };
+      
+      try {
+        const response = await fetch(`${API_URL}/api/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          localStorage.setItem('token', result.token);
+          localStorage.setItem('user', JSON.stringify(result.user));
+          showDashboard(result.user);
+        } else {
+          document.getElementById('loginError').textContent = result.error || 'Error';
+          document.getElementById('loginError').style.display = 'block';
+        }
+      } catch (error) {
+        document.getElementById('loginError').textContent = 'Error: ' + error.message;
+        document.getElementById('loginError').style.display = 'block';
+      }
+    });
+    
+    function showDashboard(user) {
+      document.getElementById('loginCard').classList.remove('active');
+      document.getElementById('registerCard').classList.remove('active');
+      document.getElementById('dashboard').classList.add('active');
+      
+      document.getElementById('userName').textContent = user.firstName || user.email;
+      document.getElementById('userEmail').textContent = user.email;
+    }
+    
+    function logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      
+      document.getElementById('loginCard').classList.add('active');
+      document.getElementById('dashboard').classList.remove('active');
+      
+      document.getElementById('loginForm').reset();
+    }
+    
+    window.addEventListener('load', () => {
+      const user = localStorage.getItem('user');
+      if (user) {
+        showDashboard(JSON.parse(user));
+      }
+    });
+  </script>
 </body>
 </html>
