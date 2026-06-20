@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -15,6 +16,7 @@ const payments = new Map();
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '.')));
 
 // JWT Secret
 const JWT_SECRET = process.env.JWT_SECRET || 'oportunidades-publicas-secret-key-change-in-production';
@@ -55,6 +57,14 @@ function authenticateToken(req, res, next) {
   req.userId = verified.userId;
   next();
 }
+
+// ============================================
+// STATIC FILES & HOME PAGE
+// ============================================
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 // ============================================
 // HEALTH CHECK
@@ -393,6 +403,7 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
   console.log(`📍 API Health: http://localhost:${PORT}/health`);
+  console.log(`🌐 Frontend: http://localhost:${PORT}/`);
 });
 
 module.exports = app;
