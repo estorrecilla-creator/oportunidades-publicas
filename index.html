@@ -37,30 +37,20 @@
         
         .lista-container { background: white; border-radius: 4px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         .lista-header { background: #f0f4f8; padding: 20px 30px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 150px; gap: 20px; font-weight: 600; color: #1e3a5f; border-bottom: 2px solid #e0e0e0; }
-        .lista-header-item { text-transform: uppercase; font-size: 12px; }
-        
-        .lista-item { padding: 20px 30px; border-bottom: 1px solid #e0e0e0; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 150px; gap: 20px; align-items: center; transition: background 0.2s; }
+        .lista-item { padding: 20px 30px; border-bottom: 1px solid #e0e0e0; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 150px; gap: 20px; align-items: center; }
         .lista-item:hover { background: #f8f9fa; }
-        .lista-item:last-child { border-bottom: none; }
         
-        .item-title { font-weight: 600; color: #1e3a5f; margin-bottom: 5px; }
+        .item-title { font-weight: 600; color: #1e3a5f; }
         .item-institution { font-size: 13px; color: #666; }
-        .item-budget { color: #4a90e2; font-weight: 600; }
         .item-deadline { font-weight: 600; }
         .deadline-open { color: #2e7d32; }
         .deadline-closing { color: #e65100; }
-        .deadline-closed { color: #999; }
         
         .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
         .badge-open { background: #c8e6c9; color: #2e7d32; }
         .badge-closing { background: #ffe0b2; color: #e65100; }
-        .badge-closed { background: #e0e0e0; color: #666; }
         
         .btn-ver { padding: 8px 15px; background: #1e3a5f; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 12px; }
-        .btn-ver:hover { background: #152a45; }
-        
-        .no-results { text-align: center; padding: 60px 20px; color: #999; }
-        .loading { text-align: center; padding: 60px 20px; color: #999; }
         
         .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; overflow-y: auto; }
         .modal.active { display: flex; }
@@ -72,41 +62,47 @@
         .form-group label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px; }
         .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; font-family: inherit; }
         .submit-btn { width: 100%; padding: 12px; background: #1e3a5f; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; margin-top: 10px; }
-        .submit-btn:hover { background: #152a45; }
         
         .detail-section { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #e0e0e0; }
-        .detail-label { font-size: 12px; font-weight: 600; color: #666; text-transform: uppercase; margin-bottom: 5px; }
+        .detail-label { font-size: 12px; font-weight: 600; color: #666; text-transform: uppercase; }
         .detail-value { font-size: 15px; color: #1e3a5f; font-weight: 500; }
         .detail-description { font-size: 14px; color: #555; line-height: 1.6; }
         
         .requirements-list { background: #f0f4f8; padding: 20px; border-radius: 4px; margin: 20px 0; }
-        .requirements-list h4 { color: #1e3a5f; margin-bottom: 15px; font-size: 16px; }
+        .requirements-list h4 { color: #1e3a5f; margin-bottom: 15px; }
         .requirement-item { padding: 10px 0; border-bottom: 1px solid #e0e0e0; font-size: 14px; }
-        .requirement-item:last-child { border-bottom: none; }
         
         .servicios-premium { background: #fff3e0; padding: 25px; border-radius: 4px; margin: 30px 0; border: 2px solid #ff9800; }
         .servicios-premium h3 { color: #ff9800; margin-bottom: 15px; }
-        .servicios-premium p { color: #666; margin-bottom: 15px; line-height: 1.6; }
-        
         .documento-opcion { padding: 15px; background: white; border: 1px solid #e0e0e0; border-radius: 4px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .documento-opcion:hover { background: #f8f9fa; }
         .documento-nombre { font-weight: 600; color: #1e3a5f; }
-        .documento-precio { font-size: 14px; color: #ff9800; font-weight: 600; }
+        .documento-precio { color: #ff9800; font-weight: 600; }
+        .btn-comprar { padding: 8px 15px; background: #ff9800; color: white; border: none; border-radius: 3px; cursor: pointer; }
         
-        .btn-comprar { padding: 8px 15px; background: #ff9800; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
         .btn-participar { width: 100%; padding: 15px; background: #1e3a5f; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 15px; margin-top: 20px; }
         
-        @media (max-width: 1024px) {
-            .lista-header, .lista-item { grid-template-columns: 1fr; }
-            .item-institution { display: none; }
-        }
+        .checklist { background: white; padding: 20px; border-radius: 4px; margin: 20px 0; border: 1px solid #e0e0e0; }
+        .checklist h4 { color: #1e3a5f; margin-bottom: 15px; }
+        .checklist-item { display: flex; gap: 15px; padding: 12px; background: #f8f9fa; border-radius: 4px; margin-bottom: 10px; align-items: center; }
+        .checklist-item input { width: 20px; height: 20px; cursor: pointer; }
+        .checklist-item label { margin: 0; cursor: pointer; flex: 1; }
+        .btn-skip { padding: 5px 10px; font-size: 12px; background: #ff9800; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        
+        .panel-section { display: none; }
+        .panel-section.active { display: block; }
+        .panel-tabs { display: flex; gap: 20px; border-bottom: 2px solid #e0e0e0; margin-bottom: 30px; }
+        .panel-tab { padding: 15px 0; border-bottom: 3px solid transparent; cursor: pointer; font-weight: 600; color: #666; }
+        .panel-tab.active { color: #1e3a5f; border-bottom-color: #1e3a5f; }
+        
+        .app-card { background: white; padding: 25px; border-radius: 4px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; }
+        .app-card h3 { color: #1e3a5f; margin-bottom: 15px; }
+        .app-info { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 15px; }
+        .doc-item { padding: 10px; background: #f8f9fa; border-radius: 4px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .btn-small { padding: 5px 10px; font-size: 12px; background: #4a90e2; color: white; border: none; border-radius: 3px; cursor: pointer; }
         
         @media (max-width: 768px) {
-            .header { flex-wrap: wrap; gap: 15px; }
-            .hero { padding: 40px 20px; }
-            .hero h1 { font-size: 24px; }
-            .filters-bar { flex-direction: column; padding: 20px; }
-            .modal-box { margin: 10px; padding: 30px; }
+            .lista-header, .lista-item { grid-template-columns: 1fr; }
+            .app-info { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -159,28 +155,44 @@
                 <option value="all">Cualquiera</option>
                 <option value="50000">Más de €50k</option>
                 <option value="100000">Más de €100k</option>
-                <option value="200000">Más de €200k</option>
             </select>
         </div>
     </div>
 
-    <!-- LISTA DE OPORTUNIDADES -->
+    <!-- LISTA -->
     <div class="main-content" id="mainContent">
         <div class="lista-container">
             <div class="lista-header">
-                <div class="lista-header-item">OPORTUNIDAD</div>
-                <div class="lista-header-item">PRESUPUESTO</div>
-                <div class="lista-header-item">PLAZO</div>
-                <div class="lista-header-item">ESTADO</div>
-                <div class="lista-header-item">ACCIÓN</div>
+                <div>OPORTUNIDAD</div>
+                <div>PRESUPUESTO</div>
+                <div>PLAZO</div>
+                <div>ESTADO</div>
+                <div>ACCIÓN</div>
             </div>
             <div id="listaOportunidades">
-                <div class="loading" style="grid-column: 1/-1;">Cargando oportunidades...</div>
+                <div class="lista-item"><div class="loading" style="grid-column: 1/-1;">Cargando...</div></div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL LOGIN -->
+    <!-- PANEL DE USUARIO -->
+    <div id="panelUsuario" class="main-content" style="display: none;">
+        <h2 style="color: #1e3a5f; margin-bottom: 30px;">MI PANEL</h2>
+        <div class="panel-tabs">
+            <div class="panel-tab active" onclick="mostrarPanelTab('participaciones')">📋 PARTICIPACIONES</div>
+            <div class="panel-tab" onclick="mostrarPanelTab('documentos')">📄 DOCUMENTOS</div>
+        </div>
+        <div id="participaciones" class="panel-section active">
+            <div id="participacionesList"></div>
+        </div>
+        <div id="documentos" class="panel-section">
+            <button class="btn btn-register" style="margin-bottom: 20px;" onclick="abrirModal('uploadDocModal')">+ SUBIR DOCUMENTO</button>
+            <div id="documentosList"></div>
+        </div>
+        <button class="btn btn-login" onclick="cerrarPanel()" style="margin-top: 30px;">← VOLVER</button>
+    </div>
+
+    <!-- MODALES -->
     <div id="loginModal" class="modal">
         <div class="modal-box">
             <button class="close-btn" onclick="cerrarModal('loginModal')">×</button>
@@ -200,7 +212,6 @@
         </div>
     </div>
 
-    <!-- MODAL REGISTER -->
     <div id="registerModal" class="modal">
         <div class="modal-box">
             <button class="close-btn" onclick="cerrarModal('registerModal')">×</button>
@@ -223,7 +234,6 @@
         </div>
     </div>
 
-    <!-- MODAL DETALLES / REQUISITOS -->
     <div id="detalleModal" class="modal">
         <div class="modal-box">
             <button class="close-btn" onclick="cerrarModal('detalleModal')">×</button>
@@ -231,7 +241,6 @@
         </div>
     </div>
 
-    <!-- MODAL PLANES PREMIUM -->
     <div id="planesModal" class="modal">
         <div class="modal-box">
             <button class="close-btn" onclick="cerrarModal('planesModal')">×</button>
@@ -247,18 +256,84 @@
                     </ul>
                 </div>
                 <div style="border: 3px solid #ff9800; padding: 25px; border-radius: 4px; text-align: center; background: #fff3e0;">
-                    <div style="background: #ff9800; color: white; padding: 5px 10px; display: inline-block; border-radius: 20px; font-size: 12px; margin-bottom: 10px;">RECOMENDADO</div>
                     <h3 style="color: #ff9800;">PLAN PREMIUM</h3>
-                    <div style="font-size: 28px; font-weight: bold; color: #ff9800; margin: 15px 0;">€9.99<span style="font-size: 14px;">/mes</span></div>
+                    <div style="font-size: 28px; font-weight: bold; color: #ff9800; margin: 15px 0;">€9.99/mes</div>
                     <ul style="text-align: left; margin: 20px 0; list-style: none;">
-                        <li style="padding: 8px 0;">✓ Todo del plan gratuito</li>
+                        <li style="padding: 8px 0;">✓ Todo +</li>
                         <li style="padding: 8px 0;">✓ Participar sin límites</li>
                         <li style="padding: 8px 0;">✓ Chat expertos</li>
-                        <li style="padding: 8px 0;">✓ Documentos a €29.99</li>
                     </ul>
                     <button class="submit-btn" onclick="comprarPremium()" style="margin-top: 15px; background: #ff9800;">ACTIVAR PREMIUM</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="presentacionModal" class="modal">
+        <div class="modal-box">
+            <button class="close-btn" onclick="cerrarModal('presentacionModal')">×</button>
+            <h2 id="presTitle"></h2>
+            <form onsubmit="enviarPresentacion(event)">
+                <div class="form-group">
+                    <label>Nombre Organización</label>
+                    <input type="text" id="presOrgName" required>
+                </div>
+                <div class="form-group">
+                    <label>Persona de Contacto</label>
+                    <input type="text" id="presContact" required>
+                </div>
+                <div class="form-group">
+                    <label>Correo</label>
+                    <input type="email" id="presEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Teléfono</label>
+                    <input type="tel" id="presPhone" required>
+                </div>
+                <div class="form-group">
+                    <label>Propuesta</label>
+                    <textarea id="presProposal" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">SIGUIENTE</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="checklistModal" class="modal">
+        <div class="modal-box">
+            <button class="close-btn" onclick="cerrarModal('checklistModal')">×</button>
+            <h2>DOCUMENTOS REQUERIDOS</h2>
+            <div id="checklistContenido"></div>
+            <button class="submit-btn" onclick="continuarConDocumentos()" style="margin-top: 20px;">CONTINUAR</button>
+        </div>
+    </div>
+
+    <div id="uploadDocModal" class="modal">
+        <div class="modal-box">
+            <button class="close-btn" onclick="cerrarModal('uploadDocModal')">×</button>
+            <h2>SUBIR DOCUMENTO</h2>
+            <form onsubmit="subirDocumento(event)">
+                <div class="form-group">
+                    <label>Tipo</label>
+                    <select id="docType" required>
+                        <option value="">Selecciona...</option>
+                        <option value="dni">DNI</option>
+                        <option value="cv">CV</option>
+                        <option value="propuesta">Propuesta</option>
+                        <option value="presupuesto">Presupuesto</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input type="text" id="docName" required>
+                </div>
+                <div class="form-group">
+                    <label>Contenido</label>
+                    <textarea id="docContent" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">SUBIR</button>
+            </form>
         </div>
     </div>
 
@@ -267,6 +342,8 @@
         let todasLasLicitaciones = [];
         let currentUser = null;
         let currentToken = null;
+        let participacionesPendientes = {};
+        let checklistItems = [];
 
         document.addEventListener('DOMContentLoaded', () => {
             cargarLicitaciones();
@@ -296,26 +373,19 @@
 
         function mostrarLista(licitaciones) {
             const container = document.getElementById('listaOportunidades');
-            if (licitaciones.length === 0) {
-                container.innerHTML = '<div class="no-results" style="grid-column: 1/-1;">No hay resultados</div>';
-                return;
-            }
-
             container.innerHTML = licitaciones.map(l => {
                 const diasRestantes = Math.ceil((new Date(l.deadline) - new Date()) / (1000 * 60 * 60 * 24));
                 const statusClass = diasRestantes < 30 ? 'deadline-closing' : 'deadline-open';
-                const statusText = diasRestantes < 0 ? 'CERRADA' : diasRestantes + ' días';
-
                 return `
                     <div class="lista-item">
                         <div>
                             <div class="item-title">${l.title}</div>
                             <div class="item-institution">${l.institution}</div>
                         </div>
-                        <div class="item-budget">€${(l.budget_min/1000).toFixed(0)}k - €${(l.budget_max/1000).toFixed(0)}k</div>
-                        <div class="${statusClass}"><strong>${l.deadline}</strong><br><small>${statusText}</small></div>
+                        <div>€${(l.budget_min/1000).toFixed(0)}k - €${(l.budget_max/1000).toFixed(0)}k</div>
+                        <div class="${statusClass}"><strong>${l.deadline}</strong><br>${diasRestantes} días</div>
                         <div><span class="badge badge-${l.status}">${l.status === 'open' ? 'ABIERTA' : 'CERRANDO'}</span></div>
-                        <button class="btn-ver" onclick="verDetalles(${l.id})">VER DETALLES</button>
+                        <button class="btn-ver" onclick="verDetalles(${l.id})">VER</button>
                     </div>
                 `;
             }).join('');
@@ -338,67 +408,47 @@
 
             const serviciosHTML = !isPremium ? `
                 <div class="servicios-premium">
-                    <h3>⭐ SERVICIOS PREMIUM - DOCUMENTOS PERSONALIZADOS</h3>
-                    <p>Nosotros creamos tus documentos exactamente adaptados a los requisitos de esta licitación. Nuestros expertos:</p>
-                    <ul style="margin-left: 20px; margin-bottom: 15px;">
-                        <li>Te hacen preguntas precisas vía chat</li>
-                        <li>Generan documentos personalizados</li>
-                        <li>Cruzan datos con requisitos reales</li>
-                        <li>Muestran % éxito estimado</li>
-                    </ul>
+                    <h3>⭐ DOCUMENTOS PREMIUM (€29.99 + IVA c/uno)</h3>
                     ${(licitacion.documents || []).map(doc => `
                         <div class="documento-opcion">
-                            <div>
-                                <div class="documento-nombre">${obtenerNombreDocumento(doc)}</div>
-                            </div>
-                            <div style="display: flex; gap: 10px; align-items: center;">
-                                <span class="documento-precio">€29.99 + IVA</span>
-                                <button class="btn-comprar" onclick="comprarDocumento('${doc}', ${id})">Comprar</button>
-                            </div>
+                            <span class="documento-nombre">${obtenerNombreDocumento(doc)}</span>
+                            <button class="btn-comprar" onclick="comprarDocumento('${doc}', ${id})">Comprar</button>
                         </div>
                     `).join('')}
-                    <button class="submit-btn" style="background: #ff9800; margin-top: 15px;" onclick="abrirModal('planesModal')">O ACTIVAR PREMIUM - €9.99/mes</button>
+                    <button class="submit-btn" style="background: #ff9800; margin-top: 15px;" onclick="comprarPremium()">O ACTIVAR PREMIUM €9.99/mes</button>
                 </div>
             ` : '';
 
             const btnParticipacion = isPremium ? `
-                <button class="btn-participar" onclick="alert('Función participar próximamente')">PARTICIPAR EN ESTA LICITACIÓN</button>
+                <button class="btn-participar" onclick="iniciarParticipacion(${id})">PARTICIPAR EN ESTA LICITACIÓN</button>
             ` : `
                 <div style="background: #f0f4f8; padding: 15px; border-radius: 4px; margin-top: 20px; text-align: center; color: #666;">
-                    <strong>Para participar necesitas:</strong><br>
-                    • Plan PREMIUM (€9.99/mes), o<br>
-                    • Comprar documentos personalizados (€29.99 + IVA c/uno)
+                    Necesitas PREMIUM para participar. Compra documentos o activa PREMIUM.
                 </div>
             `;
 
             const html = `
                 <h2>${licitacion.title}</h2>
-                
                 <div class="detail-section">
-                    <div class="detail-label">Institución Responsable</div>
+                    <div class="detail-label">Institución</div>
                     <div class="detail-value">${licitacion.institution}</div>
                 </div>
-                
                 <div class="detail-section">
                     <div class="detail-label">Descripción</div>
                     <div class="detail-description">${licitacion.description}</div>
                 </div>
-                
                 <div class="detail-section">
                     <div class="detail-label">Presupuesto</div>
                     <div class="detail-value">€${(licitacion.budget_min).toLocaleString('es-ES')} - €${(licitacion.budget_max).toLocaleString('es-ES')}</div>
                 </div>
-                
                 <div class="detail-section" style="border-bottom: none;">
-                    <div class="detail-label">Plazo de Presentación</div>
+                    <div class="detail-label">Plazo</div>
                     <div class="detail-value">${licitacion.deadline}</div>
                 </div>
-
                 <div class="requirements-list">
                     <h4>📋 REQUISITOS OBLIGATORIOS</h4>
                     ${requisitosHTML}
                 </div>
-
                 ${serviciosHTML}
                 ${btnParticipacion}
             `;
@@ -409,7 +459,7 @@
 
         function obtenerNombreDocumento(tipo) {
             const nombres = {
-                'dni': '📝 DNI / Identificación',
+                'dni': '📝 DNI/Identificación',
                 'empresa': '🏢 Certificado Constitución',
                 'propuesta': '📋 Propuesta Técnica',
                 'presupuesto': '💰 Presupuesto Desglosado',
@@ -419,41 +469,194 @@
             return nombres[tipo] || tipo;
         }
 
-        async function comprarDocumento(docType, oppId) {
-            if (!currentToken) {
-                abrirModal('loginModal');
-                return;
-            }
+        function iniciarParticipacion(id) {
+            const licitacion = todasLasLicitaciones.find(l => l.id === id);
+            document.getElementById('presTitle').textContent = 'PARTICIPAR: ' + licitacion.title.substring(0, 40);
+            participacionesPendientes.opportunityId = id;
+            participacionesPendientes.licitacion = licitacion;
+            cerrarModal('detalleModal');
+            abrirModal('presentacionModal');
+        }
+
+        async function enviarPresentacion(e) {
+            e.preventDefault();
+            const orgName = document.getElementById('presOrgName').value;
+            const contact = document.getElementById('presContact').value;
+            const email = document.getElementById('presEmail').value;
+            const phone = document.getElementById('presPhone').value;
+            const proposal = document.getElementById('presProposal').value;
 
             try {
-                const resp = await fetch(API + '/api/payment/create-checkout', {
+                const resp = await fetch(API + '/api/applications', {
                     method: 'POST',
-                    headers: {
+                    headers: { 
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${currentToken}`
                     },
-                    body: JSON.stringify({
-                        documentType: docType,
-                        opportunityId: oppId
-                    })
+                    body: JSON.stringify({ opportunityId: participacionesPendientes.opportunityId, organizationName: orgName, contact, email, phone, proposal })
                 });
-
                 const data = await resp.json();
                 if (data.success) {
-                    alert(`✅ Tu documento "${obtenerNombreDocumento(docType)}" se generará en breve.\n\nEn una aplicación real, aquí se abrirá Stripe para procesar el pago de €29.99 + IVA.`);
-                    // En producción: window.location.href = data.checkoutUrl;
+                    participacionesPendientes.applicationId = data.applicationId;
+                    cerrarModal('presentacionModal');
+                    mostrarChecklist();
                 }
             } catch (e) {
                 alert('Error');
             }
         }
 
-        function comprarPremium() {
-            alert('✅ Plan PREMIUM activado (en demo).\n\nEn producción: abre pasarela Stripe para €9.99/mes');
-            currentUser.isPremium = true;
-            localStorage.setItem('user', JSON.stringify(currentUser));
-            cerrarModal('planesModal');
-            actualizarUI();
+        function mostrarChecklist() {
+            const licitacion = participacionesPendientes.licitacion;
+            const documentosRequeridos = licitacion.documents || [];
+            checklistItems = documentosRequeridos.map(doc => ({ id: doc, name: obtenerNombreDocumento(doc), completado: false, omitido: false }));
+            const checklistHTML = checklistItems.map((item) => `
+                <div class="checklist-item" id="check-${item.id}">
+                    <input type="checkbox" id="chk-${item.id}" onchange="marcarCompletado('${item.id}')">
+                    <label for="chk-${item.id}">${item.name}</label>
+                    <button type="button" class="btn-skip" onclick="omitirDocumento('${item.id}')">Omitir</button>
+                </div>
+            `).join('');
+            document.getElementById('checklistContenido').innerHTML = `<div class="checklist"><h4>✓ Documentación</h4>${checklistHTML}</div>`;
+            abrirModal('checklistModal');
+        }
+
+        function marcarCompletado(docId) {
+            const item = checklistItems.find(i => i.id === docId);
+            if (item) item.completado = document.getElementById('chk-' + docId).checked;
+        }
+
+        function omitirDocumento(docId) {
+            const item = checklistItems.find(i => i.id === docId);
+            if (item) {
+                item.omitido = true;
+                document.getElementById('check-' + docId).style.opacity = '0.6';
+            }
+        }
+
+        function continuarConDocumentos() {
+            cerrarModal('checklistModal');
+            setTimeout(() => abrirModal('uploadDocModal'), 300);
+        }
+
+        async function subirDocumento(e) {
+            e.preventDefault();
+            const docType = document.getElementById('docType').value;
+            const docName = document.getElementById('docName').value;
+            const docContent = document.getElementById('docContent').value;
+
+            try {
+                const resp = await fetch(API + '/api/documents', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${currentToken}`
+                    },
+                    body: JSON.stringify({ name: docName, type: docType, content: docContent, applicationId: participacionesPendientes.applicationId })
+                });
+                const data = await resp.json();
+                if (data.success) {
+                    alert('✅ Documento subido');
+                    cerrarModal('uploadDocModal');
+                }
+            } catch (e) {
+                alert('Error');
+            }
+        }
+
+        function abrirPanel() {
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('heroSection').style.display = 'none';
+            document.getElementById('filtersSection').style.display = 'none';
+            document.getElementById('panelUsuario').style.display = 'block';
+            cargarParticipaciones();
+        }
+
+        function cerrarPanel() {
+            document.getElementById('mainContent').style.display = 'block';
+            document.getElementById('heroSection').style.display = 'block';
+            document.getElementById('filtersSection').style.display = 'flex';
+            document.getElementById('panelUsuario').style.display = 'none';
+        }
+
+        async function cargarParticipaciones() {
+            try {
+                const resp = await fetch(API + '/api/applications', {
+                    headers: { 'Authorization': `Bearer ${currentToken}` }
+                });
+                const data = await resp.json();
+                const apps = data.applications || [];
+                if (apps.length === 0) {
+                    document.getElementById('participacionesList').innerHTML = '<p style="color: #999;">No hay participaciones</p>';
+                    return;
+                }
+                document.getElementById('participacionesList').innerHTML = apps.map(app => {
+                    const opp = todasLasLicitaciones.find(o => o.id === app.opportunityId);
+                    return `
+                        <div class="app-card">
+                            <h3>${opp ? opp.title : 'Licitación'}</h3>
+                            <div class="app-info">
+                                <div><strong>Org:</strong> ${app.organizationName}</div>
+                                <div><span class="badge badge-${app.status}">${app.status === 'draft' ? 'BORRADOR' : 'ENVIADA'}</span></div>
+                            </div>
+                            ${app.status === 'draft' ? `<button class="btn-small" onclick="enviarParticipacion('${app.id}')">Enviar</button>` : ''}
+                        </div>
+                    `;
+                }).join('');
+            } catch (e) {
+                document.getElementById('participacionesList').innerHTML = '<p style="color: #f00;">Error</p>';
+            }
+        }
+
+        async function enviarParticipacion(appId) {
+            try {
+                const resp = await fetch(API + `/api/applications/${appId}/submit`, {
+                    method: 'PATCH',
+                    headers: { 'Authorization': `Bearer ${currentToken}` }
+                });
+                const data = await resp.json();
+                if (data.success) {
+                    alert('✅ Enviada');
+                    cargarParticipaciones();
+                }
+            } catch (e) {
+                alert('Error');
+            }
+        }
+
+        async function cargarDocumentos() {
+            try {
+                const resp = await fetch(API + '/api/documents', {
+                    headers: { 'Authorization': `Bearer ${currentToken}` }
+                });
+                const data = await resp.json();
+                const docs = data.documents || [];
+                document.getElementById('documentosList').innerHTML = docs.length === 0 ? '<p style="color: #999;">Sin documentos</p>' : docs.map(doc => `
+                    <div class="doc-item">
+                        <span>📄 ${doc.name}</span>
+                        <button class="btn-small" style="background: #d32f2f;" onclick="eliminarDocumento('${doc.id}')">Eliminar</button>
+                    </div>
+                `).join('');
+            } catch (e) {}
+        }
+
+        async function eliminarDocumento(docId) {
+            if (!confirm('¿Eliminar?')) return;
+            try {
+                await fetch(API + `/api/documents/${docId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${currentToken}` }
+                });
+                cargarDocumentos();
+            } catch (e) {}
+        }
+
+        function mostrarPanelTab(tab) {
+            document.querySelectorAll('.panel-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(tab).classList.add('active');
+            document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            if (tab === 'documentos') cargarDocumentos();
         }
 
         async function buscar() {
@@ -474,12 +677,10 @@
             const cat = document.getElementById('filtroCategoria').value;
             const est = document.getElementById('filtroEstado').value;
             const pre = document.getElementById('filtroPresupuesto').value;
-
             let filtradas = todasLasLicitaciones;
             if (cat !== 'all') filtradas = filtradas.filter(l => l.category === cat);
             if (est !== 'all') filtradas = filtradas.filter(l => l.status === est);
             if (pre !== 'all') filtradas = filtradas.filter(l => l.budget_min >= parseInt(pre));
-
             mostrarLista(filtradas);
         }
 
@@ -527,7 +728,7 @@
                     localStorage.setItem('user', JSON.stringify(data.user));
                     currentToken = data.token;
                     currentUser = data.user;
-                    alert('¡Registro completado!');
+                    alert('¡Registrado!');
                     cerrarModal('registerModal');
                     actualizarUI();
                 } else {
@@ -536,6 +737,18 @@
             } catch (e) {
                 alert('Error de conexión');
             }
+        }
+
+        function comprarDocumento(docType, oppId) {
+            alert(`✅ Sistema de pago: comprar "${obtenerNombreDocumento(docType)}" por €29.99 + IVA`);
+        }
+
+        function comprarPremium() {
+            currentUser.isPremium = true;
+            localStorage.setItem('user', JSON.stringify(currentUser));
+            alert('✅ ¡¡PREMIUM ACTIVADO!!');
+            cerrarModal('planesModal');
+            actualizarUI();
         }
 
         function cerrarSesion() {
@@ -550,20 +763,12 @@
         function actualizarUI() {
             const logged = !!currentToken;
             const premium = logged && currentUser && currentUser.isPremium;
-
             document.getElementById('btnLogin').classList.toggle('hidden', logged);
             document.getElementById('btnRegister').classList.toggle('hidden', logged);
             document.getElementById('btnPanel').classList.toggle('hidden', !logged);
             document.getElementById('btnPremium').classList.toggle('hidden', !logged);
             document.getElementById('btnLogout').classList.toggle('hidden', !logged);
-
-            if (premium) {
-                document.getElementById('btnPremium').textContent = '✅ PREMIUM ACTIVO';
-            }
-        }
-
-        function abrirPanel() {
-            alert('Panel de usuario próximamente');
+            if (premium) document.getElementById('btnPremium').textContent = '✅ PREMIUM ACTIVO';
         }
 
         function abrirModal(id) {
