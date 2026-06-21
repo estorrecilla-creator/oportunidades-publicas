@@ -3,306 +3,302 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oportunidades Públicas - Portal de Licitaciones</title>
+    <title>Oportunidades Públicas - Licitaciones y Subvenciones</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background: #f8f9fa; color: #333; }
         
-        /* ===== LANDING PAGE ===== */
-        .landing { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%); }
-        .landing-container { background: white; padding: 50px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); width: 100%; max-width: 400px; border-top: 4px solid #1e3a5f; }
+        /* ===== HEADER ===== */
+        .header { background: white; padding: 20px 40px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
+        .logo { font-size: 18px; font-weight: 700; color: #1e3a5f; }
+        .header-buttons { display: flex; gap: 15px; }
+        .btn { padding: 10px 20px; border-radius: 4px; border: none; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.3s; }
+        .btn-login { background: transparent; color: #1e3a5f; border: 1px solid #1e3a5f; }
+        .btn-login:hover { background: #f0f4f8; }
+        .btn-register { background: #1e3a5f; color: white; }
+        .btn-register:hover { background: #152a45; }
+        .btn-logout { background: #d32f2f; color: white; }
+        .btn-logout:hover { background: #b71c1c; }
         
-        .logo-section { text-align: center; margin-bottom: 40px; border-bottom: 1px solid #e0e0e0; padding-bottom: 30px; }
-        .logo-section h1 { font-size: 24px; color: #1e3a5f; font-weight: 700; margin-bottom: 5px; }
-        .logo-section p { font-size: 13px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
+        /* ===== HERO ===== */
+        .hero { background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%); color: white; padding: 60px 40px; text-align: center; }
+        .hero h1 { font-size: 36px; margin-bottom: 15px; }
+        .hero p { font-size: 16px; margin-bottom: 30px; opacity: 0.9; }
+        .search-box { display: flex; gap: 10px; justify-content: center; max-width: 600px; margin: 0 auto; }
+        .search-box input { flex: 1; padding: 12px; border: none; border-radius: 4px; font-size: 14px; }
+        .search-box button { padding: 12px 30px; background: white; color: #1e3a5f; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
         
-        .tabs { display: flex; gap: 0; margin-bottom: 30px; border-bottom: 1px solid #e0e0e0; }
-        .tab-btn { flex: 1; padding: 15px; border: none; background: transparent; cursor: pointer; font-weight: 500; font-size: 14px; color: #666; border-bottom: 3px solid transparent; transition: all 0.3s; }
-        .tab-btn.active { color: #1e3a5f; border-bottom-color: #1e3a5f; }
-        .tab-btn:hover { color: #1e3a5f; }
+        /* ===== FILTROS ===== */
+        .filters-section { background: white; padding: 30px 40px; border-bottom: 1px solid #e0e0e0; display: flex; gap: 20px; flex-wrap: wrap; }
+        .filter-group { display: flex; flex-direction: column; }
+        .filter-group label { font-size: 12px; font-weight: 600; color: #666; text-transform: uppercase; margin-bottom: 5px; }
+        .filter-group select { padding: 10px; border: 1px solid #e0e0e0; border-radius: 4px; font-size: 14px; }
         
-        .form-container { display: none; }
-        .form-container.active { display: block; }
+        /* ===== CONTENIDO ===== */
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px; }
         
-        .form-group { margin-bottom: 20px; }
-        label { display: block; font-weight: 600; margin-bottom: 8px; color: #1e3a5f; font-size: 14px; }
-        input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; font-family: inherit; transition: border 0.3s; }
+        /* ===== LOGIN/REGISTER MODALS ===== */
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; padding: 50px; border-radius: 4px; width: 100%; max-width: 400px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); border-top: 4px solid #1e3a5f; }
+        .modal-close { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; color: #666; }
+        .modal-content h2 { color: #1e3a5f; margin-bottom: 20px; text-align: center; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: 600; margin-bottom: 5px; color: #333; font-size: 14px; }
+        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
         input:focus { outline: none; border-color: #1e3a5f; box-shadow: 0 0 0 3px rgba(30,58,95,0.1); }
+        .btn-submit { width: 100%; padding: 12px; background: #1e3a5f; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
+        .btn-submit:hover { background: #152a45; }
+        .message { padding: 10px; border-radius: 4px; margin-bottom: 15px; display: none; font-size: 14px; }
+        .message.error { background: #f8d7da; color: #721c24; display: block; }
+        .message.success { background: #d4edda; color: #155724; display: block; }
         
-        button { width: 100%; padding: 12px; background: #1e3a5f; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.3s; }
-        button:hover { background: #152a45; }
+        /* ===== LICITACIONES GRID ===== */
+        .opportunities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
+        .opportunity-card { background: white; border-radius: 4px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e0e0e0; transition: all 0.3s; cursor: pointer; }
+        .opportunity-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
         
-        .message { padding: 12px; border-radius: 4px; margin-bottom: 15px; display: none; font-size: 14px; }
-        .message.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; display: block; }
-        .message.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; display: block; }
+        .card-header { background: #f0f4f8; padding: 15px; border-bottom: 1px solid #e0e0e0; }
+        .card-title { font-size: 16px; font-weight: 600; color: #1e3a5f; margin-bottom: 5px; }
+        .card-subtitle { font-size: 12px; color: #666; }
+        
+        .card-body { padding: 20px; }
+        .card-description { font-size: 13px; color: #666; margin-bottom: 15px; line-height: 1.5; }
+        
+        .card-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .stat { background: #f8f9fa; padding: 10px; border-radius: 4px; }
+        .stat-label { font-size: 11px; color: #999; text-transform: uppercase; }
+        .stat-value { font-size: 14px; font-weight: 600; color: #1e3a5f; margin-top: 3px; }
+        
+        .card-footer { padding: 15px 20px; background: #f8f9fa; border-top: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center; }
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        .badge-open { background: #fff3e0; color: #e65100; }
+        .badge-closing { background: #ffe0e0; color: #c62828; }
+        .badge-closed { background: #e0e0e0; color: #666; }
         
         /* ===== DASHBOARD ===== */
         .dashboard { display: none; min-height: 100vh; background: #f8f9fa; }
         .dashboard.active { display: flex; }
         
-        .sidebar { width: 260px; background: #1e3a5f; color: white; padding: 30px 0; position: fixed; height: 100vh; overflow-y: auto; box-shadow: 1px 0 3px rgba(0,0,0,0.1); }
+        .sidebar { width: 260px; background: #1e3a5f; color: white; padding: 30px 0; position: fixed; height: 100vh; overflow-y: auto; }
         .sidebar-logo { padding: 0 20px 30px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 16px; font-weight: 700; }
         .nav-menu { list-style: none; padding-top: 20px; }
-        .nav-menu li { margin: 0; }
         .nav-menu a { display: block; padding: 12px 20px; color: rgba(255,255,255,0.8); text-decoration: none; border-left: 3px solid transparent; transition: all 0.3s; font-size: 14px; }
         .nav-menu a:hover, .nav-menu a.active { background: rgba(255,255,255,0.1); color: white; border-left-color: #4a90e2; }
         
         .main { margin-left: 260px; flex: 1; padding: 40px; }
-        .header { background: white; padding: 25px 30px; border-radius: 4px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-bottom: 1px solid #e0e0e0; }
-        .header h2 { font-size: 22px; color: #1e3a5f; font-weight: 600; }
-        .logout-btn { background: #d32f2f; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: 600; }
-        .logout-btn:hover { background: #b71c1c; }
+        .dashboard-header { background: white; padding: 25px 30px; border-radius: 4px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .dashboard-header h2 { color: #1e3a5f; font-size: 22px; }
         
         .card { background: white; padding: 25px; border-radius: 4px; margin-bottom: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; }
         .card h3 { color: #1e3a5f; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #e0e0e0; font-size: 16px; font-weight: 600; }
         
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .stat-card { background: white; padding: 25px; border-radius: 4px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; border-top: 3px solid #1e3a5f; }
-        .stat-number { font-size: 32px; font-weight: 700; color: #1e3a5f; margin-bottom: 8px; }
-        .stat-label { font-size: 13px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
-        
         .section { display: none; }
         .section.active { display: block; }
-        
         .hidden { display: none !important; }
         
         .info-box { background: #f0f4f8; padding: 15px; border-radius: 4px; border-left: 3px solid #1e3a5f; margin-bottom: 20px; }
-        .info-box p { color: #555; font-size: 14px; margin-bottom: 5px; }
-        .info-box strong { color: #1e3a5f; }
         
-        table { width: 100%; border-collapse: collapse; font-size: 14px; }
-        th { background: #f0f4f8; color: #1e3a5f; padding: 12px; text-align: left; font-weight: 600; border-bottom: 1px solid #e0e0e0; }
-        td { padding: 12px; border-bottom: 1px solid #e0e0e0; }
-        tr:hover { background: #f8f9fa; }
-        
-        .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
-        .badge-free { background: #e8f5e9; color: #2e7d32; }
-        .badge-pro { background: #e3f2fd; color: #1565c0; }
-        .badge-open { background: #fff3e0; color: #e65100; }
-        
-        .empty-state { text-align: center; padding: 40px; color: #999; }
+        @media (max-width: 768px) {
+            .header { flex-direction: column; gap: 15px; }
+            .hero { padding: 40px 20px; }
+            .hero h1 { font-size: 24px; }
+            .search-box { flex-direction: column; }
+            .filters-section { flex-direction: column; }
+            .opportunities-grid { grid-template-columns: 1fr; }
+            .main { margin-left: 0; }
+            .sidebar { position: fixed; left: -260px; }
+        }
     </style>
 </head>
 <body>
-    <!-- LANDING PAGE -->
-    <div id="landingPage" class="landing">
-        <div class="landing-container">
-            <div class="logo-section">
-                <h1>OPORTUNIDADES PÚBLICAS</h1>
-                <p>Portal de Licitaciones</p>
-            </div>
-            
-            <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab('login')">INICIAR SESIÓN</button>
-                <button class="tab-btn" onclick="switchTab('register')">REGISTRARSE</button>
-            </div>
-            
-            <!-- LOGIN -->
-            <div id="login" class="form-container active">
-                <div id="loginMsg" class="message"></div>
-                <form onsubmit="handleLogin(event)">
-                    <div class="form-group">
-                        <label>Correo Electrónico</label>
-                        <input type="email" id="loginEmail" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Contraseña</label>
-                        <input type="password" id="loginPassword" required>
-                    </div>
-                    <button type="submit">INICIAR SESIÓN</button>
-                </form>
-            </div>
-            
-            <!-- REGISTER -->
-            <div id="register" class="form-container">
-                <div id="regMsg" class="message"></div>
-                <form onsubmit="handleRegister(event)">
-                    <div class="form-group">
-                        <label>Nombre Completo</label>
-                        <input type="text" id="regName">
-                    </div>
-                    <div class="form-group">
-                        <label>Correo Electrónico</label>
-                        <input type="email" id="regEmail" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Contraseña</label>
-                        <input type="password" id="regPassword" required>
-                    </div>
-                    <button type="submit">REGISTRARSE</button>
-                </form>
-            </div>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="logo">OPORTUNIDADES PÚBLICAS</div>
+        <div class="header-buttons">
+            <button class="btn btn-login" onclick="openModal('loginModal')">INICIAR SESIÓN</button>
+            <button class="btn btn-register" onclick="openModal('registerModal')">REGISTRARSE</button>
+            <button class="btn btn-logout hidden" id="logoutBtn" onclick="logout()">CERRAR SESIÓN</button>
         </div>
     </div>
 
-    <!-- DASHBOARD -->
+    <!-- HERO SECTION -->
+    <div class="hero" id="heroSection">
+        <h1>Licitaciones y Subvenciones Públicas</h1>
+        <p>Encuentra todas las oportunidades de financiación pública disponibles</p>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Buscar licitación...">
+            <button onclick="search()">BUSCAR</button>
+        </div>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="filters-section" id="filtersSection">
+        <div class="filter-group">
+            <label>CATEGORÍA</label>
+            <select id="categoryFilter">
+                <option value="">Todas</option>
+                <option value="obras">Obras</option>
+                <option value="servicios">Servicios</option>
+                <option value="suministros">Suministros</option>
+                <option value="subvenciones">Subvenciones</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>ESTADO</label>
+            <select id="statusFilter">
+                <option value="">Todos</option>
+                <option value="open">Abierta</option>
+                <option value="closing">Cerrando</option>
+                <option value="closed">Cerrada</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>PRESUPUESTO MÍNIMO</label>
+            <select id="budgetFilter">
+                <option value="">Cualquiera</option>
+                <option value="1000">Más de €1.000</option>
+                <option value="10000">Más de €10.000</option>
+                <option value="50000">Más de €50.000</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- OPORTUNIDADES -->
+    <div class="container" id="mainContent">
+        <div class="opportunities-grid" id="opportunitiesGrid">
+            <!-- Se llena dinámicamente -->
+        </div>
+    </div>
+
+    <!-- DASHBOARD (oculto inicialmente) -->
     <div id="dashboard" class="dashboard">
         <div class="sidebar">
             <div class="sidebar-logo">OPORTUNIDADES</div>
             <ul class="nav-menu">
-                <li><a onclick="showSection('dashboard-section')" class="nav-link active">PANEL DE CONTROL</a></li>
-                <li><a onclick="showSection('solicitations')" class="nav-link">SOLICITUDES</a></li>
-                <li><a onclick="showSection('documents')" class="nav-link">DOCUMENTOS</a></li>
-                <li><a onclick="showSection('payments')" class="nav-link">SUSCRIPCIÓN</a></li>
-                <li><a onclick="showSection('profile')" class="nav-link">PERFIL</a></li>
+                <li><a onclick="showDashSection('dashboard-section')" class="nav-link active">PANEL DE CONTROL</a></li>
+                <li><a onclick="showDashSection('solicitations')" class="nav-link">SOLICITUDES</a></li>
+                <li><a onclick="showDashSection('documents')" class="nav-link">DOCUMENTOS</a></li>
+                <li><a onclick="showDashSection('payments')" class="nav-link">SUSCRIPCIÓN</a></li>
                 <li style="margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;"><a onclick="logout()" class="nav-link">CERRAR SESIÓN</a></li>
             </ul>
         </div>
-
         <div class="main">
-            <div class="header">
-                <h2 id="pageTitle">Panel de Control</h2>
-                <button class="logout-btn" onclick="logout()">CERRAR SESIÓN</button>
+            <div class="dashboard-header">
+                <h2 id="dashboardTitle">Panel de Control</h2>
             </div>
-
-            <!-- DASHBOARD SECTION -->
             <div id="dashboard-section" class="section active">
                 <div class="card">
                     <h3>INFORMACIÓN DE CUENTA</h3>
                     <div class="info-box">
                         <p><strong>Usuario:</strong> <span id="userEmail">usuario@example.com</span></p>
-                        <p><strong>Plan:</strong> <span class="badge badge-free">PLAN GRATUITO</span></p>
-                        <p><strong>Estado:</strong> Activo</p>
                     </div>
-                </div>
-
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number">0</div>
-                        <div class="stat-label">Solicitudes</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">0</div>
-                        <div class="stat-label">Documentos</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">0</div>
-                        <div class="stat-label">Pagos</div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>ESTADO DEL SISTEMA</h3>
-                    <table>
-                        <tr>
-                            <td><strong>Base de Datos</strong></td>
-                            <td><span class="badge badge-pro">OPERATIVO</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Procesamiento de Pagos</strong></td>
-                            <td><span class="badge badge-pro">OPERATIVO</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>API Backend</strong></td>
-                            <td><span class="badge badge-pro">OPERATIVO</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Seguridad</strong></td>
-                            <td><span class="badge badge-pro">CERTIFICADO</span></td>
-                        </tr>
-                    </table>
                 </div>
             </div>
-
-            <!-- SOLICITATIONS -->
             <div id="solicitations" class="section">
-                <div class="card">
-                    <h3>NUEVA SOLICITUD</h3>
-                    <form onsubmit="createSolicitation(event)">
-                        <div class="form-group">
-                            <label>Título de la Solicitud *</label>
-                            <input type="text" id="solTitle" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Descripción Detallada</label>
-                            <input type="text" id="solDesc">
-                        </div>
-                        <div class="form-group">
-                            <label>Institución Responsable</label>
-                            <input type="text" id="solInst">
-                        </div>
-                        <button type="submit">REGISTRAR SOLICITUD</button>
-                    </form>
-                </div>
-
-                <div class="card">
-                    <h3>MIS SOLICITUDES</h3>
-                    <div id="solList"><div class="empty-state">No hay solicitudes registradas</div></div>
-                </div>
+                <div class="card"><h3>SOLICITUDES</h3><p>Próximamente</p></div>
             </div>
-
-            <!-- DOCUMENTS -->
             <div id="documents" class="section">
-                <div class="card">
-                    <h3>SUBIR DOCUMENTO</h3>
-                    <form onsubmit="uploadDocument(event)">
-                        <div class="form-group">
-                            <label>Nombre del Documento *</label>
-                            <input type="text" id="docName" required>
-                        </div>
-                        <button type="submit">SUBIR DOCUMENTO</button>
-                    </form>
-                </div>
-
-                <div class="card">
-                    <h3>MIS DOCUMENTOS</h3>
-                    <div id="docList"><div class="empty-state">No hay documentos subidos</div></div>
-                </div>
+                <div class="card"><h3>DOCUMENTOS</h3><p>Próximamente</p></div>
             </div>
-
-            <!-- PAYMENTS -->
             <div id="payments" class="section">
-                <div class="card">
-                    <h3>PLANES DE SUSCRIPCIÓN</h3>
-                    <p style="margin-bottom: 20px; color: #666; font-size: 14px;">Selecciona el plan que mejor se adapte a tus necesidades</p>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
-                        <div style="border: 1px solid #e0e0e0; padding: 20px; border-radius: 4px; text-align: center;">
-                            <div style="font-size: 16px; font-weight: 600; color: #1e3a5f; margin-bottom: 10px;">PLAN STARTER</div>
-                            <div style="font-size: 24px; font-weight: 700; color: #1e3a5f; margin-bottom: 15px;">€9.99<span style="font-size: 14px;">/mes</span></div>
-                            <button onclick="selectPlan('starter')" style="width: 100%;">CONTRATAR</button>
-                        </div>
-                        <div style="border: 1px solid #e0e0e0; padding: 20px; border-radius: 4px; text-align: center; border-top: 3px solid #1e3a5f;">
-                            <div style="font-size: 16px; font-weight: 600; color: #1e3a5f; margin-bottom: 10px;">PLAN PROFESIONAL</div>
-                            <div style="font-size: 24px; font-weight: 700; color: #1e3a5f; margin-bottom: 15px;">€29.99<span style="font-size: 14px;">/mes</span></div>
-                            <button onclick="selectPlan('pro')" style="width: 100%;">CONTRATAR</button>
-                        </div>
-                        <div style="border: 1px solid #e0e0e0; padding: 20px; border-radius: 4px; text-align: center;">
-                            <div style="font-size: 16px; font-weight: 600; color: #1e3a5f; margin-bottom: 10px;">PLAN EMPRESARIAL</div>
-                            <div style="font-size: 24px; font-weight: 700; color: #1e3a5f; margin-bottom: 15px;">€99.99<span style="font-size: 14px;">/mes</span></div>
-                            <button onclick="selectPlan('enterprise')" style="width: 100%;">CONTRATAR</button>
-                        </div>
-                    </div>
-                </div>
+                <div class="card"><h3>SUSCRIPCIÓN</h3><p>Próximamente</p></div>
             </div>
+        </div>
+    </div>
 
-            <!-- PROFILE -->
-            <div id="profile" class="section">
-                <div class="card">
-                    <h3>MIS DATOS</h3>
-                    <form onsubmit="updateProfile(event)">
-                        <div class="form-group">
-                            <label>Nombre Completo</label>
-                            <input type="text" id="profFirstName">
-                        </div>
-                        <div class="form-group">
-                            <label>Correo Electrónico</label>
-                            <input type="email" id="profEmail" readonly>
-                        </div>
-                        <button type="submit">GUARDAR CAMBIOS</button>
-                    </form>
+    <!-- LOGIN MODAL -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('loginModal')">×</button>
+            <h2>INICIAR SESIÓN</h2>
+            <div id="loginMsg" class="message"></div>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="loginEmail" required>
                 </div>
-            </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn-submit">INICIAR SESIÓN</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- REGISTER MODAL -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('registerModal')">×</button>
+            <h2>REGISTRARSE</h2>
+            <div id="regMsg" class="message"></div>
+            <form onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label>Nombre Completo</label>
+                    <input type="text" id="regName">
+                </div>
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="regEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="regPassword" required>
+                </div>
+                <button type="submit" class="btn-submit">REGISTRARSE</button>
+            </form>
         </div>
     </div>
 
     <script>
         const API_URL = 'https://oportunidades-publicas-production.up.railway.app';
 
-        function switchTab(tab) {
-            document.querySelectorAll('.form-container').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(tab).classList.add('active');
-            event.target.classList.add('active');
+        // Datos de ejemplo de licitaciones
+        const sampleOpportunities = [
+            { id: 1, title: 'Obra de mejora vial - Calle Principal', institution: 'Ayuntamiento de Sevilla', budget: '€150.000', deadline: '2026-07-15', status: 'open', category: 'obras', description: 'Mejora de infraestructura vial en zona céntrica de la ciudad' },
+            { id: 2, title: 'Servicios de consultoría estratégica', institution: 'Consejería de Economía', budget: '€50.000', deadline: '2026-07-30', status: 'open', category: 'servicios', description: 'Asistencia técnica para implementación de programas de innovación' },
+            { id: 3, title: 'Subvención para pymes - Digitalización', institution: 'Cámara de Comercio', budget: '€500.000', deadline: '2026-06-30', status: 'closing', category: 'subvenciones', description: 'Fondos para transformación digital de pequeñas y medianas empresas' },
+            { id: 4, title: 'Suministro de equipamiento informático', institution: 'Junta de Andalucía', budget: '€80.000', deadline: '2026-08-10', status: 'open', category: 'suministros', description: 'Adquisición de hardware y software para centros educativos' },
+            { id: 5, title: 'Mantenimiento de espacios públicos', institution: 'Ayuntamiento de Sevilla', budget: '€30.000', deadline: '2026-07-01', status: 'closing', category: 'servicios', description: 'Servicios de limpieza y conservación de parques y jardines' },
+            { id: 6, title: 'Obras de rehabilitación energética', institution: 'Instituto de Energía', budget: '€200.000', deadline: '2026-08-20', status: 'open', category: 'obras', description: 'Mejora de eficiencia energética en edificios públicos' },
+        ];
+
+        function loadOpportunities() {
+            const grid = document.getElementById('opportunitiesGrid');
+            grid.innerHTML = sampleOpportunities.map(opp => `
+                <div class="opportunity-card">
+                    <div class="card-header">
+                        <div class="card-title">${opp.title}</div>
+                        <div class="card-subtitle">${opp.institution}</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-description">${opp.description}</div>
+                        <div class="card-stats">
+                            <div class="stat">
+                                <div class="stat-label">Presupuesto</div>
+                                <div class="stat-value">${opp.budget}</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-label">Plazo</div>
+                                <div class="stat-value">${opp.deadline}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="badge badge-${opp.status}">${opp.status === 'open' ? 'ABIERTA' : opp.status === 'closing' ? 'CERRANDO' : 'CERRADA'}</span>
+                        <button class="btn btn-register" style="margin: 0;" onclick="alert('Inicia sesión para participar')">VER</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
         }
 
         async function handleLogin(e) {
@@ -316,18 +312,20 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
                 });
-
                 const data = await res.json();
 
                 if (data.success) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
                     showDashboard(data.user);
+                    closeModal('loginModal');
                 } else {
-                    showMessage('loginMsg', data.error || 'Error en iniciar sesión', 'error');
+                    document.getElementById('loginMsg').textContent = data.error || 'Error';
+                    document.getElementById('loginMsg').style.display = 'block';
                 }
             } catch (error) {
-                showMessage('loginMsg', 'Error de conexión', 'error');
+                document.getElementById('loginMsg').textContent = 'Error de conexión';
+                document.getElementById('loginMsg').style.display = 'block';
             }
         }
 
@@ -343,67 +341,40 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password, firstName })
                 });
-
                 const data = await res.json();
 
                 if (data.success) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
                     showDashboard(data.user);
+                    closeModal('registerModal');
                 } else {
-                    showMessage('regMsg', data.error || 'Error en registro', 'error');
+                    document.getElementById('regMsg').textContent = data.error || 'Error';
+                    document.getElementById('regMsg').style.display = 'block';
                 }
             } catch (error) {
-                showMessage('regMsg', 'Error de conexión', 'error');
+                document.getElementById('regMsg').textContent = 'Error de conexión';
+                document.getElementById('regMsg').style.display = 'block';
             }
         }
 
-        function showMessage(elementId, message, type) {
-            const el = document.getElementById(elementId);
-            el.className = `message ${type}`;
-            el.textContent = message;
-        }
-
         function showDashboard(user) {
-            document.getElementById('landingPage').classList.add('hidden');
+            document.getElementById('heroSection').classList.add('hidden');
+            document.getElementById('filtersSection').classList.add('hidden');
+            document.getElementById('mainContent').classList.add('hidden');
+            document.querySelector('.header').classList.add('hidden');
             document.getElementById('dashboard').classList.add('active');
             document.getElementById('userEmail').textContent = user.email;
+            document.getElementById('logoutBtn').classList.remove('hidden');
+            document.querySelector('.btn-login').classList.add('hidden');
+            document.querySelector('.btn-register').classList.add('hidden');
         }
 
-        function showSection(id) {
+        function showDashSection(id) {
             document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            
             document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
             event.target.classList.add('active');
-            
-            const titles = {
-                'dashboard-section': 'Panel de Control',
-                'solicitations': 'Solicitudes',
-                'documents': 'Documentos',
-                'payments': 'Suscripción',
-                'profile': 'Mi Perfil'
-            };
-            document.getElementById('pageTitle').textContent = titles[id] || id;
-        }
-
-        function createSolicitation(e) {
-            e.preventDefault();
-            showSection('solicitations');
-        }
-
-        function uploadDocument(e) {
-            e.preventDefault();
-            showSection('documents');
-        }
-
-        function selectPlan(plan) {
-            alert('Plan ' + plan + ' seleccionado. Integración Stripe activa.');
-        }
-
-        function updateProfile(e) {
-            e.preventDefault();
-            alert('Perfil actualizado correctamente');
         }
 
         function logout() {
@@ -412,15 +383,25 @@
             location.reload();
         }
 
+        function search() {
+            alert('Búsqueda avanzada disponible para usuarios registrados');
+        }
+
         window.addEventListener('load', () => {
+            loadOpportunities();
             const token = localStorage.getItem('token');
             const user = localStorage.getItem('user');
             if (token && user) {
-                document.getElementById('landingPage').classList.add('hidden');
-                document.getElementById('dashboard').classList.add('active');
-                document.getElementById('userEmail').textContent = JSON.parse(user).email;
+                showDashboard(JSON.parse(user));
             }
         });
+
+        // Cerrar modal al hacer clic fuera
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        }
     </script>
 </body>
 </html>
