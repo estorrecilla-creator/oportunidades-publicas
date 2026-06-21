@@ -6,81 +6,72 @@
     <title>Oportunidades Públicas - Licitaciones y Subvenciones</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; width: 100%; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background: #f8f9fa; color: #333; }
         
         .header { background: white; padding: 20px 40px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
         .logo { font-size: 18px; font-weight: 700; color: #1e3a5f; }
         .header-buttons { display: flex; gap: 15px; }
-        .btn { padding: 10px 20px; border-radius: 4px; border: none; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.3s; }
+        .btn { padding: 10px 20px; border-radius: 4px; border: none; cursor: pointer; font-weight: 600; font-size: 14px; }
         .btn-login { background: transparent; color: #1e3a5f; border: 1px solid #1e3a5f; }
-        .btn-login:hover { background: #f0f4f8; }
         .btn-register { background: #1e3a5f; color: white; }
-        .btn-register:hover { background: #152a45; }
         .btn-logout { background: #d32f2f; color: white; }
+        .hidden { display: none !important; }
         
         .hero { background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%); color: white; padding: 60px 40px; text-align: center; }
         .hero h1 { font-size: 36px; margin-bottom: 15px; }
         .hero p { font-size: 16px; margin-bottom: 30px; opacity: 0.9; }
         
-        .search-box { display: flex; gap: 10px; justify-content: center; max-width: 700px; margin: 0 auto; flex-wrap: wrap; }
-        .search-box input { flex: 1; min-width: 250px; padding: 12px; border: none; border-radius: 4px; font-size: 14px; }
-        .search-box button { padding: 12px 30px; background: white; color: #1e3a5f; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
+        .search-container { display: flex; gap: 10px; justify-content: center; max-width: 700px; margin: 0 auto; flex-wrap: wrap; }
+        .search-container input { flex: 1; min-width: 250px; padding: 12px; border: none; border-radius: 4px; font-size: 14px; }
+        .search-container button { padding: 12px 30px; background: white; color: #1e3a5f; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
         
-        .filters { background: white; padding: 30px 40px; border-bottom: 1px solid #e0e0e0; display: flex; gap: 20px; flex-wrap: wrap; }
-        .filter-group { display: flex; flex-direction: column; }
-        .filter-group label { font-size: 12px; font-weight: 600; color: #666; text-transform: uppercase; margin-bottom: 5px; }
-        .filter-group select { padding: 10px; border: 1px solid #e0e0e0; border-radius: 4px; font-size: 14px; min-width: 150px; }
+        .filters-bar { background: white; padding: 30px 40px; border-bottom: 1px solid #e0e0e0; display: flex; gap: 20px; flex-wrap: wrap; }
+        .filter-item { display: flex; flex-direction: column; }
+        .filter-item label { font-size: 12px; font-weight: 600; color: #666; text-transform: uppercase; margin-bottom: 5px; }
+        .filter-item select { padding: 10px; border: 1px solid #e0e0e0; border-radius: 4px; font-size: 14px; min-width: 150px; }
         
-        .container { max-width: 1200px; margin: 0 auto; padding: 40px; }
+        .main-content { max-width: 1200px; margin: 0 auto; padding: 40px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
         
-        .card { background: white; border-radius: 4px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e0e0e0; transition: all 0.3s; }
-        .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-        
+        .card { background: white; border-radius: 4px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e0e0e0; }
         .card-header { background: #f0f4f8; padding: 15px; border-bottom: 1px solid #e0e0e0; }
-        .card-title { font-size: 15px; font-weight: 600; color: #1e3a5f; margin-bottom: 5px; }
+        .card-title { font-size: 15px; font-weight: 600; color: #1e3a5f; margin-bottom: 5px; word-break: break-word; }
         .card-subtitle { font-size: 12px; color: #666; }
-        
         .card-body { padding: 20px; }
         .card-desc { font-size: 13px; color: #666; margin-bottom: 15px; line-height: 1.5; }
-        
         .card-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         .stat { background: #f8f9fa; padding: 10px; border-radius: 4px; }
         .stat-label { font-size: 11px; color: #999; text-transform: uppercase; }
         .stat-value { font-size: 13px; font-weight: 600; color: #1e3a5f; margin-top: 3px; }
-        
         .card-footer { padding: 15px 20px; background: #f8f9fa; border-top: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center; }
         .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
         .badge-open { background: #c8e6c9; color: #2e7d32; }
         .badge-closing { background: #ffe0b2; color: #e65100; }
         .badge-closed { background: #e0e0e0; color: #666; }
         
-        .empty { text-align: center; padding: 60px 20px; color: #999; }
+        .no-results { text-align: center; padding: 60px 20px; color: #999; grid-column: 1/-1; }
+        .loading { text-align: center; padding: 60px 20px; color: #999; }
         
         .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
         .modal.active { display: flex; }
-        .modal-content { background: white; padding: 50px; border-radius: 4px; width: 100%; max-width: 400px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); border-top: 4px solid #1e3a5f; position: relative; }
-        .modal-close { position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; }
-        .modal-content h2 { color: #1e3a5f; margin-bottom: 20px; text-align: center; }
+        .modal-box { background: white; padding: 50px; border-radius: 4px; width: 100%; max-width: 400px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); border-top: 4px solid #1e3a5f; position: relative; }
+        .close-btn { position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; }
+        .modal-box h2 { color: #1e3a5f; margin-bottom: 20px; text-align: center; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px; }
         .form-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
         .form-group input:focus { outline: none; border-color: #1e3a5f; box-shadow: 0 0 0 3px rgba(30,58,95,0.1); }
-        .btn-submit { width: 100%; padding: 12px; background: #1e3a5f; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; margin-top: 10px; }
-        .message { padding: 10px; border-radius: 4px; margin-bottom: 15px; display: none; font-size: 14px; }
-        .message.error { background: #f8d7da; color: #721c24; display: block; }
-        
-        .loading { text-align: center; padding: 60px 20px; color: #999; }
-        .loading::after { content: "..."; animation: dots 1.5s steps(4, end) infinite; }
-        @keyframes dots { 0%, 20% { content: "."; } 40% { content: ".."; } 60% { content: "..."; } 80%, 100% { content: ""; } }
+        .submit-btn { width: 100%; padding: 12px; background: #1e3a5f; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; margin-top: 10px; }
+        .error-msg { padding: 10px; border-radius: 4px; margin-bottom: 15px; background: #f8d7da; color: #721c24; display: none; }
         
         @media (max-width: 768px) {
             .header { flex-wrap: wrap; gap: 15px; }
             .hero { padding: 40px 20px; }
             .hero h1 { font-size: 24px; }
-            .search-box input { min-width: 100%; }
-            .filters { flex-direction: column; padding: 20px; }
-            .filter-group select { min-width: 100%; }
+            .search-container input { min-width: 100%; }
+            .filters-bar { flex-direction: column; padding: 20px; }
+            .filter-item select { min-width: 100%; }
             .grid { grid-template-columns: 1fr; }
         }
     </style>
@@ -90,27 +81,27 @@
     <div class="header">
         <div class="logo">OPORTUNIDADES PÚBLICAS</div>
         <div class="header-buttons">
-            <button class="btn btn-login" id="loginBtn" onclick="openModal('loginModal')">INICIAR SESIÓN</button>
-            <button class="btn btn-register" id="registerBtn" onclick="openModal('registerModal')">REGISTRARSE</button>
-            <button class="btn btn-logout hidden" id="logoutBtn" onclick="logout()">CERRAR SESIÓN</button>
+            <button class="btn btn-login" id="btnLogin" onclick="abrirModal('loginModal')">INICIAR SESIÓN</button>
+            <button class="btn btn-register" id="btnRegister" onclick="abrirModal('registerModal')">REGISTRARSE</button>
+            <button class="btn btn-logout hidden" id="btnLogout" onclick="cerrarSesion()">CERRAR SESIÓN</button>
         </div>
     </div>
 
     <!-- HERO -->
     <div class="hero" id="heroSection">
         <h1>Licitaciones y Subvenciones Públicas</h1>
-        <p>Encuentra todas las oportunidades de financiación disponibles</p>
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Buscar por título, institución o descripción...">
-            <button onclick="doSearch()">BUSCAR</button>
+        <p>Encuentra las mejores oportunidades de financiación disponibles</p>
+        <div class="search-container">
+            <input type="text" id="inputBuscar" placeholder="Busca por título, institución o descripción..." onkeypress="if(event.key==='Enter') buscar()">
+            <button onclick="buscar()">BUSCAR</button>
         </div>
     </div>
 
     <!-- FILTROS -->
-    <div class="filters" id="filtersSection">
-        <div class="filter-group">
+    <div class="filters-bar" id="filtersSection">
+        <div class="filter-item">
             <label>CATEGORÍA</label>
-            <select id="categoryFilter" onchange="applyFilters()">
+            <select id="filtroCategoria" onchange="aplicarFiltros()">
                 <option value="all">Todas</option>
                 <option value="obras">Obras</option>
                 <option value="servicios">Servicios</option>
@@ -118,254 +109,241 @@
                 <option value="subvenciones">Subvenciones</option>
             </select>
         </div>
-        <div class="filter-group">
+        <div class="filter-item">
             <label>ESTADO</label>
-            <select id="statusFilter" onchange="applyFilters()">
+            <select id="filtroEstado" onchange="aplicarFiltros()">
                 <option value="all">Todos</option>
                 <option value="open">Abierta</option>
                 <option value="closing">Cerrando</option>
                 <option value="closed">Cerrada</option>
             </select>
         </div>
-        <div class="filter-group">
-            <label>PRESUPUESTO MÍNIMO</label>
-            <select id="budgetFilter" onchange="applyFilters()">
+        <div class="filter-item">
+            <label>PRESUPUESTO</label>
+            <select id="filtroPresupuesto" onchange="aplicarFiltros()">
                 <option value="all">Cualquiera</option>
-                <option value="50000">Más de €50.000</option>
-                <option value="100000">Más de €100.000</option>
-                <option value="200000">Más de €200.000</option>
+                <option value="50000">Más de €50k</option>
+                <option value="100000">Más de €100k</option>
+                <option value="200000">Más de €200k</option>
             </select>
         </div>
     </div>
 
-    <!-- CONTENIDO -->
-    <div class="container">
-        <div class="grid" id="grid">
-            <div class="loading">Cargando oportunidades</div>
+    <!-- GRID DE LICITACIONES -->
+    <div class="main-content">
+        <div class="grid" id="gridLicitaciones">
+            <div class="loading">Cargando oportunidades...</div>
         </div>
     </div>
 
-    <!-- MODALES LOGIN/REGISTER -->
+    <!-- MODAL LOGIN -->
     <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('loginModal')">×</button>
+        <div class="modal-box">
+            <button class="close-btn" onclick="cerrarModal('loginModal')">×</button>
             <h2>INICIAR SESIÓN</h2>
-            <div id="loginMsg" class="message"></div>
-            <form onsubmit="handleLogin(event)">
+            <div id="msgLogin" class="error-msg"></div>
+            <form onsubmit="iniciarSesion(event)">
                 <div class="form-group">
                     <label>Correo</label>
-                    <input type="email" id="loginEmail" required>
+                    <input type="email" id="emailLogin" required>
                 </div>
                 <div class="form-group">
                     <label>Contraseña</label>
-                    <input type="password" id="loginPassword" required>
+                    <input type="password" id="passLogin" required>
                 </div>
-                <button type="submit" class="btn-submit">INICIAR SESIÓN</button>
+                <button type="submit" class="submit-btn">INICIAR SESIÓN</button>
             </form>
             <p style="text-align: center; margin-top: 15px; font-size: 12px; color: #666;">
-                Prueba: test@test.com / test1234
+                Demo: test@test.com / test1234
             </p>
         </div>
     </div>
 
+    <!-- MODAL REGISTER -->
     <div id="registerModal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('registerModal')">×</button>
+        <div class="modal-box">
+            <button class="close-btn" onclick="cerrarModal('registerModal')">×</button>
             <h2>REGISTRARSE</h2>
-            <div id="regMsg" class="message"></div>
-            <form onsubmit="handleRegister(event)">
+            <div id="msgRegister" class="error-msg"></div>
+            <form onsubmit="registrarse(event)">
                 <div class="form-group">
                     <label>Nombre</label>
-                    <input type="text" id="regName">
+                    <input type="text" id="nameReg">
                 </div>
                 <div class="form-group">
                     <label>Correo</label>
-                    <input type="email" id="regEmail" required>
+                    <input type="email" id="emailReg" required>
                 </div>
                 <div class="form-group">
                     <label>Contraseña</label>
-                    <input type="password" id="regPassword" required>
+                    <input type="password" id="passReg" required>
                 </div>
-                <button type="submit" class="btn-submit">REGISTRARSE</button>
+                <button type="submit" class="submit-btn">REGISTRARSE</button>
             </form>
         </div>
     </div>
 
     <script>
-        const API_URL = 'https://oportunidades-publicas-production.up.railway.app';
-        let allOpportunities = [];
+        const API = 'https://oportunidades-publicas-production.up.railway.app';
+        let todasLasLicitaciones = [];
 
-        async function loadOpportunities() {
+        // CARGAR LICITACIONES AL INICIAR
+        document.addEventListener('DOMContentLoaded', cargarLicitaciones);
+
+        async function cargarLicitaciones() {
             try {
-                const res = await fetch(`${API_URL}/api/opportunities`);
-                const data = await res.json();
-                allOpportunities = data.opportunities || [];
-                renderOpportunities(allOpportunities);
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('grid').innerHTML = '<div class="empty">Error al cargar licitaciones</div>';
+                const resp = await fetch(API + '/api/opportunities');
+                const data = await resp.json();
+                todasLasLicitaciones = data.opportunities || [];
+                mostrarLicitaciones(todasLasLicitaciones);
+            } catch (e) {
+                console.error(e);
+                document.getElementById('gridLicitaciones').innerHTML = '<div class="no-results" style="grid-column: 1/-1;">Error al cargar licitaciones</div>';
             }
         }
 
-        function renderOpportunities(opps) {
-            const grid = document.getElementById('grid');
-            if (opps.length === 0) {
-                grid.innerHTML = '<div class="empty" style="grid-column: 1/-1;">No hay oportunidades que coincidan con los filtros</div>';
+        function mostrarLicitaciones(licitaciones) {
+            const grid = document.getElementById('gridLicitaciones');
+            if (licitaciones.length === 0) {
+                grid.innerHTML = '<div class="no-results" style="grid-column: 1/-1;">No hay resultados</div>';
                 return;
             }
-
-            grid.innerHTML = opps.map(opp => `
+            grid.innerHTML = licitaciones.map(l => `
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">${opp.title}</div>
-                        <div class="card-subtitle">${opp.institution}</div>
+                        <div class="card-title">${l.title}</div>
+                        <div class="card-subtitle">${l.institution}</div>
                     </div>
                     <div class="card-body">
-                        <div class="card-desc">${opp.description.substring(0, 90)}...</div>
+                        <div class="card-desc">${l.description.substring(0, 85)}...</div>
                         <div class="card-stats">
                             <div class="stat">
                                 <div class="stat-label">Presupuesto</div>
-                                <div class="stat-value">€${(opp.budget_min/1000).toFixed(0)}k-${(opp.budget_max/1000).toFixed(0)}k</div>
+                                <div class="stat-value">€${(l.budget_min/1000).toFixed(0)}k-${(l.budget_max/1000).toFixed(0)}k</div>
                             </div>
                             <div class="stat">
                                 <div class="stat-label">Plazo</div>
-                                <div class="stat-value">${opp.deadline}</div>
+                                <div class="stat-value">${l.deadline}</div>
                             </div>
                         </div>
                     </div>
                     <div class="card-footer">
-                        <span class="badge badge-${opp.status}">${opp.status === 'open' ? 'ABIERTA' : opp.status === 'closing' ? 'CERRANDO' : 'CERRADA'}</span>
-                        <button class="btn" style="margin: 0; padding: 8px 12px;" onclick="alert('Inicia sesión para participar')">VER</button>
+                        <span class="badge badge-${l.status}">${l.status === 'open' ? 'ABIERTA' : l.status === 'closing' ? 'CERRANDO' : 'CERRADA'}</span>
+                        <button class="btn" style="padding: 8px 12px; margin: 0;" onclick="alert('Inicia sesión para participar')">VER</button>
                     </div>
                 </div>
             `).join('');
         }
 
-        async function applyFilters() {
-            const category = document.getElementById('categoryFilter').value;
-            const status = document.getElementById('statusFilter').value;
-            const budget = document.getElementById('budgetFilter').value;
-
-            let filtered = [...allOpportunities];
-
-            if (category !== 'all') filtered = filtered.filter(o => o.category === category);
-            if (status !== 'all') filtered = filtered.filter(o => o.status === status);
-            if (budget !== 'all') filtered = filtered.filter(o => o.budget_min >= parseInt(budget));
-
-            renderOpportunities(filtered);
-        }
-
-        async function doSearch() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            if (!query.trim()) {
-                renderOpportunities(allOpportunities);
+        async function buscar() {
+            const q = document.getElementById('inputBuscar').value.toLowerCase();
+            if (!q.trim()) {
+                mostrarLicitaciones(todasLasLicitaciones);
                 return;
             }
-
-            const filtered = allOpportunities.filter(o =>
-                o.title.toLowerCase().includes(query) ||
-                o.description.toLowerCase().includes(query) ||
-                o.institution.toLowerCase().includes(query)
+            const filtradas = todasLasLicitaciones.filter(l =>
+                l.title.toLowerCase().includes(q) ||
+                l.description.toLowerCase().includes(q) ||
+                l.institution.toLowerCase().includes(q)
             );
-
-            renderOpportunities(filtered);
+            mostrarLicitaciones(filtradas);
         }
 
-        function openModal(id) {
+        async function aplicarFiltros() {
+            const cat = document.getElementById('filtroCategoria').value;
+            const est = document.getElementById('filtroEstado').value;
+            const pre = document.getElementById('filtroPresupuesto').value;
+
+            let filtradas = todasLasLicitaciones;
+            if (cat !== 'all') filtradas = filtradas.filter(l => l.category === cat);
+            if (est !== 'all') filtradas = filtradas.filter(l => l.status === est);
+            if (pre !== 'all') filtradas = filtradas.filter(l => l.budget_min >= parseInt(pre));
+
+            mostrarLicitaciones(filtradas);
+        }
+
+        function abrirModal(id) {
             document.getElementById(id).classList.add('active');
         }
 
-        function closeModal(id) {
+        function cerrarModal(id) {
             document.getElementById(id).classList.remove('active');
         }
 
-        async function handleLogin(e) {
+        async function iniciarSesion(e) {
             e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-
+            const email = document.getElementById('emailLogin').value;
+            const pass = document.getElementById('passLogin').value;
             try {
-                const res = await fetch(`${API_URL}/api/auth/login`, {
+                const resp = await fetch(API + '/api/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
+                    body: JSON.stringify({ email, password: pass })
                 });
-                const data = await res.json();
-
+                const data = await resp.json();
                 if (data.success) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
-                    alert('¡Bienvenido! ' + data.user.email);
-                    closeModal('loginModal');
-                    updateLoginUI();
+                    alert('¡Bienvenido!');
+                    cerrarModal('loginModal');
+                    actualizarUI();
                 } else {
-                    document.getElementById('loginMsg').textContent = data.error || 'Error';
-                    document.getElementById('loginMsg').style.display = 'block';
+                    document.getElementById('msgLogin').textContent = data.error;
+                    document.getElementById('msgLogin').style.display = 'block';
                 }
-            } catch (error) {
-                document.getElementById('loginMsg').textContent = 'Error de conexión';
-                document.getElementById('loginMsg').style.display = 'block';
+            } catch (e) {
+                document.getElementById('msgLogin').textContent = 'Error de conexión';
+                document.getElementById('msgLogin').style.display = 'block';
             }
         }
 
-        async function handleRegister(e) {
+        async function registrarse(e) {
             e.preventDefault();
-            const email = document.getElementById('regEmail').value;
-            const password = document.getElementById('regPassword').value;
-            const firstName = document.getElementById('regName').value;
-
+            const email = document.getElementById('emailReg').value;
+            const pass = document.getElementById('passReg').value;
+            const firstName = document.getElementById('nameReg').value;
             try {
-                const res = await fetch(`${API_URL}/api/auth/register`, {
+                const resp = await fetch(API + '/api/auth/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password, firstName })
+                    body: JSON.stringify({ email, password: pass, firstName })
                 });
-                const data = await res.json();
-
+                const data = await resp.json();
                 if (data.success) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
-                    alert('¡Registro completado! Bienvenido.');
-                    closeModal('registerModal');
-                    updateLoginUI();
+                    alert('¡Registro completado!');
+                    cerrarModal('registerModal');
+                    actualizarUI();
                 } else {
-                    document.getElementById('regMsg').textContent = data.error || 'Error';
-                    document.getElementById('regMsg').style.display = 'block';
+                    document.getElementById('msgRegister').textContent = data.error;
+                    document.getElementById('msgRegister').style.display = 'block';
                 }
-            } catch (error) {
-                document.getElementById('regMsg').textContent = 'Error de conexión';
-                document.getElementById('regMsg').style.display = 'block';
+            } catch (e) {
+                document.getElementById('msgRegister').textContent = 'Error de conexión';
+                document.getElementById('msgRegister').style.display = 'block';
             }
         }
 
-        function updateLoginUI() {
-            const token = localStorage.getItem('token');
-            document.getElementById('loginBtn').classList.toggle('hidden', !!token);
-            document.getElementById('registerBtn').classList.toggle('hidden', !!token);
-            document.getElementById('logoutBtn').classList.toggle('hidden', !token);
-        }
-
-        function logout() {
+        function cerrarSesion() {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             alert('Sesión cerrada');
-            updateLoginUI();
+            actualizarUI();
+        }
+
+        function actualizarUI() {
+            const token = localStorage.getItem('token');
+            document.getElementById('btnLogin').classList.toggle('hidden', !!token);
+            document.getElementById('btnRegister').classList.toggle('hidden', !!token);
+            document.getElementById('btnLogout').classList.toggle('hidden', !token);
         }
 
         window.onclick = function(e) {
             if (e.target.classList.contains('modal')) e.target.classList.remove('active');
         }
 
-        document.addEventListener('keyup', function(e) {
-            if (e.key === 'Enter' && document.getElementById('searchInput') === document.activeElement) {
-                doSearch();
-            }
-        });
-
-        window.addEventListener('load', () => {
-            loadOpportunities();
-            updateLoginUI();
-        });
+        window.addEventListener('load', actualizarUI);
     </script>
 </body>
 </html>
