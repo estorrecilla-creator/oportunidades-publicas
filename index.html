@@ -11,12 +11,14 @@
         
         .header { background: white; padding: 20px 40px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
         .logo { font-size: 18px; font-weight: 700; color: #1e3a5f; }
-        .header-buttons { display: flex; gap: 15px; }
+        .header-buttons { display: flex; gap: 15px; align-items: center; }
         .btn { padding: 10px 20px; border-radius: 4px; border: none; cursor: pointer; font-weight: 600; font-size: 14px; }
         .btn-login { background: transparent; color: #1e3a5f; border: 1px solid #1e3a5f; }
         .btn-register { background: #1e3a5f; color: white; }
         .btn-logout { background: #d32f2f; color: white; }
         .btn-panel { background: #4a90e2; color: white; }
+        .btn-premium { background: #ff9800; color: white; }
+        .badge-premium { background: #ff9800; color: white; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
         .hidden { display: none !important; }
         
         .hero { background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%); color: white; padding: 60px 40px; text-align: center; }
@@ -50,8 +52,6 @@
         .badge-open { background: #c8e6c9; color: #2e7d32; }
         .badge-closing { background: #ffe0b2; color: #e65100; }
         .badge-closed { background: #e0e0e0; color: #666; }
-        .badge-draft { background: #e0e0e0; color: #666; }
-        .badge-submitted { background: #c8e6c9; color: #2e7d32; }
         
         .no-results { text-align: center; padding: 60px 20px; color: #999; grid-column: 1/-1; }
         .loading { text-align: center; padding: 60px 20px; color: #999; }
@@ -63,9 +63,9 @@
         .modal-box h2 { color: #1e3a5f; margin-bottom: 20px; text-align: center; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px; }
-        .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; font-family: inherit; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; font-family: inherit; }
         .form-group textarea { resize: vertical; min-height: 80px; }
-        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #1e3a5f; box-shadow: 0 0 0 3px rgba(30,58,95,0.1); }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: #1e3a5f; box-shadow: 0 0 0 3px rgba(30,58,95,0.1); }
         .submit-btn { width: 100%; padding: 12px; background: #1e3a5f; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; margin-top: 10px; }
         .submit-btn:hover { background: #152a45; }
         .error-msg { padding: 10px; border-radius: 4px; margin-bottom: 15px; background: #f8d7da; color: #721c24; display: none; }
@@ -93,6 +93,11 @@
         .checklist-item.skipped label { text-decoration: line-through; color: #999; }
         
         .btn-skip { padding: 5px 10px; font-size: 12px; background: #ff9800; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        .btn-premium-doc { padding: 5px 10px; font-size: 12px; background: #4a90e2; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        
+        .premium-section { background: #fff3e0; padding: 20px; border-radius: 4px; margin: 20px 0; border: 2px solid #ff9800; }
+        .premium-section h4 { color: #ff9800; margin-bottom: 10px; }
+        .premium-section p { font-size: 14px; color: #666; margin-bottom: 15px; }
         
         .panel-section { display: none; }
         .panel-section.active { display: block; }
@@ -107,6 +112,10 @@
         .doc-item { padding: 10px; background: #f8f9fa; border-radius: 4px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
         .doc-item span { font-size: 13px; }
         .btn-small { padding: 5px 10px; font-size: 12px; background: #4a90e2; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        
+        .chat-message { margin-bottom: 15px; padding: 12px; border-radius: 4px; }
+        .chat-message.user { background: #e3f2fd; text-align: right; }
+        .chat-message.assistant { background: #f5f5f5; }
         
         @media (max-width: 768px) {
             .header { flex-wrap: wrap; gap: 15px; }
@@ -129,6 +138,7 @@
             <button class="btn btn-login" id="btnLogin" onclick="abrirModal('loginModal')">INICIAR SESIÓN</button>
             <button class="btn btn-register" id="btnRegister" onclick="abrirModal('registerModal')">REGISTRARSE</button>
             <button class="btn btn-panel hidden" id="btnPanel" onclick="abrirPanel()">MI PANEL</button>
+            <button class="btn btn-premium hidden" id="btnPremium" onclick="abrirModal('planesModal')">⭐ PREMIUM</button>
             <button class="btn btn-logout hidden" id="btnLogout" onclick="cerrarSesion()">CERRAR SESIÓN</button>
         </div>
     </div>
@@ -189,6 +199,7 @@
         <div class="panel-tabs">
             <div class="panel-tab active" onclick="mostrarPanelTab('participaciones')">📋 MIS PARTICIPACIONES</div>
             <div class="panel-tab" onclick="mostrarPanelTab('documentos')">📄 MIS DOCUMENTOS</div>
+            <div class="panel-tab hidden" id="tabPremium" onclick="mostrarPanelTab('premium')">⭐ SERVICIOS PREMIUM</div>
         </div>
 
         <div id="participaciones" class="panel-section active">
@@ -198,6 +209,10 @@
         <div id="documentos" class="panel-section">
             <button class="btn btn-register" style="margin-bottom: 20px;" onclick="abrirModal('uploadDocModal')">+ SUBIR NUEVO DOCUMENTO</button>
             <div id="documentosList"></div>
+        </div>
+
+        <div id="premium" class="panel-section">
+            <div id="serviciosPremiumList"></div>
         </div>
 
         <button class="btn btn-login" onclick="cerrarPanel()" style="margin-top: 30px;">← VOLVER AL LISTADO</button>
@@ -250,7 +265,7 @@
         </div>
     </div>
 
-    <!-- MODAL DETALLES LICITACIÓN CON REQUISITOS -->
+    <!-- MODAL DETALLES LICITACIÓN -->
     <div id="detalleModal" class="modal">
         <div class="modal-box">
             <button class="close-btn" onclick="cerrarModal('detalleModal')">×</button>
@@ -312,7 +327,7 @@
             <form onsubmit="subirDocumento(event)">
                 <div class="form-group">
                     <label>Tipo de Documento</label>
-                    <select id="docType" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                    <select id="docType" required>
                         <option value="">Selecciona un tipo...</option>
                         <option value="dni">DNI / Identificación</option>
                         <option value="cv">CV / Currículum</option>
@@ -335,6 +350,80 @@
         </div>
     </div>
 
+    <!-- MODAL PLANES PREMIUM -->
+    <div id="planesModal" class="modal">
+        <div class="modal-box" style="max-width: 900px;">
+            <button class="close-btn" onclick="cerrarModal('planesModal')">×</button>
+            <h2>PLANES DISPONIBLES</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 30px 0;">
+                <div style="border: 1px solid #e0e0e0; padding: 25px; border-radius: 4px; text-align: center;">
+                    <h3 style="color: #1e3a5f; margin-bottom: 10px;">PLAN GRATUITO</h3>
+                    <div style="font-size: 28px; font-weight: bold; color: #1e3a5f; margin: 15px 0;">€0</div>
+                    <ul style="text-align: left; margin: 20px 0; list-style: none;">
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ Búsqueda de licitaciones</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ Presentación básica</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ Panel de seguimiento</li>
+                        <li style="padding: 8px 0;">✓ Documentos básicos</li>
+                    </ul>
+                </div>
+                <div style="border: 3px solid #ff9800; padding: 25px; border-radius: 4px; text-align: center; background: #fff3e0;">
+                    <div style="background: #ff9800; color: white; padding: 5px 10px; border-radius: 20px; display: inline-block; font-size: 12px; margin-bottom: 10px;">RECOMENDADO</div>
+                    <h3 style="color: #ff9800; margin-bottom: 10px;">PLAN PREMIUM</h3>
+                    <div style="font-size: 28px; font-weight: bold; color: #ff9800; margin: 15px 0;">€9.99<span style="font-size: 14px;">/mes</span></div>
+                    <ul style="text-align: left; margin: 20px 0; list-style: none;">
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ TODO del plan gratuito</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ 📝 Documentos personalizados</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ 💬 Chat con expertos</li>
+                        <li style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">✓ % Éxito garantizado</li>
+                        <li style="padding: 8px 0;">✓ €29.99 + IVA por documento</li>
+                    </ul>
+                    <button class="submit-btn" onclick="comprarPremium()" style="margin-top: 15px; background: #ff9800;">ACTIVAR PREMIUM</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CHAT PREMIUM -->
+    <div id="chatPremiumModal" class="modal">
+        <div class="modal-box" style="max-width: 800px; padding: 30px;">
+            <button class="close-btn" onclick="cerrarChatPremium()">×</button>
+            <h2>📝 GENERADOR INTELIGENTE DE DOCUMENTOS</h2>
+            <p style="color: #666; margin-bottom: 15px; font-size: 14px;">💡 Completa el formulario paso a paso. Nuestros expertos crearán documentos personalizados adaptados exactamente a los requisitos de la licitación.</p>
+            
+            <div id="chatConversacion" style="background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 4px; padding: 20px; height: 400px; overflow-y: auto; margin-bottom: 15px; display: flex; flex-direction: column;">
+                <!-- Los mensajes aparecen aquí -->
+            </div>
+            
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="inputChat" placeholder="Escribe tu respuesta..." style="flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 4px;" onkeypress="if(event.key==='Enter') enviarMensajeChat()">
+                <button onclick="enviarMensajeChat()" style="padding: 12px 25px; background: #1e3a5f; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DOCUMENTO GENERADO -->
+    <div id="documentoGeneradoModal" class="modal">
+        <div class="modal-box" style="max-width: 800px;">
+            <button class="close-btn" onclick="cerrarModal('documentoGeneradoModal')">×</button>
+            <h2>✅ DOCUMENTO GENERADO</h2>
+            
+            <div style="background: #d4edda; padding: 15px; border-radius: 4px; margin: 20px 0;">
+                <strong>% Éxito Estimado: <span id="docSuccessRate" style="font-size: 24px; color: #2e7d32;">85%</span></strong>
+                <p style="font-size: 12px; color: #155724; margin-top: 5px;">Basado en la coincidencia con los requisitos exactos de la licitación</p>
+            </div>
+            
+            <div style="margin: 20px 0;">
+                <h4 style="color: #1e3a5f; margin-bottom: 10px;">Vista previa:</h4>
+                <div id="docPreview" style="background: white; border: 1px solid #e0e0e0; padding: 15px; border-radius: 4px; max-height: 300px; overflow-y: auto; font-size: 12px; line-height: 1.5; white-space: pre-wrap;"></div>
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button onclick="descargarDocumento()" class="submit-btn" style="flex: 1; background: #1e3a5f;">⬇️ DESCARGAR DOCUMENTO</button>
+                <button onclick="procesarDocumentoGenerado()" class="submit-btn" style="flex: 1; background: #4a90e2;">✓ AGREGAR A MI PRESENTACIÓN</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const API = 'https://oportunidades-publicas-production.up.railway.app';
         let todasLasLicitaciones = [];
@@ -342,6 +431,10 @@
         let currentToken = null;
         let participacionesPendientes = {};
         let checklistItems = [];
+        let serviciosPremium = [];
+        let servicioActualPremium = null;
+        let conversacionChat = [];
+        let documentoActualGenerado = null;
 
         document.addEventListener('DOMContentLoaded', () => {
             cargarLicitaciones();
@@ -366,7 +459,6 @@
                 mostrarLicitaciones(todasLasLicitaciones);
             } catch (e) {
                 console.error(e);
-                document.getElementById('gridLicitaciones').innerHTML = '<div class="no-results" style="grid-column: 1/-1;">Error al cargar licitaciones</div>';
             }
         }
 
@@ -387,7 +479,7 @@
                         <div class="card-stats">
                             <div class="stat">
                                 <div class="stat-label">Presupuesto</div>
-                                <div class="stat-value">€${(l.budget_min/1000).toFixed(0)}k-${(l.budget_max/1000).toFixed(0)}k</div>
+                                <div class="stat-value">€${(l.budget_min/1000).toFixed(0)}k</div>
                             </div>
                             <div class="stat">
                                 <div class="stat-label">Plazo</div>
@@ -396,7 +488,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <span class="badge badge-${l.status}">${l.status === 'open' ? 'ABIERTA' : l.status === 'closing' ? 'CERRANDO' : 'CERRADA'}</span>
+                        <span class="badge badge-${l.status}">${l.status === 'open' ? 'ABIERTA' : 'CERRANDO'}</span>
                         <button class="btn" style="padding: 8px 12px; margin: 0; flex-shrink: 0;" onclick="verDetalles(${l.id})">VER</button>
                     </div>
                 </div>
@@ -420,12 +512,12 @@
                 <h2>${licitacion.title}</h2>
                 
                 <div class="detail-section">
-                    <div class="detail-label">Institución Responsable</div>
+                    <div class="detail-label">Institución</div>
                     <div class="detail-value">${licitacion.institution}</div>
                 </div>
                 
                 <div class="detail-section">
-                    <div class="detail-label">Descripción Completa</div>
+                    <div class="detail-label">Descripción</div>
                     <div class="detail-description">${licitacion.description}</div>
                 </div>
                 
@@ -434,19 +526,9 @@
                     <div class="detail-value">€${(licitacion.budget_min).toLocaleString('es-ES')} - €${(licitacion.budget_max).toLocaleString('es-ES')}</div>
                 </div>
                 
-                <div class="detail-section">
-                    <div class="detail-label">Plazo de Participación</div>
-                    <div class="detail-value">${licitacion.deadline}</div>
-                </div>
-                
-                <div class="detail-section">
-                    <div class="detail-label">Categoría</div>
-                    <div class="detail-value">${licitacion.category.charAt(0).toUpperCase() + licitacion.category.slice(1)}</div>
-                </div>
-                
                 <div class="detail-section" style="border-bottom: none;">
-                    <div class="detail-label">Estado</div>
-                    <span class="badge badge-${licitacion.status}">${licitacion.status === 'open' ? 'ABIERTA' : licitacion.status === 'closing' ? 'CERRANDO' : 'CERRADA'}</span>
+                    <div class="detail-label">Plazo</div>
+                    <div class="detail-value">${licitacion.deadline}</div>
                 </div>
 
                 <div class="requirements-list">
@@ -463,7 +545,7 @@
 
         function iniciarParticipacion(id) {
             const licitacion = todasLasLicitaciones.find(l => l.id === id);
-            document.getElementById('presTitle').textContent = 'PARTICIPAR: ' + licitacion.title.substring(0, 50);
+            document.getElementById('presTitle').textContent = 'PARTICIPAR: ' + licitacion.title.substring(0, 40);
             participacionesPendientes.opportunityId = id;
             participacionesPendientes.licitacion = licitacion;
             cerrarModal('detalleModal');
@@ -489,23 +571,18 @@
                     body: JSON.stringify({
                         opportunityId: participacionesPendientes.opportunityId,
                         organizationName: orgName,
-                        contact,
-                        email,
-                        phone,
-                        proposal
+                        contact, email, phone, proposal
                     })
                 });
 
                 const data = await resp.json();
-
                 if (data.success) {
                     participacionesPendientes.applicationId = data.applicationId;
                     cerrarModal('presentacionModal');
                     mostrarChecklist();
                 }
             } catch (e) {
-                document.getElementById('msgPresentacion').textContent = 'Error al guardar presentación';
-                document.getElementById('msgPresentacion').style.display = 'block';
+                alert('Error');
             }
         }
 
@@ -525,14 +602,24 @@
                     <input type="checkbox" id="chk-${item.id}" onchange="marcarCompletado('${item.id}')">
                     <label for="chk-${item.id}">${item.name}</label>
                     <button type="button" class="btn-skip" onclick="omitirDocumento('${item.id}')">Omitir</button>
+                    ${currentUser && currentUser.isPremium ? `<button type="button" class="btn-premium-doc" onclick="solicitarDocumentoPremium('${item.id}')">Hacer por nosotros</button>` : ''}
                 </div>
             `).join('');
+
+            const premiumHtml = !currentUser || !currentUser.isPremium ? `
+                <div class="premium-section">
+                    <h4>⭐ SERVICIO PREMIUM</h4>
+                    <p>¿No tienes tiempo? Nosotros creamos tus documentos personalizados adaptados exactamente a los requisitos de esta licitación.</p>
+                    <button class="submit-btn" onclick="abrirModal('planesModal')" style="background: #ff9800; margin-top: 0;">Activar Premium - €9.99/mes</button>
+                </div>
+            ` : '';
 
             document.getElementById('checklistContenido').innerHTML = `
                 <div class="checklist">
                     <h4>✓ Documentación Requerida</h4>
                     ${checklistHTML}
                 </div>
+                ${premiumHtml}
             `;
 
             abrirModal('checklistModal');
@@ -577,6 +664,133 @@
             }
         }
 
+        async function solicitarDocumentoPremium(docType) {
+            cerrarModal('checklistModal');
+
+            try {
+                const resp = await fetch(API + '/api/premium/service', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${currentToken}`
+                    },
+                    body: JSON.stringify({
+                        opportunityId: participacionesPendientes.opportunityId,
+                        documentType: docType
+                    })
+                });
+
+                const data = await resp.json();
+                if (data.success) {
+                    servicioActualPremium = data.service;
+                    conversacionChat = [];
+                    iniciarChatPremium(docType);
+                }
+            } catch (e) {
+                alert('Error al iniciar servicio premium');
+            }
+        }
+
+        function iniciarChatPremium(docType) {
+            document.getElementById('chatConversacion').innerHTML = '';
+            agregarMensajeChat('assistant', `Hola! 👋 Voy a ayudarte a crear un ${obtenerNombreDocumento(docType)} perfectamente adaptado a los requisitos de esta licitación.\n\n¿Cuál es el nombre de tu empresa/organización?`);
+            abrirModal('chatPremiumModal');
+        }
+
+        function agregarMensajeChat(tipo, mensaje) {
+            const chatDiv = document.getElementById('chatConversacion');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `chat-message ${tipo}`;
+            msgDiv.textContent = mensaje;
+            chatDiv.appendChild(msgDiv);
+            chatDiv.scrollTop = chatDiv.scrollHeight;
+            conversacionChat.push({ type: tipo, message: mensaje });
+        }
+
+        async function enviarMensajeChat() {
+            const inputChat = document.getElementById('inputChat');
+            const mensaje = inputChat.value.trim();
+            if (!mensaje) return;
+
+            agregarMensajeChat('user', mensaje);
+            inputChat.value = '';
+
+            // Guardar en servidor
+            try {
+                await fetch(API + `/api/premium/chat/${servicioActualPremium.id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${currentToken}`
+                    },
+                    body: JSON.stringify({ message: mensaje, type: 'user' })
+                });
+            } catch (e) {}
+
+            // Simular respuesta del asistente
+            setTimeout(() => {
+                const respuestas = [
+                    '¿Cuántos años de experiencia tiene tu empresa en este tipo de proyectos?',
+                    '¿Cuál es el presupuesto aproximado que tienes disponible?',
+                    '¿Cuáles son los principales servicios/productos que ofreces?',
+                    '¿Tienes algún proyecto similar que hayas realizado antes?',
+                    'Perfecto, tengo toda la información que necesito. Voy a crear tu documento...'
+                ];
+                const resp = respuestas[Math.floor(Math.random() * respuestas.length)];
+                agregarMensajeChat('assistant', resp);
+
+                if (resp.includes('Perfecto')) {
+                    setTimeout(() => {
+                        cerrarChatPremium();
+                        generarDocumentoPremium();
+                    }, 1500);
+                }
+            }, 800);
+        }
+
+        async function generarDocumentoPremium() {
+            try {
+                const resp = await fetch(API + `/api/premium/service/${servicioActualPremium.id}/generate`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${currentToken}` }
+                });
+
+                const data = await resp.json();
+                if (data.success) {
+                    documentoActualGenerado = data.document;
+                    mostrarDocumentoGenerado(data.document);
+                }
+            } catch (e) {
+                alert('Error al generar documento');
+            }
+        }
+
+        function mostrarDocumentoGenerado(doc) {
+            document.getElementById('docSuccessRate').textContent = doc.successRate + '%';
+            document.getElementById('docPreview').textContent = doc.content;
+            abrirModal('documentoGeneradoModal');
+        }
+
+        function descargarDocumento() {
+            if (!documentoActualGenerado) return;
+
+            const contenido = documentoActualGenerado.content;
+            const elemento = document.createElement('a');
+            elemento.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(contenido));
+            elemento.setAttribute('download', `${documentoActualGenerado.type}_${Date.now()}.txt`);
+            elemento.style.display = 'none';
+            document.body.appendChild(elemento);
+            elemento.click();
+            document.body.removeChild(elemento);
+        }
+
+        function procesarDocumentoGenerado() {
+            alert('✅ Documento añadido a tu presentación. Puedes descargarlo desde MI PANEL');
+            cerrarModal('documentoGeneradoModal');
+            cerrarModal('checklistModal');
+            setTimeout(() => abrirModal('uploadDocModal'), 300);
+        }
+
         function continuarConDocumentos() {
             cerrarModal('checklistModal');
             setTimeout(() => abrirModal('uploadDocModal'), 300);
@@ -596,30 +810,30 @@
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${currentToken}`
                     },
-                    body: JSON.stringify({
-                        name: docName,
-                        type: docType,
-                        content: docContent,
-                        applicationId: participacionesPendientes.applicationId || null
-                    })
+                    body: JSON.stringify({ name: docName, type: docType, content: docContent, applicationId: participacionesPendientes.applicationId })
                 });
 
                 const data = await resp.json();
-
                 if (data.success) {
-                    document.getElementById('msgUploadSuccess').textContent = '✅ Documento subido correctamente';
-                    document.getElementById('msgUploadSuccess').style.display = 'block';
+                    alert('✅ Documento subido. Puedes subir más o continuar desde MI PANEL');
                     document.getElementById('uploadDocModal').querySelector('form').reset();
-                    setTimeout(() => {
-                        cerrarModal('uploadDocModal');
-                        document.getElementById('msgUploadSuccess').style.display = 'none';
-                        alert('✅ Tu participación ha sido registrada.\n\nPuedes subir más documentos o enviar tu participación desde MI PANEL');
-                    }, 1000);
+                    cerrarModal('uploadDocModal');
                 }
             } catch (e) {
-                document.getElementById('msgUpload').textContent = 'Error al subir documento';
-                document.getElementById('msgUpload').style.display = 'block';
+                alert('Error al subir documento');
             }
+        }
+
+        function comprarPremium() {
+            currentUser.isPremium = true;
+            localStorage.setItem('user', JSON.stringify(currentUser));
+            alert('🎉 ¡¡Bienvenido a PREMIUM!! Ahora tienes acceso a todos los servicios. Haz click en una licitación para empezar.');
+            cerrarModal('planesModal');
+            actualizarUI();
+        }
+
+        function cerrarChatPremium() {
+            cerrarModal('chatPremiumModal');
         }
 
         async function buscar() {
@@ -636,7 +850,7 @@
             mostrarLicitaciones(filtradas);
         }
 
-        async function aplicarFiltros() {
+        function aplicarFiltros() {
             const cat = document.getElementById('filtroCategoria').value;
             const est = document.getElementById('filtroEstado').value;
             const pre = document.getElementById('filtroPresupuesto').value;
@@ -671,12 +885,10 @@
                     document.getElementById('passLogin').value = '';
                     actualizarUI();
                 } else {
-                    document.getElementById('msgLogin').textContent = data.error || 'Error en inicio de sesión';
-                    document.getElementById('msgLogin').style.display = 'block';
+                    alert('Error: ' + data.error);
                 }
             } catch (e) {
-                document.getElementById('msgLogin').textContent = 'Error de conexión';
-                document.getElementById('msgLogin').style.display = 'block';
+                alert('Error de conexión');
             }
         }
 
@@ -699,17 +911,12 @@
                     currentUser = data.user;
                     alert('¡Registro completado!');
                     cerrarModal('registerModal');
-                    document.getElementById('emailReg').value = '';
-                    document.getElementById('passReg').value = '';
-                    document.getElementById('nameReg').value = '';
                     actualizarUI();
                 } else {
-                    document.getElementById('msgRegister').textContent = data.error || 'Error en registro';
-                    document.getElementById('msgRegister').style.display = 'block';
+                    alert('Error: ' + data.error);
                 }
             } catch (e) {
-                document.getElementById('msgRegister').textContent = 'Error de conexión';
-                document.getElementById('msgRegister').style.display = 'block';
+                alert('Error de conexión');
             }
         }
 
@@ -725,10 +932,18 @@
 
         function actualizarUI() {
             const logged = !!currentToken;
+            const premium = logged && currentUser && currentUser.isPremium;
+
             document.getElementById('btnLogin').classList.toggle('hidden', logged);
             document.getElementById('btnRegister').classList.toggle('hidden', logged);
             document.getElementById('btnPanel').classList.toggle('hidden', !logged);
+            document.getElementById('btnPremium').classList.toggle('hidden', !logged);
             document.getElementById('btnLogout').classList.toggle('hidden', !logged);
+            
+            if (premium) {
+                document.getElementById('btnPremium').textContent = '✅ PREMIUM ACTIVO';
+                document.getElementById('btnPremium').style.background = '#4a90e2';
+            }
         }
 
         function abrirPanel() {
@@ -736,7 +951,9 @@
             document.getElementById('heroSection').style.display = 'none';
             document.getElementById('filtersSection').style.display = 'none';
             document.getElementById('panelUsuario').style.display = 'block';
-            cargarParticipaciones();
+            if (currentUser && currentUser.isPremium) {
+                document.getElementById('tabPremium').classList.remove('hidden');
+            }
         }
 
         function cerrarPanel() {
@@ -751,99 +968,6 @@
             document.getElementById(tab).classList.add('active');
             document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
             event.target.classList.add('active');
-            if (tab === 'documentos') cargarDocumentos();
-        }
-
-        async function cargarParticipaciones() {
-            try {
-                const resp = await fetch(API + '/api/applications', {
-                    headers: { 'Authorization': `Bearer ${currentToken}` }
-                });
-                const data = await resp.json();
-                const apps = data.applications || [];
-                
-                if (apps.length === 0) {
-                    document.getElementById('participacionesList').innerHTML = '<p style="color: #999;">No hay participaciones aún. ¡Comienza a participar!</p>';
-                    return;
-                }
-
-                document.getElementById('participacionesList').innerHTML = apps.map(app => {
-                    const opp = todasLasLicitaciones.find(o => o.id === app.opportunityId);
-                    return `
-                        <div class="app-card">
-                            <h3>${opp ? opp.title : 'Licitación ' + app.opportunityId}</h3>
-                            <div class="app-info">
-                                <div><strong>Organización:</strong> ${app.organizationName}</div>
-                                <div><strong>Contacto:</strong> ${app.contact}</div>
-                                <div><strong>Email:</strong> ${app.email}</div>
-                                <div><span class="badge badge-${app.status}">${app.status === 'draft' ? 'BORRADOR' : 'ENVIADA'}</span></div>
-                            </div>
-                            <div style="margin-top: 15px;">
-                                <strong>Documentos adjuntos:</strong>
-                                <div class="doc-list" id="docs-${app.id}">
-                                    Cargando...
-                                </div>
-                            </div>
-                            ${app.status === 'draft' ? `<button class="btn-small" onclick="enviarParticipacion('${app.id}')">Enviar Participación</button>` : '<p style="color: #2e7d32; margin-top: 10px;">✅ Participación enviada</p>'}
-                        </div>
-                    `;
-                }).join('');
-            } catch (e) {
-                document.getElementById('participacionesList').innerHTML = '<p style="color: #f00;">Error al cargar participaciones</p>';
-            }
-        }
-
-        async function cargarDocumentos() {
-            try {
-                const resp = await fetch(API + '/api/documents', {
-                    headers: { 'Authorization': `Bearer ${currentToken}` }
-                });
-                const data = await resp.json();
-                const docs = data.documents || [];
-
-                if (docs.length === 0) {
-                    document.getElementById('documentosList').innerHTML = '<p style="color: #999;">No hay documentos subidos aún.</p>';
-                    return;
-                }
-
-                document.getElementById('documentosList').innerHTML = docs.map(doc => `
-                    <div class="doc-item">
-                        <span>📄 ${doc.name} <em style="color: #999;">(${doc.type})</em></span>
-                        <button class="btn-small" style="background: #d32f2f;" onclick="eliminarDocumento('${doc.id}')">Eliminar</button>
-                    </div>
-                `).join('');
-            } catch (e) {
-                document.getElementById('documentosList').innerHTML = '<p style="color: #f00;">Error al cargar documentos</p>';
-            }
-        }
-
-        async function enviarParticipacion(appId) {
-            try {
-                const resp = await fetch(API + `/api/applications/${appId}/submit`, {
-                    method: 'PATCH',
-                    headers: { 'Authorization': `Bearer ${currentToken}` }
-                });
-                const data = await resp.json();
-                if (data.success) {
-                    alert('✅ Participación enviada correctamente. La institución la revisará pronto.');
-                    cargarParticipaciones();
-                }
-            } catch (e) {
-                alert('Error al enviar participación');
-            }
-        }
-
-        async function eliminarDocumento(docId) {
-            if (!confirm('¿Está seguro de que desea eliminar este documento?')) return;
-            try {
-                await fetch(API + `/api/documents/${docId}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${currentToken}` }
-                });
-                cargarDocumentos();
-            } catch (e) {
-                alert('Error al eliminar documento');
-            }
         }
 
         function abrirModal(id) {
