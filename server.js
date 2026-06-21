@@ -15,16 +15,18 @@ app.use(helmet({ contentSecurityPolicy: false }));
 app.use(compression());
 app.use(cors({ origin: '*', credentials: true }));
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }));
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({ limit: '50mb' }));
 app.use(express.static(path.join(__dirname, '.')));
 
 let users = new Map();
+let applications = new Map();
+let userDocuments = new Map();
+
 (async () => {
   const hashedPassword = await bcryptjs.hash('test1234', 12);
   users.set('test@test.com', { id: 'user123', email: 'test@test.com', password_hash: hashedPassword, firstName: 'Test', isPremium: false, createdAt: new Date() });
 })();
 
-// 50+ LICITACIONES REALES
 const opportunities = [
   { id: 1, title: 'Mejora vial integral - Avenida Constitución', institution: 'Ayuntamiento de Sevilla', budget_min: 100000, budget_max: 200000, deadline: '2026-07-15', status: 'open', category: 'obras', description: 'Repavimentación, semaforización y mejora de accesibilidad en avenida céntrica' },
   { id: 2, title: 'Rehabilitación energética edificios públicos', institution: 'Instituto Andaluz Eficiencia Energética', budget_min: 150000, budget_max: 250000, deadline: '2026-08-20', status: 'open', category: 'obras', description: 'Aislamiento, energías renovables e instalaciones en 5 edificios municipales' },
@@ -83,8 +85,18 @@ function verifyToken(token) {
   try { return jwt.verify(token, JWT_SECRET); } catch (e) { return null; }
 }
 
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) return res.status(401).json({ error: 'Token required' });
+  const verified = verifyToken(token);
+  if (!verified) return res.status(403).json({ error: 'Invalid token' });
+  req.userId = verified.userId;
+  next();
+}
+
+// ROUTES
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
-app.get('/admin.html', (req, res) => res.sendFile(path.join(__dirname, 'admin.html')));
 app.get('/health', (req, res) => res.json({ status: 'Online', opportunities: opportunities.length }));
 
 app.get('/api/opportunities', (req, res) => {
@@ -100,6 +112,51 @@ app.get('/api/opportunities', (req, res) => {
   res.json({ total: filtered.length, opportunities: filtered });
 });
 
+// PARTICIPACIONES
+app.post('/api/applications', authenticateToken, (req, res) => {
+  const { opportunityId, organizationName, contact, email, phone, proposal } = req.body;
+  const appId = Date.now().toString();
+  const app = { id: appId, userId: req.userId, opportunityId, organizationName, contact, email, phone, proposal, status: 'draft', documents: [], createdAt: new Date(), submittedAt: null };
+  applications.set(appId, app);
+  res.json({ success: true, applicationId: appId, application: app });
+});
+
+app.get('/api/applications', authenticateToken, (req, res) => {
+  const userApps = Array.from(applications.values()).filter(a => a.userId === req.userId);
+  res.json({ total: userApps.length, applications: userApps });
+});
+
+app.patch('/api/applications/:id/submit', authenticateToken, (req, res) => {
+  const app = applications.get(req.params.id);
+  if (!app || app.userId !== req.userId) return res.status(403).json({ error: 'Forbidden' });
+  app.status = 'submitted';
+  app.submittedAt = new Date();
+  res.json({ success: true, application: app });
+});
+
+// DOCUMENTOS
+app.post('/api/documents', authenticateToken, (req, res) => {
+  const { name, type, content, applicationId } = req.body;
+  const docId = Date.now().toString();
+  const doc = { id: docId, userId: req.userId, name, type, content, applicationId, uploadedAt: new Date() };
+  if (!userDocuments.has(req.userId)) userDocuments.set(req.userId, []);
+  userDocuments.get(req.userId).push(doc);
+  res.json({ success: true, document: doc });
+});
+
+app.get('/api/documents', authenticateToken, (req, res) => {
+  const docs = userDocuments.get(req.userId) || [];
+  res.json({ total: docs.length, documents: docs });
+});
+
+app.delete('/api/documents/:id', authenticateToken, (req, res) => {
+  const docs = userDocuments.get(req.userId) || [];
+  const idx = docs.findIndex(d => d.id === req.params.id);
+  if (idx >= 0) docs.splice(idx, 1);
+  res.json({ success: true });
+});
+
+// AUTH
 app.post('/api/auth/register', async (req, res) => {
   try {
     const { email, password, firstName } = req.body;
@@ -124,8 +181,6 @@ app.post('/api/auth/login', async (req, res) => {
   } catch (e) { res.status(500).json({ error: 'Error' }); }
 });
 
-app.listen(PORT, () => {
-  console.log(`✅ API Online - ${opportunities.length} licitaciones`);
-});
+app.listen(PORT, () => console.log(`✅ API Online - ${opportunities.length} licitaciones`));
 
 module.exports = app;
