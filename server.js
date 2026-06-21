@@ -36,10 +36,9 @@ let payments = new Map();
     plan: 'premium',
     createdAt: new Date() 
   });
-  console.log('✅ Usuario test@test.com creado como PREMIUM');
 })();
 
-// TÍTULOS REALES PARA OPORTUNIDADES
+// TÍTULOS REALES
 const TITLES = [
   'Rehabilitación de parques públicos - Fase 1',
   'Modernización de infraestructura vial municipal',
@@ -88,7 +87,7 @@ const TITLES = [
   'Reparación de infraestructuras portuarias'
 ];
 
-// DATOS DE OPORTUNIDADES
+// OPORTUNIDADES
 const opportunities = [
   { id: 1, title: 'Mejora vial integral - Avenida Constitución', institution: 'Ayuntamiento de Sevilla', budget_min: 100000, budget_max: 200000, deadline: '2026-07-15', deadlineDate: new Date('2026-07-15'), status: 'open', category: 'obras', description: 'Repavimentación, semaforización y mejora de accesibilidad', requirements: ['Certificado de constitución', 'DNI del representante', 'Declaración de impuestos', 'Propuesta técnica'], documents: ['dni', 'empresa', 'propuesta', 'presupuesto'] },
   { id: 2, title: 'Rehabilitación energética edificios públicos', institution: 'Instituto Andaluz Eficiencia Energética', budget_min: 150000, budget_max: 250000, deadline: '2026-08-20', deadlineDate: new Date('2026-08-20'), status: 'open', category: 'obras', description: 'Aislamiento e instalaciones', requirements: ['Certificado especialista', 'Experiencia previa 5 años'], documents: ['certificacion', 'propuesta'] },
@@ -96,19 +95,14 @@ const opportunities = [
   { id: 30, title: 'Subvención autónomos Fomento Empleo', institution: 'Servicio Andaluz Empleo', budget_min: 500000, budget_max: 1000000, deadline: '2026-07-20', deadlineDate: new Date('2026-07-20'), status: 'open', category: 'subvenciones', description: 'Ayudas inicio ampliación actividades', requirements: ['DNI solicitante', 'Plan negocio'], documents: ['dni', 'plan'] }
 ];
 
-// Generar oportunidades con títulos REALES
 for (let i = 4; i < 45; i++) {
   const days = Math.floor(Math.random() * 90) + 10;
   const deadline = new Date();
   deadline.setDate(deadline.getDate() + days);
-  
-  // Usar título del array TITLES de forma circular
   const titleIndex = (i - 4) % TITLES.length;
-  const title = TITLES[titleIndex];
-  
   opportunities.push({
     id: i, 
-    title: title,
+    title: TITLES[titleIndex],
     institution: 'Institución Pública Regional',
     budget_min: 50000 + Math.random() * 250000,
     budget_max: 150000 + Math.random() * 850000,
@@ -116,9 +110,9 @@ for (let i = 4; i < 45; i++) {
     deadlineDate: deadline, 
     status: days < 30 ? 'closing' : 'open',
     category: ['obras', 'servicios', 'suministros', 'subvenciones'][Math.floor(Math.random() * 4)],
-    description: `${title} - Proyecto de mejora e innovación infraestructural`, 
-    requirements: ['Certificado de constitución', 'DNI representante', 'Propuesta técnica', 'Presupuesto detallado'], 
-    documents: ['propuesta', 'presupuesto', 'empresa']
+    description: `${TITLES[titleIndex]} - Proyecto de mejora e innovación infraestructural`, 
+    requirements: ['Certificado de constitución', 'DNI representante', 'Propuesta técnica'], 
+    documents: ['propuesta', 'presupuesto']
   });
 }
 
@@ -126,14 +120,13 @@ opportunities.sort((a, b) => a.deadlineDate - b.deadlineDate);
 
 const JWT_SECRET = 'oportunidades-secret-2026';
 
-function generateToken(userId) {
-  return jwt.sign({ userId, timestamp: Date.now() }, JWT_SECRET, { expiresIn: '24h' });
+function generateToken(userId, isPremium = false) {
+  return jwt.sign({ userId, isPremium, timestamp: Date.now() }, JWT_SECRET, { expiresIn: '24h' });
 }
 
 function verifyToken(token) {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    return decoded;
+    return jwt.verify(token, JWT_SECRET);
   } catch (e) {
     return null;
   }
@@ -142,16 +135,14 @@ function verifyToken(token) {
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
-  if (!token) {
-    return res.status(401).json({ error: 'Token required' });
-  }
+  if (!token) return res.status(401).json({ error: 'Token required' });
   
   const verified = verifyToken(token);
-  if (!verified) {
-    return res.status(403).json({ error: 'Invalid token' });
-  }
+  if (!verified) return res.status(403).json({ error: 'Invalid token' });
   
+  // EL TOKEN ES LA FUENTE DE VERDAD - No buscar en base de datos
   req.userId = verified.userId;
+  req.isPremium = verified.isPremium || false;
   next();
 }
 
@@ -159,7 +150,7 @@ function authenticateToken(req, res, next) {
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
 app.get('/health', (req, res) => {
-  res.json({ status: 'Online ✅', opportunities: opportunities.length, users: users.size });
+  res.json({ status: 'Online ✅', opportunities: opportunities.length });
 });
 
 app.get('/api/opportunities', (req, res) => {
@@ -184,8 +175,8 @@ app.get('/api/opportunities/:id', (req, res) => {
 app.post('/api/auth/register', async (req, res) => {
   try {
     const { email, password, firstName } = req.body;
-    if (!email || !password) return res.status(400).json({ error: 'Email y password requeridos' });
-    if (users.has(email)) return res.status(409).json({ error: 'Usuario ya registrado' });
+    if (!email || !password) return res.status(400).json({ error: 'Required' });
+    if (users.has(email)) return res.status(409).json({ error: 'Ya registrado' });
     
     const userId = Math.random().toString(36).substr(2, 9);
     const user = { 
@@ -193,52 +184,51 @@ app.post('/api/auth/register', async (req, res) => {
       email, 
       password_hash: await bcryptjs.hash(password, 12), 
       firstName: firstName || '', 
-      isPremium: false, 
-      plan: 'free', 
+      isPremium: false,
       createdAt: new Date() 
     };
     users.set(email, user);
-    const token = generateToken(userId);
+    const token = generateToken(userId, false);
     res.status(201).json({ success: true, token, user: { id: user.id, email: user.email, firstName: user.firstName, isPremium: user.isPremium } });
   } catch (e) {
-    res.status(500).json({ error: 'Error al registrar' });
+    res.status(500).json({ error: 'Error' });
   }
 });
 
 app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    if (!email || !password) return res.status(400).json({ error: 'Email y password requeridos' });
+    if (!email || !password) return res.status(400).json({ error: 'Required' });
     
     const user = users.get(email);
     if (!user || !(await bcryptjs.compare(password, user.password_hash))) {
-      return res.status(401).json({ error: 'Email o contraseña incorrectos' });
+      return res.status(401).json({ error: 'Credenciales incorrectas' });
     }
     
-    const token = generateToken(user.id);
+    const token = generateToken(user.id, user.isPremium);
     res.json({ success: true, token, user: { id: user.id, email: user.email, firstName: user.firstName, isPremium: user.isPremium } });
   } catch (e) {
-    res.status(500).json({ error: 'Error al iniciar sesión' });
+    res.status(500).json({ error: 'Error' });
   }
 });
 
 app.post('/api/applications', authenticateToken, (req, res) => {
   try {
-    const user = Array.from(users.values()).find(u => u.id === req.userId);
-    
-    if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
-    if (!user.isPremium) return res.status(403).json({ error: 'Necesitas PREMIUM para participar' });
+    // EL TOKEN CONTIENE isPremium - usarlo directamente
+    if (!req.isPremium) {
+      return res.status(403).json({ error: 'PREMIUM required' });
+    }
 
     const { opportunityId, organizationName, contact, email, phone, proposal } = req.body;
     
     if (!opportunityId || !organizationName || !contact || !email || !phone || !proposal) {
-      return res.status(400).json({ error: 'Faltan campos requeridos' });
+      return res.status(400).json({ error: 'Missing fields' });
     }
 
     const appId = 'app_' + Date.now();
     const app = { 
       id: appId, 
-      userId: req.userId, 
+      userId: req.userId,
       opportunityId, 
       organizationName, 
       contact, 
@@ -251,10 +241,9 @@ app.post('/api/applications', authenticateToken, (req, res) => {
     };
     
     applications.set(appId, app);
-    
     res.json({ success: true, applicationId: appId, application: app });
   } catch (e) {
-    res.status(500).json({ error: 'Error al crear aplicación: ' + e.message });
+    res.status(500).json({ error: 'Error: ' + e.message });
   }
 });
 
@@ -263,21 +252,19 @@ app.get('/api/applications', authenticateToken, (req, res) => {
     const userApps = Array.from(applications.values()).filter(a => a.userId === req.userId);
     res.json({ total: userApps.length, applications: userApps });
   } catch (e) {
-    res.status(500).json({ error: 'Error al obtener aplicaciones' });
+    res.status(500).json({ error: 'Error' });
   }
 });
 
 app.patch('/api/applications/:id/submit', authenticateToken, (req, res) => {
   try {
     const app = applications.get(req.params.id);
-    if (!app) return res.status(404).json({ error: 'Aplicación no encontrada' });
-    if (app.userId !== req.userId) return res.status(403).json({ error: 'No tienes permiso' });
-    
+    if (!app || app.userId !== req.userId) return res.status(403).json({ error: 'Forbidden' });
     app.status = 'submitted';
     app.submittedAt = new Date();
     res.json({ success: true, application: app });
   } catch (e) {
-    res.status(500).json({ error: 'Error al enviar aplicación' });
+    res.status(500).json({ error: 'Error' });
   }
 });
 
@@ -286,13 +273,11 @@ app.post('/api/documents', authenticateToken, (req, res) => {
     const { name, type, content, applicationId } = req.body;
     const docId = 'doc_' + Date.now();
     const doc = { id: docId, userId: req.userId, name, type, content, applicationId, uploadedAt: new Date() };
-    
     if (!userDocuments.has(req.userId)) userDocuments.set(req.userId, []);
     userDocuments.get(req.userId).push(doc);
-    
     res.json({ success: true, document: doc });
   } catch (e) {
-    res.status(500).json({ error: 'Error al guardar documento' });
+    res.status(500).json({ error: 'Error' });
   }
 });
 
@@ -301,7 +286,7 @@ app.get('/api/documents', authenticateToken, (req, res) => {
     const docs = userDocuments.get(req.userId) || [];
     res.json({ total: docs.length, documents: docs });
   } catch (e) {
-    res.status(500).json({ error: 'Error al obtener documentos' });
+    res.status(500).json({ error: 'Error' });
   }
 });
 
@@ -309,19 +294,13 @@ app.delete('/api/documents/:id', authenticateToken, (req, res) => {
   try {
     const docs = userDocuments.get(req.userId) || [];
     const index = docs.findIndex(d => d.id === req.params.id);
-    if (index === -1) return res.status(404).json({ error: 'Documento no encontrado' });
+    if (index === -1) return res.status(404).json({ error: 'Not found' });
     docs.splice(index, 1);
     res.json({ success: true });
   } catch (e) {
-    res.status(500).json({ error: 'Error al eliminar documento' });
+    res.status(500).json({ error: 'Error' });
   }
 });
 
-app.post('/api/payment/create-checkout', authenticateToken, (req, res) => {
-  const sessionId = 'cs_' + Math.random().toString(36).substr(2, 24);
-  payments.set(sessionId, { userId: req.userId, status: 'pending', createdAt: new Date() });
-  res.json({ success: true, sessionId, checkoutUrl: `https://checkout.stripe.com/pay/${sessionId}` });
-});
-
-app.listen(PORT, () => console.log(`\n🚀 SERVIDOR ONLINE EN PUERTO ${PORT}\n✅ Base de datos en memoria\n✅ ${opportunities.length} oportunidades cargadas con títulos reales\n✅ Usuario test@test.com (PREMIUM) disponible\n`));
+app.listen(PORT, () => console.log(`\n🚀 SERVIDOR ONLINE - PORT ${PORT}\n✅ ${opportunities.length} oportunidades\n`));
 
