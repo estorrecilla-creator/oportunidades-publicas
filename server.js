@@ -21,13 +21,29 @@ app.use(express.static(path.join(__dirname, '.')));
 let users = new Map();
 let applications = new Map();
 let userDocuments = new Map();
+let premiumServices = new Map();
+let generatedDocuments = new Map();
+let chatMessages = new Map();
 
 (async () => {
   const hashedPassword = await bcryptjs.hash('test1234', 12);
-  users.set('test@test.com', { id: 'user123', email: 'test@test.com', password_hash: hashedPassword, firstName: 'Test', isPremium: false, createdAt: new Date() });
+  users.set('test@test.com', { 
+    id: 'user123', 
+    email: 'test@test.com', 
+    password_hash: hashedPassword, 
+    firstName: 'Test', 
+    isPremium: true, 
+    plan: 'premium',
+    createdAt: new Date() 
+  });
 })();
 
-// LICITACIONES CON REQUISITOS
+// PLANES
+const plans = {
+  free: { name: 'Gratis', price: 0, documentPrice: 0, features: ['Búsqueda', 'Presentación básica'] },
+  premium: { name: 'Premium', price: 9.99, documentPrice: 29.99, features: ['Todo +', 'Documentos personalizados', 'Chat con expertos', '% éxito garantizado'] }
+};
+
 const opportunities = [
   { 
     id: 1, 
@@ -72,26 +88,6 @@ const opportunities = [
     documents: ['experiencia', 'certificacion', 'propuesta', 'plan', 'garantia']
   },
   { 
-    id: 3, 
-    title: 'Ampliación Centro de Salud Triana', 
-    institution: 'Servicio Andaluz de Salud', 
-    budget_min: 200000, 
-    budget_max: 350000, 
-    deadline: '2026-09-10', 
-    status: 'open', 
-    category: 'obras', 
-    description: 'Obras de ampliación y equipamiento médico moderno',
-    requirements: [
-      'Inscripción en registro de empresas de construcción',
-      'Acreditación técnica de equipos sanitarios',
-      'Propuesta arquitectónica',
-      'Certificado de asistencia técnica',
-      'Plan de cumplimiento normativo sanitario',
-      'Declaración de solvencia económica'
-    ],
-    documents: ['registro', 'propuesta', 'certificacion', 'solvencia', 'tecnico']
-  },
-  { 
     id: 29, 
     title: 'Subvención pymes Digitalización', 
     institution: 'Cámara Comercio Sevilla', 
@@ -133,32 +129,9 @@ const opportunities = [
   }
 ];
 
-// Extender con más licitaciones sin requisitos detallados
-const baseOpps = [
-  { id: 4, title: 'Reforma piscina municipal Distrito Norte', institution: 'Ayuntamiento de Sevilla', budget_min: 80000, budget_max: 150000, deadline: '2026-08-01', status: 'open', category: 'obras', description: 'Reforma vasos, vestuarios y climatización' },
-  { id: 5, title: 'Carril bici segregado Corredor Este', institution: 'Consejería de Movilidad', budget_min: 300000, budget_max: 500000, deadline: '2026-07-30', status: 'open', category: 'obras', description: '8km carril bici con iluminación LED' },
-  { id: 6, title: 'Restauración fachada Ayuntamiento Histórico', institution: 'Ayuntamiento de Sevilla', budget_min: 120000, budget_max: 180000, deadline: '2026-08-15', status: 'open', category: 'obras', description: 'Restauración con técnicas tradicionales' },
-  { id: 7, title: 'Pavimentación parque central Distrito Sur', institution: 'Ayuntamiento de Sevilla', budget_min: 60000, budget_max: 100000, deadline: '2026-07-20', status: 'closing', category: 'obras', description: 'Pavimentación con adoquines y mobiliario' },
-  { id: 8, title: 'Reparación fuentes ornamentales', institution: 'Junta de Andalucía', budget_min: 40000, budget_max: 70000, deadline: '2026-06-30', status: 'closing', category: 'obras', description: 'Sistemas hidráulicos y eléctricos de 12 fuentes' },
-  { id: 9, title: 'Construcción nueva biblioteca pública', institution: 'Ayuntamiento de Sevilla', budget_min: 500000, budget_max: 800000, deadline: '2026-09-20', status: 'open', category: 'obras', description: 'Construcción completa con salas modernas y zonas verdes' },
-  { id: 10, title: 'Remodelación plaza central histórica', institution: 'Ayuntamiento de Sevilla', budget_min: 250000, budget_max: 400000, deadline: '2026-08-25', status: 'open', category: 'obras', description: 'Remodelación integral con preservación histórica' },
-  { id: 11, title: 'Consultoría estratégica Transformación Digital', institution: 'Consejería de Economía', budget_min: 40000, budget_max: 60000, deadline: '2026-07-30', status: 'open', category: 'servicios', description: 'Asesoramiento innovación en administración pública' },
-  { id: 12, title: 'Vigilancia y seguridad 24/7', institution: 'Ayuntamiento de Sevilla', budget_min: 80000, budget_max: 120000, deadline: '2026-09-15', status: 'open', category: 'servicios', description: 'Servicios seguridad instalaciones municipales' },
-  { id: 13, title: 'Mantenimiento espacios públicos anual', institution: 'Ayuntamiento de Sevilla', budget_min: 20000, budget_max: 40000, deadline: '2026-07-01', status: 'closing', category: 'servicios', description: 'Limpieza parques y conservación 12 meses' },
-];
-
-const allOpportunities = [
-  ...opportunities,
-  ...baseOpps.map(o => ({
-    ...o,
-    requirements: ['Documentación general requerida', 'Propuesta técnica', 'Presupuesto desglosado', 'Referencias de trabajos anteriores', 'Declaración de responsabilidad civil'],
-    documents: ['propuesta', 'presupuesto', 'referencias']
-  }))
-];
-
-// Agregar más para llegar a 45
-for (let i = baseOpps.length + 5; i < 45; i++) {
-  allOpportunities.push({
+// Llenar hasta 45
+for (let i = opportunities.length; i < 45; i++) {
+  opportunities.push({
     id: i,
     title: `Licitación ${i}`,
     institution: 'Institución Pública',
@@ -195,11 +168,11 @@ function authenticateToken(req, res, next) {
 
 // ROUTES
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
-app.get('/health', (req, res) => res.json({ status: 'Online', opportunities: allOpportunities.length }));
+app.get('/health', (req, res) => res.json({ status: 'Online', opportunities: opportunities.length }));
 
 app.get('/api/opportunities', (req, res) => {
   const { category, status, budget, search } = req.query;
-  let filtered = [...allOpportunities];
+  let filtered = [...opportunities];
   if (category && category !== 'all') filtered = filtered.filter(o => o.category === category);
   if (status && status !== 'all') filtered = filtered.filter(o => o.status === status);
   if (budget && budget !== 'all') filtered = filtered.filter(o => o.budget_min >= parseInt(budget));
@@ -211,9 +184,153 @@ app.get('/api/opportunities', (req, res) => {
 });
 
 app.get('/api/opportunities/:id', (req, res) => {
-  const opp = allOpportunities.find(o => o.id === parseInt(req.params.id));
+  const opp = opportunities.find(o => o.id === parseInt(req.params.id));
   if (!opp) return res.status(404).json({ error: 'Not found' });
   res.json(opp);
+});
+
+// PREMIUM SERVICES
+app.post('/api/premium/service', authenticateToken, (req, res) => {
+  const user = Array.from(users.values()).find(u => u.id === req.userId);
+  if (!user || !user.isPremium) return res.status(403).json({ error: 'Premium only' });
+
+  const { opportunityId, documentType } = req.body;
+  const serviceId = Date.now().toString();
+  const service = {
+    id: serviceId,
+    userId: req.userId,
+    opportunityId,
+    documentType,
+    status: 'waiting_data',
+    price: 29.99,
+    data: {},
+    createdAt: new Date()
+  };
+  premiumServices.set(serviceId, service);
+  chatMessages.set(serviceId, []);
+  res.json({ success: true, serviceId, service });
+});
+
+app.post('/api/premium/chat/:serviceId', authenticateToken, (req, res) => {
+  const service = premiumServices.get(req.params.serviceId);
+  if (!service || service.userId !== req.userId) return res.status(403).json({ error: 'Not found' });
+
+  const { message, type } = req.body; // type: 'user' | 'assistant'
+  const msg = { type, message, timestamp: new Date() };
+  
+  if (!chatMessages.has(req.params.serviceId)) chatMessages.set(req.params.serviceId, []);
+  chatMessages.get(req.params.serviceId).push(msg);
+  
+  res.json({ success: true, message: msg });
+});
+
+app.get('/api/premium/chat/:serviceId', authenticateToken, (req, res) => {
+  const service = premiumServices.get(req.params.serviceId);
+  if (!service || service.userId !== req.userId) return res.status(403).json({ error: 'Not found' });
+
+  const messages = chatMessages.get(req.params.serviceId) || [];
+  res.json({ messages });
+});
+
+app.patch('/api/premium/service/:serviceId/data', authenticateToken, (req, res) => {
+  const service = premiumServices.get(req.params.serviceId);
+  if (!service || service.userId !== req.userId) return res.status(403).json({ error: 'Not found' });
+
+  service.data = { ...service.data, ...req.body };
+  service.status = 'data_collected';
+  res.json({ success: true, service });
+});
+
+app.post('/api/premium/service/:serviceId/generate', authenticateToken, (req, res) => {
+  const service = premiumServices.get(req.params.serviceId);
+  if (!service || service.userId !== req.userId) return res.status(403).json({ error: 'Not found' });
+
+  const opportunity = opportunities.find(o => o.id === service.opportunityId);
+  const docId = Date.now().toString();
+  
+  // Generar documento simulado con los datos
+  const documento = {
+    id: docId,
+    type: service.documentType,
+    serviceId: req.params.serviceId,
+    title: `${service.documentType} - ${opportunity.title}`,
+    content: generarDocumento(service.documentType, service.data, opportunity),
+    status: 'ready',
+    successRate: Math.floor(75 + Math.random() * 20), // 75-95%
+    createdAt: new Date()
+  };
+
+  generatedDocuments.set(docId, documento);
+  service.status = 'document_generated';
+  service.generatedDocumentId = docId;
+
+  res.json({ success: true, document: documento });
+});
+
+function generarDocumento(tipo, datos, oportunidad) {
+  const fecha = new Date().toLocaleDateString('es-ES');
+  
+  if (tipo === 'presupuesto') {
+    return `PRESUPUESTO DESGLOSADO
+==================================
+Licitación: ${oportunidad.title}
+Institución: ${oportunidad.institution}
+Fecha: ${fecha}
+
+EMPRESA: ${datos.empresa || 'Empresa del cliente'}
+CONTACTO: ${datos.contacto || 'Contacto'}
+
+DESGLOSE DE COSTOS:
+${datos.items ? datos.items.map((item, i) => `${i+1}. ${item.concepto}: €${item.cantidad}`).join('\n') : '- Concepto: A determinar'}
+
+TOTAL: €${datos.total || 'A determinar'}
+
+OBSERVACIONES: ${datos.observaciones || 'Sin observaciones'}
+
+---
+Documento generado automáticamente por Oportunidades Públicas
+`;
+  }
+
+  if (tipo === 'plan') {
+    return `PLAN DE EJECUCIÓN
+==================================
+Licitación: ${oportunidad.title}
+Institución: ${oportunidad.institution}
+Fecha: ${fecha}
+
+EMPRESA: ${datos.empresa || 'Empresa del cliente'}
+
+FASES DE EJECUCIÓN:
+${datos.fases ? datos.fases.map((fase, i) => `FASE ${i+1}: ${fase.nombre}\nDuración: ${fase.duracion}\nTareas: ${fase.tareas}`).join('\n\n') : '- Fase 1: Planificación\n- Fase 2: Ejecución\n- Fase 3: Entrega'}
+
+CRONOGRAMA: ${datos.cronograma || 'Cronograma detallado'}
+
+RECURSOS: ${datos.recursos || 'Recursos necesarios'}
+
+RIESGOS Y MITIGACIÓN: ${datos.riesgos || 'Análisis de riesgos'}
+
+---
+Documento generado automáticamente por Oportunidades Públicas
+`;
+  }
+
+  return `DOCUMENTO: ${tipo}\n\nDatos del cliente:\n${JSON.stringify(datos, null, 2)}\n\nRequisitos de la licitación:\n${oportunidad.requirements.join('\n')}\n\nDocumento generado: ${fecha}`;
+}
+
+app.get('/api/premium/document/:docId', authenticateToken, (req, res) => {
+  const doc = generatedDocuments.get(req.params.docId);
+  if (!doc) return res.status(404).json({ error: 'Not found' });
+  res.json(doc);
+});
+
+app.get('/api/premium/services', authenticateToken, (req, res) => {
+  const services = Array.from(premiumServices.values()).filter(s => s.userId === req.userId);
+  res.json({ services });
+});
+
+app.get('/api/plans', (req, res) => {
+  res.json(plans);
 });
 
 app.post('/api/applications', authenticateToken, (req, res) => {
@@ -264,10 +381,10 @@ app.post('/api/auth/register', async (req, res) => {
     if (!email || !password) return res.status(400).json({ error: 'Required' });
     if (users.has(email)) return res.status(409).json({ error: 'Registered' });
     const userId = Math.random().toString(36).substr(2, 9);
-    const user = { id: userId, email, password_hash: await bcryptjs.hash(password, 12), firstName: firstName || '', isPremium: false, createdAt: new Date() };
+    const user = { id: userId, email, password_hash: await bcryptjs.hash(password, 12), firstName: firstName || '', isPremium: false, plan: 'free', createdAt: new Date() };
     users.set(email, user);
     const token = generateToken(userId);
-    res.status(201).json({ success: true, token, user: { id: user.id, email: user.email, firstName: user.firstName } });
+    res.status(201).json({ success: true, token, user: { id: user.id, email: user.email, firstName: user.firstName, isPremium: user.isPremium } });
   } catch (e) { res.status(500).json({ error: 'Error' }); }
 });
 
@@ -278,10 +395,10 @@ app.post('/api/auth/login', async (req, res) => {
     const user = users.get(email);
     if (!user || !(await bcryptjs.compare(password, user.password_hash))) return res.status(401).json({ error: 'Invalid' });
     const token = generateToken(user.id);
-    res.json({ success: true, token, user: { id: user.id, email: user.email, firstName: user.firstName } });
+    res.json({ success: true, token, user: { id: user.id, email: user.email, firstName: user.firstName, isPremium: user.isPremium } });
   } catch (e) { res.status(500).json({ error: 'Error' }); }
 });
 
-app.listen(PORT, () => console.log(`✅ API Online - ${allOpportunities.length} licitaciones`));
+app.listen(PORT, () => console.log(`✅ API Online - ${opportunities.length} licitaciones + PREMIUM`));
 
 module.exports = app;
