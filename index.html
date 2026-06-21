@@ -487,6 +487,13 @@
             const phone = document.getElementById('presPhone').value;
             const proposal = document.getElementById('presProposal').value;
 
+            console.log('📝 Presentación a enviar:', {
+                orgName, contact, email, phone, proposal,
+                opportunityId: participacionesPendientes.opportunityId,
+                token: currentToken ? 'Present' : 'Missing',
+                isPremium: currentUser ? currentUser.isPremium : 'No user'
+            });
+
             if (!currentUser || !currentUser.isPremium) {
                 alert('❌ Necesitas PREMIUM para participar');
                 return;
@@ -497,7 +504,12 @@
                 return;
             }
 
+            const btn = event.target.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            btn.textContent = 'PROCESANDO...';
+
             try {
+                console.log('📤 Enviando a:', API + '/api/applications');
                 const resp = await fetch(API + '/api/applications', {
                     method: 'POST',
                     headers: { 
@@ -507,53 +519,35 @@
                     body: JSON.stringify({
                         opportunityId: participacionesPendientes.opportunityId,
                         organizationName: orgName,
-                        contact, email, phone, proposal
+                        contact, 
+                        email, 
+                        phone, 
+                        proposal
                     })
                 });
 
+                console.log('📡 Respuesta status:', resp.status);
                 const data = await resp.json();
+                console.log('📦 Respuesta data:', data);
 
-                if (data.success) {
+                if (resp.ok && data.success) {
                     participacionesPendientes.applicationId = data.applicationId;
+                    console.log('✅ Éxito! ID:', data.applicationId);
+                    alert('✅ Presentación guardada. Continuando...');
                     cerrarModal('presentacionModal');
                     setTimeout(() => mostrarChecklist(), 300);
                 } else {
-                    alert('❌ ' + (data.error || 'Error al guardar'));
+                    const errorMsg = data.error || 'Error desconocido';
+                    console.error('❌ Error:', errorMsg);
+                    alert('❌ Error: ' + errorMsg);
                 }
             } catch (e) {
-                alert('❌ Error de conexión: ' + e.message);
+                console.error('❌ Error de conexión:', e);
+                alert('❌ Error de conexión:\n' + e.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'SIGUIENTE';
             }
-        }
-
-            const documentosRequeridos = licitacion.documents || [];
-            checklistItems = documentosRequeridos.map(doc => ({ id: doc, name: obtenerNombreDocumento(doc), completado: false, omitido: false }));
-            const checklistHTML = checklistItems.map((item) => `
-                <div class="checklist-item" id="check-${item.id}">
-                    <input type="checkbox" id="chk-${item.id}" onchange="marcarCompletado('${item.id}')">
-                    <label for="chk-${item.id}">${item.name}</label>
-                    <button type="button" class="btn-skip" onclick="omitirDocumento('${item.id}')">Omitir</button>
-                </div>
-            `).join('');
-            document.getElementById('checklistContenido').innerHTML = `<div class="checklist"><h4>✓ Documentación</h4>${checklistHTML}</div>`;
-            abrirModal('checklistModal');
-        }
-
-        function marcarCompletado(docId) {
-            const item = checklistItems.find(i => i.id === docId);
-            if (item) item.completado = document.getElementById('chk-' + docId).checked;
-        }
-
-        function omitirDocumento(docId) {
-            const item = checklistItems.find(i => i.id === docId);
-            if (item) {
-                item.omitido = true;
-                document.getElementById('check-' + docId).style.opacity = '0.6';
-            }
-        }
-
-        function continuarConDocumentos() {
-            cerrarModal('checklistModal');
-            setTimeout(() => abrirModal('uploadDocModal'), 300);
         }
 
         async function subirDocumento(e) {
