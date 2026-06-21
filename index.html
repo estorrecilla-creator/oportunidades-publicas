@@ -8,7 +8,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background: #f8f9fa; color: #333; }
         
-        /* ===== HEADER ===== */
         .header { background: white; padding: 20px 40px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
         .logo { font-size: 18px; font-weight: 700; color: #1e3a5f; }
         .header-buttons { display: flex; gap: 15px; }
@@ -18,96 +17,71 @@
         .btn-register { background: #1e3a5f; color: white; }
         .btn-register:hover { background: #152a45; }
         .btn-logout { background: #d32f2f; color: white; }
-        .btn-logout:hover { background: #b71c1c; }
         
-        /* ===== HERO ===== */
         .hero { background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%); color: white; padding: 60px 40px; text-align: center; }
         .hero h1 { font-size: 36px; margin-bottom: 15px; }
         .hero p { font-size: 16px; margin-bottom: 30px; opacity: 0.9; }
-        .search-box { display: flex; gap: 10px; justify-content: center; max-width: 600px; margin: 0 auto; }
-        .search-box input { flex: 1; padding: 12px; border: none; border-radius: 4px; font-size: 14px; }
+        
+        .search-box { display: flex; gap: 10px; justify-content: center; max-width: 700px; margin: 0 auto; flex-wrap: wrap; }
+        .search-box input { flex: 1; min-width: 250px; padding: 12px; border: none; border-radius: 4px; font-size: 14px; }
         .search-box button { padding: 12px 30px; background: white; color: #1e3a5f; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
         
-        /* ===== FILTROS ===== */
-        .filters-section { background: white; padding: 30px 40px; border-bottom: 1px solid #e0e0e0; display: flex; gap: 20px; flex-wrap: wrap; }
+        .filters { background: white; padding: 30px 40px; border-bottom: 1px solid #e0e0e0; display: flex; gap: 20px; flex-wrap: wrap; }
         .filter-group { display: flex; flex-direction: column; }
         .filter-group label { font-size: 12px; font-weight: 600; color: #666; text-transform: uppercase; margin-bottom: 5px; }
-        .filter-group select { padding: 10px; border: 1px solid #e0e0e0; border-radius: 4px; font-size: 14px; }
+        .filter-group select { padding: 10px; border: 1px solid #e0e0e0; border-radius: 4px; font-size: 14px; min-width: 150px; }
         
-        /* ===== CONTENIDO ===== */
         .container { max-width: 1200px; margin: 0 auto; padding: 40px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
         
-        /* ===== LOGIN/REGISTER MODALS ===== */
-        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
-        .modal.active { display: flex; }
-        .modal-content { background: white; padding: 50px; border-radius: 4px; width: 100%; max-width: 400px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); border-top: 4px solid #1e3a5f; }
-        .modal-close { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; color: #666; }
-        .modal-content h2 { color: #1e3a5f; margin-bottom: 20px; text-align: center; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: 600; margin-bottom: 5px; color: #333; font-size: 14px; }
-        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
-        input:focus { outline: none; border-color: #1e3a5f; box-shadow: 0 0 0 3px rgba(30,58,95,0.1); }
-        .btn-submit { width: 100%; padding: 12px; background: #1e3a5f; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
-        .btn-submit:hover { background: #152a45; }
-        .message { padding: 10px; border-radius: 4px; margin-bottom: 15px; display: none; font-size: 14px; }
-        .message.error { background: #f8d7da; color: #721c24; display: block; }
-        .message.success { background: #d4edda; color: #155724; display: block; }
-        
-        /* ===== LICITACIONES GRID ===== */
-        .opportunities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
-        .opportunity-card { background: white; border-radius: 4px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e0e0e0; transition: all 0.3s; cursor: pointer; }
-        .opportunity-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .card { background: white; border-radius: 4px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e0e0e0; transition: all 0.3s; }
+        .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
         
         .card-header { background: #f0f4f8; padding: 15px; border-bottom: 1px solid #e0e0e0; }
-        .card-title { font-size: 16px; font-weight: 600; color: #1e3a5f; margin-bottom: 5px; }
+        .card-title { font-size: 15px; font-weight: 600; color: #1e3a5f; margin-bottom: 5px; }
         .card-subtitle { font-size: 12px; color: #666; }
         
         .card-body { padding: 20px; }
-        .card-description { font-size: 13px; color: #666; margin-bottom: 15px; line-height: 1.5; }
+        .card-desc { font-size: 13px; color: #666; margin-bottom: 15px; line-height: 1.5; }
         
         .card-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         .stat { background: #f8f9fa; padding: 10px; border-radius: 4px; }
         .stat-label { font-size: 11px; color: #999; text-transform: uppercase; }
-        .stat-value { font-size: 14px; font-weight: 600; color: #1e3a5f; margin-top: 3px; }
+        .stat-value { font-size: 13px; font-weight: 600; color: #1e3a5f; margin-top: 3px; }
         
         .card-footer { padding: 15px 20px; background: #f8f9fa; border-top: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center; }
         .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-        .badge-open { background: #fff3e0; color: #e65100; }
-        .badge-closing { background: #ffe0e0; color: #c62828; }
+        .badge-open { background: #c8e6c9; color: #2e7d32; }
+        .badge-closing { background: #ffe0b2; color: #e65100; }
         .badge-closed { background: #e0e0e0; color: #666; }
         
-        /* ===== DASHBOARD ===== */
-        .dashboard { display: none; min-height: 100vh; background: #f8f9fa; }
-        .dashboard.active { display: flex; }
+        .empty { text-align: center; padding: 60px 20px; color: #999; }
         
-        .sidebar { width: 260px; background: #1e3a5f; color: white; padding: 30px 0; position: fixed; height: 100vh; overflow-y: auto; }
-        .sidebar-logo { padding: 0 20px 30px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 16px; font-weight: 700; }
-        .nav-menu { list-style: none; padding-top: 20px; }
-        .nav-menu a { display: block; padding: 12px 20px; color: rgba(255,255,255,0.8); text-decoration: none; border-left: 3px solid transparent; transition: all 0.3s; font-size: 14px; }
-        .nav-menu a:hover, .nav-menu a.active { background: rgba(255,255,255,0.1); color: white; border-left-color: #4a90e2; }
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; padding: 50px; border-radius: 4px; width: 100%; max-width: 400px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); border-top: 4px solid #1e3a5f; position: relative; }
+        .modal-close { position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; }
+        .modal-content h2 { color: #1e3a5f; margin-bottom: 20px; text-align: center; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px; }
+        .form-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        .form-group input:focus { outline: none; border-color: #1e3a5f; box-shadow: 0 0 0 3px rgba(30,58,95,0.1); }
+        .btn-submit { width: 100%; padding: 12px; background: #1e3a5f; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; margin-top: 10px; }
+        .message { padding: 10px; border-radius: 4px; margin-bottom: 15px; display: none; font-size: 14px; }
+        .message.error { background: #f8d7da; color: #721c24; display: block; }
         
-        .main { margin-left: 260px; flex: 1; padding: 40px; }
-        .dashboard-header { background: white; padding: 25px 30px; border-radius: 4px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .dashboard-header h2 { color: #1e3a5f; font-size: 22px; }
-        
-        .card { background: white; padding: 25px; border-radius: 4px; margin-bottom: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; }
-        .card h3 { color: #1e3a5f; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #e0e0e0; font-size: 16px; font-weight: 600; }
-        
-        .section { display: none; }
-        .section.active { display: block; }
-        .hidden { display: none !important; }
-        
-        .info-box { background: #f0f4f8; padding: 15px; border-radius: 4px; border-left: 3px solid #1e3a5f; margin-bottom: 20px; }
+        .loading { text-align: center; padding: 60px 20px; color: #999; }
+        .loading::after { content: "..."; animation: dots 1.5s steps(4, end) infinite; }
+        @keyframes dots { 0%, 20% { content: "."; } 40% { content: ".."; } 60% { content: "..."; } 80%, 100% { content: ""; } }
         
         @media (max-width: 768px) {
-            .header { flex-direction: column; gap: 15px; }
+            .header { flex-wrap: wrap; gap: 15px; }
             .hero { padding: 40px 20px; }
             .hero h1 { font-size: 24px; }
-            .search-box { flex-direction: column; }
-            .filters-section { flex-direction: column; }
-            .opportunities-grid { grid-template-columns: 1fr; }
-            .main { margin-left: 0; }
-            .sidebar { position: fixed; left: -260px; }
+            .search-box input { min-width: 100%; }
+            .filters { flex-direction: column; padding: 20px; }
+            .filter-group select { min-width: 100%; }
+            .grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -116,28 +90,28 @@
     <div class="header">
         <div class="logo">OPORTUNIDADES PÚBLICAS</div>
         <div class="header-buttons">
-            <button class="btn btn-login" onclick="openModal('loginModal')">INICIAR SESIÓN</button>
-            <button class="btn btn-register" onclick="openModal('registerModal')">REGISTRARSE</button>
+            <button class="btn btn-login" id="loginBtn" onclick="openModal('loginModal')">INICIAR SESIÓN</button>
+            <button class="btn btn-register" id="registerBtn" onclick="openModal('registerModal')">REGISTRARSE</button>
             <button class="btn btn-logout hidden" id="logoutBtn" onclick="logout()">CERRAR SESIÓN</button>
         </div>
     </div>
 
-    <!-- HERO SECTION -->
+    <!-- HERO -->
     <div class="hero" id="heroSection">
         <h1>Licitaciones y Subvenciones Públicas</h1>
-        <p>Encuentra todas las oportunidades de financiación pública disponibles</p>
+        <p>Encuentra todas las oportunidades de financiación disponibles</p>
         <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Buscar licitación...">
-            <button onclick="search()">BUSCAR</button>
+            <input type="text" id="searchInput" placeholder="Buscar por título, institución o descripción...">
+            <button onclick="doSearch()">BUSCAR</button>
         </div>
     </div>
 
     <!-- FILTROS -->
-    <div class="filters-section" id="filtersSection">
+    <div class="filters" id="filtersSection">
         <div class="filter-group">
             <label>CATEGORÍA</label>
-            <select id="categoryFilter" onchange="filterOpportunities()">
-                <option value="">Todas</option>
+            <select id="categoryFilter" onchange="applyFilters()">
+                <option value="all">Todas</option>
                 <option value="obras">Obras</option>
                 <option value="servicios">Servicios</option>
                 <option value="suministros">Suministros</option>
@@ -146,8 +120,8 @@
         </div>
         <div class="filter-group">
             <label>ESTADO</label>
-            <select id="statusFilter" onchange="filterOpportunities()">
-                <option value="">Todos</option>
+            <select id="statusFilter" onchange="applyFilters()">
+                <option value="all">Todos</option>
                 <option value="open">Abierta</option>
                 <option value="closing">Cerrando</option>
                 <option value="closed">Cerrada</option>
@@ -155,59 +129,23 @@
         </div>
         <div class="filter-group">
             <label>PRESUPUESTO MÍNIMO</label>
-            <select id="budgetFilter" onchange="filterOpportunities()">
-                <option value="">Cualquiera</option>
-                <option value="1000">Más de €1.000</option>
-                <option value="10000">Más de €10.000</option>
+            <select id="budgetFilter" onchange="applyFilters()">
+                <option value="all">Cualquiera</option>
                 <option value="50000">Más de €50.000</option>
+                <option value="100000">Más de €100.000</option>
+                <option value="200000">Más de €200.000</option>
             </select>
         </div>
     </div>
 
-    <!-- OPORTUNIDADES -->
-    <div class="container" id="mainContent">
-        <div class="opportunities-grid" id="opportunitiesGrid">
-            <!-- Se llena dinámicamente -->
+    <!-- CONTENIDO -->
+    <div class="container">
+        <div class="grid" id="grid">
+            <div class="loading">Cargando oportunidades</div>
         </div>
     </div>
 
-    <!-- DASHBOARD (oculto inicialmente) -->
-    <div id="dashboard" class="dashboard">
-        <div class="sidebar">
-            <div class="sidebar-logo">OPORTUNIDADES</div>
-            <ul class="nav-menu">
-                <li><a onclick="showDashSection('dashboard-section')" class="nav-link active">PANEL DE CONTROL</a></li>
-                <li><a onclick="showDashSection('solicitations')" class="nav-link">SOLICITUDES</a></li>
-                <li><a onclick="showDashSection('documents')" class="nav-link">DOCUMENTOS</a></li>
-                <li><a onclick="showDashSection('payments')" class="nav-link">SUSCRIPCIÓN</a></li>
-                <li style="margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;"><a onclick="logout()" class="nav-link">CERRAR SESIÓN</a></li>
-            </ul>
-        </div>
-        <div class="main">
-            <div class="dashboard-header">
-                <h2 id="dashboardTitle">Panel de Control</h2>
-            </div>
-            <div id="dashboard-section" class="section active">
-                <div class="card">
-                    <h3>INFORMACIÓN DE CUENTA</h3>
-                    <div class="info-box">
-                        <p><strong>Usuario:</strong> <span id="userEmail">usuario@example.com</span></p>
-                    </div>
-                </div>
-            </div>
-            <div id="solicitations" class="section">
-                <div class="card"><h3>SOLICITUDES</h3><p>Próximamente</p></div>
-            </div>
-            <div id="documents" class="section">
-                <div class="card"><h3>DOCUMENTOS</h3><p>Próximamente</p></div>
-            </div>
-            <div id="payments" class="section">
-                <div class="card"><h3>SUSCRIPCIÓN</h3><p>Próximamente</p></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- LOGIN MODAL -->
+    <!-- MODALES LOGIN/REGISTER -->
     <div id="loginModal" class="modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal('loginModal')">×</button>
@@ -215,7 +153,7 @@
             <div id="loginMsg" class="message"></div>
             <form onsubmit="handleLogin(event)">
                 <div class="form-group">
-                    <label>Correo Electrónico</label>
+                    <label>Correo</label>
                     <input type="email" id="loginEmail" required>
                 </div>
                 <div class="form-group">
@@ -224,10 +162,12 @@
                 </div>
                 <button type="submit" class="btn-submit">INICIAR SESIÓN</button>
             </form>
+            <p style="text-align: center; margin-top: 15px; font-size: 12px; color: #666;">
+                Prueba: test@test.com / test1234
+            </p>
         </div>
     </div>
 
-    <!-- REGISTER MODAL -->
     <div id="registerModal" class="modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal('registerModal')">×</button>
@@ -235,11 +175,11 @@
             <div id="regMsg" class="message"></div>
             <form onsubmit="handleRegister(event)">
                 <div class="form-group">
-                    <label>Nombre Completo</label>
+                    <label>Nombre</label>
                     <input type="text" id="regName">
                 </div>
                 <div class="form-group">
-                    <label>Correo Electrónico</label>
+                    <label>Correo</label>
                     <input type="email" id="regEmail" required>
                 </div>
                 <div class="form-group">
@@ -253,39 +193,39 @@
 
     <script>
         const API_URL = 'https://oportunidades-publicas-production.up.railway.app';
+        let allOpportunities = [];
 
-        // Datos de ejemplo de licitaciones
-        const sampleOpportunities = [
-            { id: 1, title: 'Obra de mejora vial - Calle Principal', institution: 'Ayuntamiento de Sevilla', budget: '€150.000', deadline: '2026-07-15', status: 'open', category: 'obras', description: 'Mejora de infraestructura vial en zona céntrica de la ciudad' },
-            { id: 2, title: 'Servicios de consultoría estratégica', institution: 'Consejería de Economía', budget: '€50.000', deadline: '2026-07-30', status: 'open', category: 'servicios', description: 'Asistencia técnica para implementación de programas de innovación' },
-            { id: 3, title: 'Subvención para pymes - Digitalización', institution: 'Cámara de Comercio', budget: '€500.000', deadline: '2026-06-30', status: 'closing', category: 'subvenciones', description: 'Fondos para transformación digital de pequeñas y medianas empresas' },
-            { id: 4, title: 'Suministro de equipamiento informático', institution: 'Junta de Andalucía', budget: '€80.000', deadline: '2026-08-10', status: 'open', category: 'suministros', description: 'Adquisición de hardware y software para centros educativos' },
-            { id: 5, title: 'Mantenimiento de espacios públicos', institution: 'Ayuntamiento de Sevilla', budget: '€30.000', deadline: '2026-07-01', status: 'closing', category: 'servicios', description: 'Servicios de limpieza y conservación de parques y jardines' },
-            { id: 6, title: 'Obras de rehabilitación energética', institution: 'Instituto de Energía', budget: '€200.000', deadline: '2026-08-20', status: 'open', category: 'obras', description: 'Mejora de eficiencia energética en edificios públicos' },
-        ];
+        async function loadOpportunities() {
+            try {
+                const res = await fetch(`${API_URL}/api/opportunities`);
+                const data = await res.json();
+                allOpportunities = data.opportunities || [];
+                renderOpportunities(allOpportunities);
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('grid').innerHTML = '<div class="empty">Error al cargar licitaciones</div>';
+            }
+        }
 
-    async function loadOpportunities() {
-        try {
-            const res = await fetch(`${API_URL}/api/opportunities`);
-            const data = await res.json();
-            const opportunities = data.opportunities || [];
-            const grid = document.getElementById("opportunitiesGrid");
-            if (opportunities.length === 0) {
-                grid.innerHTML = "<p style="grid-column: 1/-1; text-align: center; color: #999;">No hay oportunidades disponibles</p>";
+        function renderOpportunities(opps) {
+            const grid = document.getElementById('grid');
+            if (opps.length === 0) {
+                grid.innerHTML = '<div class="empty" style="grid-column: 1/-1;">No hay oportunidades que coincidan con los filtros</div>';
                 return;
             }
-            grid.innerHTML = opportunities.map(opp => `
-                <div class="opportunity-card" onclick="openOpportunity(${opp.id})">
+
+            grid.innerHTML = opps.map(opp => `
+                <div class="card">
                     <div class="card-header">
                         <div class="card-title">${opp.title}</div>
                         <div class="card-subtitle">${opp.institution}</div>
                     </div>
                     <div class="card-body">
-                        <div class="card-description">${opp.description.substring(0, 100)}...</div>
+                        <div class="card-desc">${opp.description.substring(0, 90)}...</div>
                         <div class="card-stats">
                             <div class="stat">
                                 <div class="stat-label">Presupuesto</div>
-                                <div class="stat-value">€${(opp.budget_min/1000).toFixed(0)}k - €${(opp.budget_max/1000).toFixed(0)}k</div>
+                                <div class="stat-value">€${(opp.budget_min/1000).toFixed(0)}k-${(opp.budget_max/1000).toFixed(0)}k</div>
                             </div>
                             <div class="stat">
                                 <div class="stat-label">Plazo</div>
@@ -294,23 +234,49 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <span class="badge badge-${opp.status}">${opp.status === "open" ? "ABIERTA" : opp.status === "closing" ? "CERRANDO" : "CERRADA"}</span>
-                        <button class="btn btn-register" style="margin: 0;" onclick="event.stopPropagation(); alert("Inicia sesiu00f3n para participar")">VER</button>
+                        <span class="badge badge-${opp.status}">${opp.status === 'open' ? 'ABIERTA' : opp.status === 'closing' ? 'CERRANDO' : 'CERRADA'}</span>
+                        <button class="btn" style="margin: 0; padding: 8px 12px;" onclick="alert('Inicia sesión para participar')">VER</button>
                     </div>
                 </div>
-            `).join("");
-        } catch (error) {
-            console.error("Error cargando oportunidades:", error);
-            document.getElementById("opportunitiesGrid").innerHTML = "<p style="grid-column: 1/-1; text-align: center; color: red;">Error al cargar licitaciones</p>";
-        }
-    }
-
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.add('active');
+            `).join('');
         }
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
+        async function applyFilters() {
+            const category = document.getElementById('categoryFilter').value;
+            const status = document.getElementById('statusFilter').value;
+            const budget = document.getElementById('budgetFilter').value;
+
+            let filtered = [...allOpportunities];
+
+            if (category !== 'all') filtered = filtered.filter(o => o.category === category);
+            if (status !== 'all') filtered = filtered.filter(o => o.status === status);
+            if (budget !== 'all') filtered = filtered.filter(o => o.budget_min >= parseInt(budget));
+
+            renderOpportunities(filtered);
+        }
+
+        async function doSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            if (!query.trim()) {
+                renderOpportunities(allOpportunities);
+                return;
+            }
+
+            const filtered = allOpportunities.filter(o =>
+                o.title.toLowerCase().includes(query) ||
+                o.description.toLowerCase().includes(query) ||
+                o.institution.toLowerCase().includes(query)
+            );
+
+            renderOpportunities(filtered);
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
         }
 
         async function handleLogin(e) {
@@ -329,8 +295,9 @@
                 if (data.success) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
-                    showDashboard(data.user);
+                    alert('¡Bienvenido! ' + data.user.email);
                     closeModal('loginModal');
+                    updateLoginUI();
                 } else {
                     document.getElementById('loginMsg').textContent = data.error || 'Error';
                     document.getElementById('loginMsg').style.display = 'block';
@@ -358,8 +325,9 @@
                 if (data.success) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
-                    showDashboard(data.user);
+                    alert('¡Registro completado! Bienvenido.');
                     closeModal('registerModal');
+                    updateLoginUI();
                 } else {
                     document.getElementById('regMsg').textContent = data.error || 'Error';
                     document.getElementById('regMsg').style.display = 'block';
@@ -370,104 +338,34 @@
             }
         }
 
-        function showDashboard(user) {
-            document.getElementById('heroSection').classList.add('hidden');
-            document.getElementById('filtersSection').classList.add('hidden');
-            document.getElementById('mainContent').classList.add('hidden');
-            document.querySelector('.header').classList.add('hidden');
-            document.getElementById('dashboard').classList.add('active');
-            document.getElementById('userEmail').textContent = user.email;
-            document.getElementById('logoutBtn').classList.remove('hidden');
-            document.querySelector('.btn-login').classList.add('hidden');
-            document.querySelector('.btn-register').classList.add('hidden');
-        }
-
-        function showDashSection(id) {
-            document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-            event.target.classList.add('active');
+        function updateLoginUI() {
+            const token = localStorage.getItem('token');
+            document.getElementById('loginBtn').classList.toggle('hidden', !!token);
+            document.getElementById('registerBtn').classList.toggle('hidden', !!token);
+            document.getElementById('logoutBtn').classList.toggle('hidden', !token);
         }
 
         function logout() {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            location.reload();
+            alert('Sesión cerrada');
+            updateLoginUI();
         }
 
-        function search() {
-            alert('Búsqueda avanzada disponible para usuarios registrados');
+        window.onclick = function(e) {
+            if (e.target.classList.contains('modal')) e.target.classList.remove('active');
         }
 
-        window.addEventListener('load', () => {
-            loadOpportunities();
-            const token = localStorage.getItem('token');
-            const user = localStorage.getItem('user');
-            if (token && user) {
-                showDashboard(JSON.parse(user));
+        document.addEventListener('keyup', function(e) {
+            if (e.key === 'Enter' && document.getElementById('searchInput') === document.activeElement) {
+                doSearch();
             }
         });
 
-        // Cerrar modal al hacer clic fuera
-    
-    async function filterOpportunities() {
-        const category = document.getElementById("categoryFilter")?.value || "";
-        const status = document.getElementById("statusFilter")?.value || "";
-        const budget = document.getElementById("budgetFilter")?.value || "";
-        let url = `${API_URL}/api/opportunities?`;
-        if (category) url += `category=${category}&`;
-        if (status) url += `status=${status}&`;
-        if (budget) url += `budget=${budget}`;
-        try {
-            const res = await fetch(url);
-            const data = await res.json();
-            const opportunities = data.opportunities || [];
-            const grid = document.getElementById("opportunitiesGrid");
-            grid.innerHTML = opportunities.map(opp => `
-                <div class="opportunity-card" onclick="openOpportunity(${opp.id})">
-                    <div class="card-header">
-                        <div class="card-title">${opp.title}</div>
-                        <div class="card-subtitle">${opp.institution}</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-description">${opp.description.substring(0, 100)}...</div>
-                        <div class="card-stats">
-                            <div class="stat"><div class="stat-label">Presupuesto</div><div class="stat-value">€${(opp.budget_min/1000).toFixed(0)}k</div></div>
-                            <div class="stat"><div class="stat-label">Plazo</div><div class="stat-value">${opp.deadline}</div></div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <span class="badge badge-${opp.status}">${opp.status === "open" ? "ABIERTA" : "CERRANDO"}</span>
-                        <button class="btn btn-register" style="margin: 0;" onclick="event.stopPropagation(); alert("Inicia sesiu00f3n")">VER</button>
-                    </div>
-                </div>
-            `).join("");
-        } catch (error) { console.error("Error:", error); }
-    }
-    function openOpportunity(id) { alert("Abre sesiu00f3n para ver detalles"); }
-    async function search() {
-        const query = document.getElementById("searchInput").value;
-        if (!query.trim()) { loadOpportunities(); return; }
-        try {
-            const res = await fetch(`${API_URL}/api/search?q=${encodeURIComponent(query)}`);
-            const data = await res.json();
-            const results = data.results || [];
-            const grid = document.getElementById("opportunitiesGrid");
-            grid.innerHTML = results.map(opp => `
-                <div class="opportunity-card"><div class="card-header"><div class="card-title">${opp.title}</div><div class="card-subtitle">${opp.institution}</div></div>
-                <div class="card-body"><div class="card-description">${opp.description.substring(0, 100)}...</div><div class="card-stats">
-                <div class="stat"><div class="stat-label">Presupuesto</div><div class="stat-value">€${(opp.budget_min/1000).toFixed(0)}k</div></div>
-                <div class="stat"><div class="stat-label">Plazo</div><div class="stat-value">${opp.deadline}</div></div></div></div>
-                <div class="card-footer"><span class="badge badge-${opp.status}">${opp.status === "open" ? "ABIERTA" : "CERRANDO"}</span>
-                <button class="btn btn-register" style="margin: 0;">VER</button></div></div>
-            `).join("");
-        } catch (error) { console.error("Error:", error); }
-    }
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.classList.remove('active');
-            }
-        }
+        window.addEventListener('load', () => {
+            loadOpportunities();
+            updateLoginUI();
+        });
     </script>
 </body>
 </html>
