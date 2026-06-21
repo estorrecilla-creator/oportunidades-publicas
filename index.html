@@ -480,11 +480,22 @@
 
         async function enviarPresentacion(e) {
             e.preventDefault();
+            
             const orgName = document.getElementById('presOrgName').value;
             const contact = document.getElementById('presContact').value;
             const email = document.getElementById('presEmail').value;
             const phone = document.getElementById('presPhone').value;
             const proposal = document.getElementById('presProposal').value;
+
+            if (!currentUser || !currentUser.isPremium) {
+                alert('❌ Necesitas PREMIUM para participar');
+                return;
+            }
+
+            if (!currentToken) {
+                alert('❌ Inicia sesión primero');
+                return;
+            }
 
             try {
                 const resp = await fetch(API + '/api/applications', {
@@ -493,21 +504,27 @@
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${currentToken}`
                     },
-                    body: JSON.stringify({ opportunityId: participacionesPendientes.opportunityId, organizationName: orgName, contact, email, phone, proposal })
+                    body: JSON.stringify({
+                        opportunityId: participacionesPendientes.opportunityId,
+                        organizationName: orgName,
+                        contact, email, phone, proposal
+                    })
                 });
+
                 const data = await resp.json();
+
                 if (data.success) {
                     participacionesPendientes.applicationId = data.applicationId;
                     cerrarModal('presentacionModal');
-                    mostrarChecklist();
+                    setTimeout(() => mostrarChecklist(), 300);
+                } else {
+                    alert('❌ ' + (data.error || 'Error al guardar'));
                 }
             } catch (e) {
-                alert('Error');
+                alert('❌ Error de conexión: ' + e.message);
             }
         }
 
-        function mostrarChecklist() {
-            const licitacion = participacionesPendientes.licitacion;
             const documentosRequeridos = licitacion.documents || [];
             checklistItems = documentosRequeridos.map(doc => ({ id: doc, name: obtenerNombreDocumento(doc), completado: false, omitido: false }));
             const checklistHTML = checklistItems.map((item) => `
