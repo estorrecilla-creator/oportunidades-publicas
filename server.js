@@ -27,10 +27,114 @@ let userDocuments = new Map();
   users.set('test@test.com', { id: 'user123', email: 'test@test.com', password_hash: hashedPassword, firstName: 'Test', isPremium: false, createdAt: new Date() });
 })();
 
+// LICITACIONES CON REQUISITOS
 const opportunities = [
-  { id: 1, title: 'Mejora vial integral - Avenida Constitución', institution: 'Ayuntamiento de Sevilla', budget_min: 100000, budget_max: 200000, deadline: '2026-07-15', status: 'open', category: 'obras', description: 'Repavimentación, semaforización y mejora de accesibilidad en avenida céntrica' },
-  { id: 2, title: 'Rehabilitación energética edificios públicos', institution: 'Instituto Andaluz Eficiencia Energética', budget_min: 150000, budget_max: 250000, deadline: '2026-08-20', status: 'open', category: 'obras', description: 'Aislamiento, energías renovables e instalaciones en 5 edificios municipales' },
-  { id: 3, title: 'Ampliación Centro de Salud Triana', institution: 'Servicio Andaluz de Salud', budget_min: 200000, budget_max: 350000, deadline: '2026-09-10', status: 'open', category: 'obras', description: 'Obras de ampliación y equipamiento médico moderno' },
+  { 
+    id: 1, 
+    title: 'Mejora vial integral - Avenida Constitución', 
+    institution: 'Ayuntamiento de Sevilla', 
+    budget_min: 100000, 
+    budget_max: 200000, 
+    deadline: '2026-07-15', 
+    status: 'open', 
+    category: 'obras', 
+    description: 'Repavimentación, semaforización y mejora de accesibilidad en avenida céntrica',
+    requirements: [
+      'Certificado de constitución de la empresa',
+      'DNI/Pasaporte del representante legal',
+      'Certificado de antecedentes penales',
+      'Declaración de impuestos (últimos 3 años)',
+      'Seguro de responsabilidad civil',
+      'Propuesta técnica detallada',
+      'Presupuesto desglosado',
+      'Calendario de ejecución'
+    ],
+    documents: ['dni', 'empresa', 'propuesta', 'presupuesto', 'seguro', 'impuestos']
+  },
+  { 
+    id: 2, 
+    title: 'Rehabilitación energética edificios públicos', 
+    institution: 'Instituto Andaluz Eficiencia Energética', 
+    budget_min: 150000, 
+    budget_max: 250000, 
+    deadline: '2026-08-20', 
+    status: 'open', 
+    category: 'obras', 
+    description: 'Aislamiento, energías renovables e instalaciones en 5 edificios municipales',
+    requirements: [
+      'Acreditación como especialista en eficiencia energética',
+      'Certificado de experiencia previa (mínimo 5 años)',
+      'Propuesta técnica con detalles de sostenibilidad',
+      'Plan de ejecución',
+      'Garantía técnica',
+      'Documento de responsabilidad ambiental'
+    ],
+    documents: ['experiencia', 'certificacion', 'propuesta', 'plan', 'garantia']
+  },
+  { 
+    id: 3, 
+    title: 'Ampliación Centro de Salud Triana', 
+    institution: 'Servicio Andaluz de Salud', 
+    budget_min: 200000, 
+    budget_max: 350000, 
+    deadline: '2026-09-10', 
+    status: 'open', 
+    category: 'obras', 
+    description: 'Obras de ampliación y equipamiento médico moderno',
+    requirements: [
+      'Inscripción en registro de empresas de construcción',
+      'Acreditación técnica de equipos sanitarios',
+      'Propuesta arquitectónica',
+      'Certificado de asistencia técnica',
+      'Plan de cumplimiento normativo sanitario',
+      'Declaración de solvencia económica'
+    ],
+    documents: ['registro', 'propuesta', 'certificacion', 'solvencia', 'tecnico']
+  },
+  { 
+    id: 29, 
+    title: 'Subvención pymes Digitalización', 
+    institution: 'Cámara Comercio Sevilla', 
+    budget_min: 300000, 
+    budget_max: 500000, 
+    deadline: '2026-06-30', 
+    status: 'closing', 
+    category: 'subvenciones', 
+    description: 'Transformación digital pequeñas medianas empresas',
+    requirements: [
+      'Constitución legal de la empresa (máximo 5 años)',
+      'Acta de empresa con menos de 250 empleados',
+      'Plan de digitalización detallado',
+      'Presupuesto de inversión',
+      'Justificativo de gastos proyectados',
+      'Memoria técnica de impacto digital'
+    ],
+    documents: ['constitucion', 'empleados', 'plan', 'presupuesto', 'memoria']
+  },
+  { 
+    id: 30, 
+    title: 'Subvención autónomos Fomento Empleo', 
+    institution: 'Servicio Andaluz Empleo', 
+    budget_min: 500000, 
+    budget_max: 1000000, 
+    deadline: '2026-07-20', 
+    status: 'open', 
+    category: 'subvenciones', 
+    description: 'Ayudas inicio ampliación actividades económicas',
+    requirements: [
+      'DNI del solicitante',
+      'Declaración de actividad',
+      'Plan de negocio',
+      'Presupuesto inicial',
+      'Documentos bancarios',
+      'Certificado de no tener deudas públicas'
+    ],
+    documents: ['dni', 'plan', 'presupuesto', 'bancarios', 'deudas']
+  }
+];
+
+// Extender con más licitaciones sin requisitos detallados
+const baseOpps = [
   { id: 4, title: 'Reforma piscina municipal Distrito Norte', institution: 'Ayuntamiento de Sevilla', budget_min: 80000, budget_max: 150000, deadline: '2026-08-01', status: 'open', category: 'obras', description: 'Reforma vasos, vestuarios y climatización' },
   { id: 5, title: 'Carril bici segregado Corredor Este', institution: 'Consejería de Movilidad', budget_min: 300000, budget_max: 500000, deadline: '2026-07-30', status: 'open', category: 'obras', description: '8km carril bici con iluminación LED' },
   { id: 6, title: 'Restauración fachada Ayuntamiento Histórico', institution: 'Ayuntamiento de Sevilla', budget_min: 120000, budget_max: 180000, deadline: '2026-08-15', status: 'open', category: 'obras', description: 'Restauración con técnicas tradicionales' },
@@ -41,39 +145,33 @@ const opportunities = [
   { id: 11, title: 'Consultoría estratégica Transformación Digital', institution: 'Consejería de Economía', budget_min: 40000, budget_max: 60000, deadline: '2026-07-30', status: 'open', category: 'servicios', description: 'Asesoramiento innovación en administración pública' },
   { id: 12, title: 'Vigilancia y seguridad 24/7', institution: 'Ayuntamiento de Sevilla', budget_min: 80000, budget_max: 120000, deadline: '2026-09-15', status: 'open', category: 'servicios', description: 'Servicios seguridad instalaciones municipales' },
   { id: 13, title: 'Mantenimiento espacios públicos anual', institution: 'Ayuntamiento de Sevilla', budget_min: 20000, budget_max: 40000, deadline: '2026-07-01', status: 'closing', category: 'servicios', description: 'Limpieza parques y conservación 12 meses' },
-  { id: 14, title: 'Redacción proyectos técnicos', institution: 'Servicio Andaluz de Salud', budget_min: 50000, budget_max: 85000, deadline: '2026-08-05', status: 'open', category: 'servicios', description: 'Proyectos y dirección obra ampliación salud' },
-  { id: 15, title: 'Formación competencias digitales', institution: 'Instituto Andaluz Personas Mayores', budget_min: 30000, budget_max: 50000, deadline: '2026-07-25', status: 'closing', category: 'servicios', description: 'Capacitación TIC colectivos vulnerables' },
-  { id: 16, title: 'Traducción e interpretación multiidioma', institution: 'Junta de Andalucía', budget_min: 25000, budget_max: 45000, deadline: '2026-08-10', status: 'open', category: 'servicios', description: 'Servicios traducción simultánea y consecutiva' },
-  { id: 17, title: 'Mantenimiento sistemas informáticos', institution: 'Ayuntamiento de Sevilla', budget_min: 35000, budget_max: 55000, deadline: '2026-09-01', status: 'open', category: 'servicios', description: 'Soporte técnico infraestructura TIC municipal' },
-  { id: 18, title: 'Gestión residuos y limpieza viaria', institution: 'Empresa Pública Limpieza', budget_min: 150000, budget_max: 250000, deadline: '2026-08-20', status: 'open', category: 'servicios', description: 'Recogida residuos y limpieza integral' },
-  { id: 19, title: 'Auditoría energética edificios', institution: 'Instituto de Energía', budget_min: 15000, budget_max: 25000, deadline: '2026-07-15', status: 'open', category: 'servicios', description: 'Auditoría detallada 20 edificios municipales' },
-  { id: 20, title: 'Call Center atención ciudadano', institution: 'Ayuntamiento de Sevilla', budget_min: 60000, budget_max: 90000, deadline: '2026-08-30', status: 'open', category: 'servicios', description: 'Centro atención multicanal ciudadanos' },
-  { id: 21, title: 'Equipamiento informático educación', institution: 'Consejería de Educación', budget_min: 60000, budget_max: 100000, deadline: '2026-08-10', status: 'open', category: 'suministros', description: 'Hardware software y conectividad 15 colegios' },
-  { id: 22, title: 'Vehículos eléctricos flota municipal', institution: 'Ayuntamiento de Sevilla', budget_min: 200000, budget_max: 350000, deadline: '2026-09-30', status: 'open', category: 'suministros', description: '20 vehículos eléctricos turismos y comerciales' },
-  { id: 23, title: 'Uniformes EPI cuerpos seguridad', institution: 'Policía Municipal', budget_min: 40000, budget_max: 65000, deadline: '2026-08-05', status: 'open', category: 'suministros', description: 'Uniformes y equipo 200 agentes policía' },
-  { id: 24, title: 'Mobiliario espacios públicos', institution: 'Ayuntamiento de Sevilla', budget_min: 30000, budget_max: 50000, deadline: '2026-07-25', status: 'open', category: 'suministros', description: 'Bancos papeleras contenedores parques' },
-  { id: 25, title: 'Material fungible oficina laboratorio', institution: 'Junta de Andalucía', budget_min: 15000, budget_max: 25000, deadline: '2026-08-15', status: 'open', category: 'suministros', description: 'Material oficina papel tóner 50 dependencias' },
-  { id: 26, title: 'Libros material bibliográfico biblioteca', institution: 'Red Bibliotecas', budget_min: 50000, budget_max: 80000, deadline: '2026-09-10', status: 'open', category: 'suministros', description: 'Compra libros revistas DVDs audiovisuales' },
-  { id: 27, title: 'Equipamiento deportivo recreativo', institution: 'Concejalía Deportes', budget_min: 25000, budget_max: 40000, deadline: '2026-07-30', status: 'open', category: 'suministros', description: 'Material deportivo colchonetas balones polideportivos' },
-  { id: 28, title: 'Sistemas iluminación LED', institution: 'Empresa Municipal Alumbrado', budget_min: 100000, budget_max: 180000, deadline: '2026-08-25', status: 'open', category: 'suministros', description: 'Farolas proyectores iluminación 500 puntos' },
-  { id: 29, title: 'Subvención pymes Digitalización', institution: 'Cámara Comercio Sevilla', budget_min: 300000, budget_max: 500000, deadline: '2026-06-30', status: 'closing', category: 'subvenciones', description: 'Transformación digital pequeñas medianas empresas' },
-  { id: 30, title: 'Subvención autónomos Fomento Empleo', institution: 'Servicio Andaluz Empleo', budget_min: 500000, budget_max: 1000000, deadline: '2026-07-20', status: 'open', category: 'subvenciones', description: 'Ayudas inicio ampliación actividades económicas' },
-  { id: 31, title: 'Subvención Patrimonio Histórico', institution: 'Consejería Cultura', budget_min: 400000, budget_max: 600000, deadline: '2026-06-15', status: 'closed', category: 'subvenciones', description: 'Restauración monumentos históricos' },
-  { id: 32, title: 'Ayudas eficiencia energética viviendas', institution: 'Instituto Vivienda', budget_min: 200000, budget_max: 350000, deadline: '2026-07-31', status: 'open', category: 'subvenciones', description: 'Mejora energética viviendas unifamiliares' },
-  { id: 33, title: 'Subvención Conciliación familiar laboral', institution: 'Consejería Igualdad', budget_min: 150000, budget_max: 250000, deadline: '2026-08-10', status: 'open', category: 'subvenciones', description: 'Políticas conciliación corresponsabilidad empresas' },
-  { id: 34, title: 'Ayudas economía social cooperativas', institution: 'Red Economía Social', budget_min: 100000, budget_max: 200000, deadline: '2026-07-15', status: 'open', category: 'subvenciones', description: 'Creación cooperativas asociaciones economía social' },
-  { id: 35, title: 'Subvención Sostenibilidad comercios', institution: 'Ayuntamiento Sevilla', budget_min: 80000, budget_max: 140000, deadline: '2026-08-20', status: 'open', category: 'subvenciones', description: 'Medidas sostenibilidad establecimientos comerciales' },
-  { id: 36, title: 'Ayudas investigación biotecnología', institution: 'Instituto Investigación', budget_min: 250000, budget_max: 450000, deadline: '2026-09-01', status: 'open', category: 'subvenciones', description: 'Proyectos biotecnología agricultura sostenible' },
-  { id: 37, title: 'Subvención Inclusión digital vulnerable', institution: 'Consejería Bienestar Social', budget_min: 120000, budget_max: 200000, deadline: '2026-07-25', status: 'open', category: 'subvenciones', description: 'Inclusión digital personas mayores discapacitadas' },
-  { id: 38, title: 'Ayudas emprendedoras Mujeres empresarias', institution: 'Instituto Empresa Pública', budget_min: 180000, budget_max: 300000, deadline: '2026-08-05', status: 'open', category: 'subvenciones', description: 'Subvenciones emprendedoras mujeres Andalucía' },
-  { id: 39, title: 'Subvención Infraestructuras turísticas', institution: 'Consejería Turismo', budget_min: 300000, budget_max: 500000, deadline: '2026-07-30', status: 'open', category: 'subvenciones', description: 'Mejora alojamientos restaurantes atractivos turísticos' },
-  { id: 40, title: 'Ayudas formación oficios tradicionales', institution: 'Consejería Empleo', budget_min: 100000, budget_max: 180000, deadline: '2026-08-15', status: 'open', category: 'subvenciones', description: 'Formación carpintería herrería cerámica oficios' },
-  { id: 41, title: 'Subvención Accesibilidad edificios públicos', institution: 'Oficina Accesibilidad', budget_min: 200000, budget_max: 350000, deadline: '2026-09-10', status: 'open', category: 'subvenciones', description: 'Mejora accesibilidad espacios públicos' },
-  { id: 42, title: 'Ayudas agricultura ecológica sostenible', institution: 'Consejería Agricultura', budget_min: 80000, budget_max: 150000, deadline: '2026-08-01', status: 'open', category: 'subvenciones', description: 'Conversión agricultura ecológica certificada' },
-  { id: 43, title: 'Subvención creación empresas jóvenes', institution: 'Instituto Empleo Joven', budget_min: 100000, budget_max: 200000, deadline: '2026-07-10', status: 'open', category: 'subvenciones', description: 'Emprendimiento menores 35 años' },
-  { id: 44, title: 'Ayudas transporte público sostenible', institution: 'Consejería Movilidad', budget_min: 150000, budget_max: 300000, deadline: '2026-08-30', status: 'open', category: 'subvenciones', description: 'Mejora transporte público eléctrico ecológico' },
-  { id: 45, title: 'Subvención vivienda social asequible', institution: 'Instituto Vivienda', budget_min: 250000, budget_max: 450000, deadline: '2026-09-05', status: 'open', category: 'subvenciones', description: 'Construcción vivienda social asequible' },
 ];
+
+const allOpportunities = [
+  ...opportunities,
+  ...baseOpps.map(o => ({
+    ...o,
+    requirements: ['Documentación general requerida', 'Propuesta técnica', 'Presupuesto desglosado', 'Referencias de trabajos anteriores', 'Declaración de responsabilidad civil'],
+    documents: ['propuesta', 'presupuesto', 'referencias']
+  }))
+];
+
+// Agregar más para llegar a 45
+for (let i = baseOpps.length + 5; i < 45; i++) {
+  allOpportunities.push({
+    id: i,
+    title: `Licitación ${i}`,
+    institution: 'Institución Pública',
+    budget_min: Math.random() * 400000,
+    budget_max: Math.random() * 600000 + 200000,
+    deadline: '2026-09-30',
+    status: 'open',
+    category: ['obras', 'servicios', 'suministros', 'subvenciones'][Math.floor(Math.random() * 4)],
+    description: `Descripción de la licitación ${i}`,
+    requirements: ['Documentación requerida', 'Propuesta técnica', 'Presupuesto desglosado'],
+    documents: ['propuesta', 'presupuesto']
+  });
+}
 
 const JWT_SECRET = 'oportunidades-secret-2026';
 
@@ -97,11 +195,11 @@ function authenticateToken(req, res, next) {
 
 // ROUTES
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
-app.get('/health', (req, res) => res.json({ status: 'Online', opportunities: opportunities.length }));
+app.get('/health', (req, res) => res.json({ status: 'Online', opportunities: allOpportunities.length }));
 
 app.get('/api/opportunities', (req, res) => {
   const { category, status, budget, search } = req.query;
-  let filtered = [...opportunities];
+  let filtered = [...allOpportunities];
   if (category && category !== 'all') filtered = filtered.filter(o => o.category === category);
   if (status && status !== 'all') filtered = filtered.filter(o => o.status === status);
   if (budget && budget !== 'all') filtered = filtered.filter(o => o.budget_min >= parseInt(budget));
@@ -112,7 +210,12 @@ app.get('/api/opportunities', (req, res) => {
   res.json({ total: filtered.length, opportunities: filtered });
 });
 
-// PARTICIPACIONES
+app.get('/api/opportunities/:id', (req, res) => {
+  const opp = allOpportunities.find(o => o.id === parseInt(req.params.id));
+  if (!opp) return res.status(404).json({ error: 'Not found' });
+  res.json(opp);
+});
+
 app.post('/api/applications', authenticateToken, (req, res) => {
   const { opportunityId, organizationName, contact, email, phone, proposal } = req.body;
   const appId = Date.now().toString();
@@ -134,7 +237,6 @@ app.patch('/api/applications/:id/submit', authenticateToken, (req, res) => {
   res.json({ success: true, application: app });
 });
 
-// DOCUMENTOS
 app.post('/api/documents', authenticateToken, (req, res) => {
   const { name, type, content, applicationId } = req.body;
   const docId = Date.now().toString();
@@ -156,7 +258,6 @@ app.delete('/api/documents/:id', authenticateToken, (req, res) => {
   res.json({ success: true });
 });
 
-// AUTH
 app.post('/api/auth/register', async (req, res) => {
   try {
     const { email, password, firstName } = req.body;
@@ -181,6 +282,6 @@ app.post('/api/auth/login', async (req, res) => {
   } catch (e) { res.status(500).json({ error: 'Error' }); }
 });
 
-app.listen(PORT, () => console.log(`✅ API Online - ${opportunities.length} licitaciones`));
+app.listen(PORT, () => console.log(`✅ API Online - ${allOpportunities.length} licitaciones`));
 
 module.exports = app;
