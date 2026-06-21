@@ -53,9 +53,9 @@
         .no-results { text-align: center; padding: 60px 20px; color: #999; grid-column: 1/-1; }
         .loading { text-align: center; padding: 60px 20px; color: #999; }
         
-        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; overflow-y: auto; }
         .modal.active { display: flex; }
-        .modal-box { background: white; padding: 50px; border-radius: 4px; width: 100%; max-width: 400px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); border-top: 4px solid #1e3a5f; position: relative; }
+        .modal-box { background: white; padding: 50px; border-radius: 4px; width: 100%; max-width: 500px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); border-top: 4px solid #1e3a5f; position: relative; margin: 20px; }
         .close-btn { position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; }
         .modal-box h2 { color: #1e3a5f; margin-bottom: 20px; text-align: center; }
         .form-group { margin-bottom: 15px; }
@@ -65,6 +65,13 @@
         .submit-btn { width: 100%; padding: 12px; background: #1e3a5f; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; margin-top: 10px; }
         .error-msg { padding: 10px; border-radius: 4px; margin-bottom: 15px; background: #f8d7da; color: #721c24; display: none; }
         
+        .detail-section { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #e0e0e0; }
+        .detail-label { font-size: 12px; font-weight: 600; color: #666; text-transform: uppercase; margin-bottom: 5px; }
+        .detail-value { font-size: 15px; color: #1e3a5f; font-weight: 500; }
+        .detail-description { font-size: 14px; color: #555; line-height: 1.6; }
+        .btn-participar { width: 100%; padding: 15px; background: #1e3a5f; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 15px; margin-top: 20px; }
+        .btn-participar:hover { background: #152a45; }
+        
         @media (max-width: 768px) {
             .header { flex-wrap: wrap; gap: 15px; }
             .hero { padding: 40px 20px; }
@@ -73,6 +80,7 @@
             .filters-bar { flex-direction: column; padding: 20px; }
             .filter-item select { min-width: 100%; }
             .grid { grid-template-columns: 1fr; }
+            .modal-box { margin: 10px; padding: 30px; }
         }
     </style>
 </head>
@@ -183,6 +191,16 @@
         </div>
     </div>
 
+    <!-- MODAL DETALLES LICITACIÓN -->
+    <div id="detalleModal" class="modal">
+        <div class="modal-box">
+            <button class="close-btn" onclick="cerrarModal('detalleModal')">×</button>
+            <div id="detalleContenido">
+                <!-- Se llena dinámicamente -->
+            </div>
+        </div>
+    </div>
+
     <script>
         const API = 'https://oportunidades-publicas-production.up.railway.app';
         let todasLasLicitaciones = [];
@@ -229,10 +247,65 @@
                     </div>
                     <div class="card-footer">
                         <span class="badge badge-${l.status}">${l.status === 'open' ? 'ABIERTA' : l.status === 'closing' ? 'CERRANDO' : 'CERRADA'}</span>
-                        <button class="btn" style="padding: 8px 12px; margin: 0;" onclick="alert('Inicia sesión para participar')">VER</button>
+                        <button class="btn" style="padding: 8px 12px; margin: 0;" onclick="verDetalles(${l.id})">VER</button>
                     </div>
                 </div>
             `).join('');
+        }
+
+        function verDetalles(id) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                abrirModal('loginModal');
+                return;
+            }
+
+            const licitacion = todasLasLicitaciones.find(l => l.id === id);
+            if (!licitacion) return;
+
+            const html = `
+                <h2>${licitacion.title}</h2>
+                
+                <div class="detail-section">
+                    <div class="detail-label">Institución Responsable</div>
+                    <div class="detail-value">${licitacion.institution}</div>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-label">Descripción Completa</div>
+                    <div class="detail-description">${licitacion.description}</div>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-label">Presupuesto</div>
+                    <div class="detail-value">€${(licitacion.budget_min).toLocaleString('es-ES')} - €${(licitacion.budget_max).toLocaleString('es-ES')}</div>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-label">Plazo de Participación</div>
+                    <div class="detail-value">${licitacion.deadline}</div>
+                </div>
+                
+                <div class="detail-section">
+                    <div class="detail-label">Categoría</div>
+                    <div class="detail-value">${licitacion.category.charAt(0).toUpperCase() + licitacion.category.slice(1)}</div>
+                </div>
+                
+                <div class="detail-section" style="border-bottom: none;">
+                    <div class="detail-label">Estado</div>
+                    <span class="badge badge-${licitacion.status}">${licitacion.status === 'open' ? 'ABIERTA' : licitacion.status === 'closing' ? 'CERRANDO' : 'CERRADA'}</span>
+                </div>
+                
+                <button class="btn-participar" onclick="participar(${id})">PARTICIPAR EN ESTA LICITACIÓN</button>
+            `;
+
+            document.getElementById('detalleContenido').innerHTML = html;
+            abrirModal('detalleModal');
+        }
+
+        function participar(id) {
+            alert('✅ Tu participación ha sido registrada en la licitación #' + id + '\n\nTe contactaremos pronto con más información.');
+            cerrarModal('detalleModal');
         }
 
         async function buscar() {
@@ -284,11 +357,13 @@
                 if (data.success) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
-                    alert('¡Bienvenido!');
+                    alert('¡Bienvenido! ' + data.user.email);
                     cerrarModal('loginModal');
+                    document.getElementById('emailLogin').value = '';
+                    document.getElementById('passLogin').value = '';
                     actualizarUI();
                 } else {
-                    document.getElementById('msgLogin').textContent = data.error;
+                    document.getElementById('msgLogin').textContent = data.error || 'Error en inicio de sesión';
                     document.getElementById('msgLogin').style.display = 'block';
                 }
             } catch (e) {
@@ -312,11 +387,14 @@
                 if (data.success) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
-                    alert('¡Registro completado!');
+                    alert('¡Registro completado! Bienvenido ' + email);
                     cerrarModal('registerModal');
+                    document.getElementById('emailReg').value = '';
+                    document.getElementById('passReg').value = '';
+                    document.getElementById('nameReg').value = '';
                     actualizarUI();
                 } else {
-                    document.getElementById('msgRegister').textContent = data.error;
+                    document.getElementById('msgRegister').textContent = data.error || 'Error en registro';
                     document.getElementById('msgRegister').style.display = 'block';
                 }
             } catch (e) {
@@ -328,12 +406,13 @@
         function cerrarSesion() {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            alert('Sesión cerrada');
+            alert('Sesión cerrada correctamente');
             actualizarUI();
         }
 
         function actualizarUI() {
             const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
             document.getElementById('btnLogin').classList.toggle('hidden', !!token);
             document.getElementById('btnRegister').classList.toggle('hidden', !!token);
             document.getElementById('btnLogout').classList.toggle('hidden', !token);
