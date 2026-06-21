@@ -39,6 +39,55 @@ let payments = new Map();
   console.log('✅ Usuario test@test.com creado como PREMIUM');
 })();
 
+// TÍTULOS REALES PARA OPORTUNIDADES
+const TITLES = [
+  'Rehabilitación de parques públicos - Fase 1',
+  'Modernización de infraestructura vial municipal',
+  'Renovación integral del centro cívico',
+  'Ampliación de servicios de agua potable',
+  'Mejora de red de alcantarillado sanitario',
+  'Construcción de centro de salud rural',
+  'Pavimentación de carreteras comarcales',
+  'Reparación de puentes en la región',
+  'Instalación de alumbrado público LED',
+  'Modernización de oficinas administrativas',
+  'Reforma de equipamientos escolares',
+  'Mejora de transporte público municipal',
+  'Instalación de paneles solares en edificios públicos',
+  'Remodelación de espacios verdes urbanos',
+  'Mejora de seguridad vial - señalización',
+  'Construcción de ciclovías en la ciudad',
+  'Renovación de sistemas de telefonía municipal',
+  'Ampliación de red de gas natural',
+  'Mejora de telecomunicaciones rurales',
+  'Construcción de viviendas de interés social',
+  'Reparación de fachadas históricas',
+  'Mejora de accesibilidad en espacios públicos',
+  'Instalación de sistema de drenaje pluvial',
+  'Renovación de muebles en escuelas públicas',
+  'Mejora de estaciones de transporte colectivo',
+  'Construcción de mercados públicos modernos',
+  'Reparación de monumentos históricos',
+  'Mejora de servicios de emergencia - equipamiento',
+  'Instalación de sistemas de vigilancia ciudadana',
+  'Renovación de centros de acogida social',
+  'Mejora de carreteras de acceso a la ciudad',
+  'Construcción de parques temáticos públicos',
+  'Reparación de acueductos municipales',
+  'Mejora de eficiencia energética - alumbrado',
+  'Instalación de puntos de carga para vehículos eléctricos',
+  'Renovación de bibliotecas municipales',
+  'Mejora de infraestructuras deportivas',
+  'Construcción de viveros municipales',
+  'Reparación de sistemas de riego público',
+  'Mejora de tratamiento de residuos sólidos',
+  'Instalación de plantas depuradoras modernas',
+  'Renovación de comedores escolares',
+  'Mejora de acceso a internet en zonas rurales',
+  'Construcción de centros de investigación municipal',
+  'Reparación de infraestructuras portuarias'
+];
+
 // DATOS DE OPORTUNIDADES
 const opportunities = [
   { id: 1, title: 'Mejora vial integral - Avenida Constitución', institution: 'Ayuntamiento de Sevilla', budget_min: 100000, budget_max: 200000, deadline: '2026-07-15', deadlineDate: new Date('2026-07-15'), status: 'open', category: 'obras', description: 'Repavimentación, semaforización y mejora de accesibilidad', requirements: ['Certificado de constitución', 'DNI del representante', 'Declaración de impuestos', 'Propuesta técnica'], documents: ['dni', 'empresa', 'propuesta', 'presupuesto'] },
@@ -47,16 +96,29 @@ const opportunities = [
   { id: 30, title: 'Subvención autónomos Fomento Empleo', institution: 'Servicio Andaluz Empleo', budget_min: 500000, budget_max: 1000000, deadline: '2026-07-20', deadlineDate: new Date('2026-07-20'), status: 'open', category: 'subvenciones', description: 'Ayudas inicio ampliación actividades', requirements: ['DNI solicitante', 'Plan negocio'], documents: ['dni', 'plan'] }
 ];
 
-// Generar más oportunidades
-for (let i = opportunities.length; i < 45; i++) {
+// Generar oportunidades con títulos REALES
+for (let i = 4; i < 45; i++) {
   const days = Math.floor(Math.random() * 90) + 10;
   const deadline = new Date();
   deadline.setDate(deadline.getDate() + days);
+  
+  // Usar título del array TITLES de forma circular
+  const titleIndex = (i - 4) % TITLES.length;
+  const title = TITLES[titleIndex];
+  
   opportunities.push({
-    id: i, title: `Oportunidad ${i}`, institution: 'Institución Pública', budget_min: 50000, budget_max: 300000,
-    deadline: deadline.toISOString().split('T')[0], deadlineDate: deadline, status: days < 30 ? 'closing' : 'open',
+    id: i, 
+    title: title,
+    institution: 'Institución Pública Regional',
+    budget_min: 50000 + Math.random() * 250000,
+    budget_max: 150000 + Math.random() * 850000,
+    deadline: deadline.toISOString().split('T')[0], 
+    deadlineDate: deadline, 
+    status: days < 30 ? 'closing' : 'open',
     category: ['obras', 'servicios', 'suministros', 'subvenciones'][Math.floor(Math.random() * 4)],
-    description: `Descripción oportunidad ${i}`, requirements: ['Req1', 'Req2'], documents: ['propuesta', 'presupuesto']
+    description: `${title} - Proyecto de mejora e innovación infraestructural`, 
+    requirements: ['Certificado de constitución', 'DNI representante', 'Propuesta técnica', 'Presupuesto detallado'], 
+    documents: ['propuesta', 'presupuesto', 'empresa']
   });
 }
 
@@ -71,32 +133,25 @@ function generateToken(userId) {
 function verifyToken(token) {
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-    console.log('✅ Token válido:', decoded.userId);
     return decoded;
   } catch (e) {
-    console.error('❌ Token inválido:', e.message);
     return null;
   }
 }
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
-  console.log('🔍 Auth header:', authHeader ? 'Present' : 'Missing');
-  
   const token = authHeader && authHeader.split(' ')[1];
   if (!token) {
-    console.error('❌ No hay token');
     return res.status(401).json({ error: 'Token required' });
   }
   
   const verified = verifyToken(token);
   if (!verified) {
-    console.error('❌ Token inválido');
     return res.status(403).json({ error: 'Invalid token' });
   }
   
   req.userId = verified.userId;
-  console.log('✅ Usuario autenticado:', req.userId);
   next();
 }
 
@@ -104,7 +159,6 @@ function authenticateToken(req, res, next) {
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
 app.get('/health', (req, res) => {
-  console.log('🏥 Health check');
   res.json({ status: 'Online ✅', opportunities: opportunities.length, users: users.size });
 });
 
@@ -145,10 +199,8 @@ app.post('/api/auth/register', async (req, res) => {
     };
     users.set(email, user);
     const token = generateToken(userId);
-    console.log('✅ Usuario registrado:', email);
     res.status(201).json({ success: true, token, user: { id: user.id, email: user.email, firstName: user.firstName, isPremium: user.isPremium } });
   } catch (e) {
-    console.error('❌ Error registro:', e.message);
     res.status(500).json({ error: 'Error al registrar' });
   }
 });
@@ -164,20 +216,15 @@ app.post('/api/auth/login', async (req, res) => {
     }
     
     const token = generateToken(user.id);
-    console.log('✅ Login exitoso:', email);
     res.json({ success: true, token, user: { id: user.id, email: user.email, firstName: user.firstName, isPremium: user.isPremium } });
   } catch (e) {
-    console.error('❌ Error login:', e.message);
     res.status(500).json({ error: 'Error al iniciar sesión' });
   }
 });
 
 app.post('/api/applications', authenticateToken, (req, res) => {
   try {
-    console.log('📤 POST /api/applications - userId:', req.userId);
-    
     const user = Array.from(users.values()).find(u => u.id === req.userId);
-    console.log('🔍 Usuario encontrado:', user ? user.email : 'NO ENCONTRADO');
     
     if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
     if (!user.isPremium) return res.status(403).json({ error: 'Necesitas PREMIUM para participar' });
@@ -204,20 +251,16 @@ app.post('/api/applications', authenticateToken, (req, res) => {
     };
     
     applications.set(appId, app);
-    console.log('✅ Aplicación guardada:', appId);
     
     res.json({ success: true, applicationId: appId, application: app });
   } catch (e) {
-    console.error('❌ Error al crear aplicación:', e.message);
     res.status(500).json({ error: 'Error al crear aplicación: ' + e.message });
   }
 });
 
 app.get('/api/applications', authenticateToken, (req, res) => {
   try {
-    console.log('📋 GET /api/applications - userId:', req.userId);
     const userApps = Array.from(applications.values()).filter(a => a.userId === req.userId);
-    console.log('✅ Encontradas aplicaciones:', userApps.length);
     res.json({ total: userApps.length, applications: userApps });
   } catch (e) {
     res.status(500).json({ error: 'Error al obtener aplicaciones' });
@@ -232,7 +275,6 @@ app.patch('/api/applications/:id/submit', authenticateToken, (req, res) => {
     
     app.status = 'submitted';
     app.submittedAt = new Date();
-    console.log('✅ Aplicación enviada:', req.params.id);
     res.json({ success: true, application: app });
   } catch (e) {
     res.status(500).json({ error: 'Error al enviar aplicación' });
@@ -248,7 +290,6 @@ app.post('/api/documents', authenticateToken, (req, res) => {
     if (!userDocuments.has(req.userId)) userDocuments.set(req.userId, []);
     userDocuments.get(req.userId).push(doc);
     
-    console.log('✅ Documento guardado:', docId);
     res.json({ success: true, document: doc });
   } catch (e) {
     res.status(500).json({ error: 'Error al guardar documento' });
@@ -258,7 +299,6 @@ app.post('/api/documents', authenticateToken, (req, res) => {
 app.get('/api/documents', authenticateToken, (req, res) => {
   try {
     const docs = userDocuments.get(req.userId) || [];
-    console.log('✅ Documentos encontrados:', docs.length);
     res.json({ total: docs.length, documents: docs });
   } catch (e) {
     res.status(500).json({ error: 'Error al obtener documentos' });
@@ -283,5 +323,5 @@ app.post('/api/payment/create-checkout', authenticateToken, (req, res) => {
   res.json({ success: true, sessionId, checkoutUrl: `https://checkout.stripe.com/pay/${sessionId}` });
 });
 
-app.listen(PORT, () => console.log(`\n🚀 SERVIDOR ONLINE EN PUERTO ${PORT}\n✅ Base de datos en memoria\n✅ ${opportunities.length} oportunidades cargadas\n✅ Usuario test@test.com (PREMIUM) disponible\n`));
+app.listen(PORT, () => console.log(`\n🚀 SERVIDOR ONLINE EN PUERTO ${PORT}\n✅ Base de datos en memoria\n✅ ${opportunities.length} oportunidades cargadas con títulos reales\n✅ Usuario test@test.com (PREMIUM) disponible\n`));
 
