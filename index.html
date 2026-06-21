@@ -136,7 +136,7 @@
     <div class="filters-section" id="filtersSection">
         <div class="filter-group">
             <label>CATEGORÍA</label>
-            <select id="categoryFilter">
+            <select id="categoryFilter" onchange="filterOpportunities()">
                 <option value="">Todas</option>
                 <option value="obras">Obras</option>
                 <option value="servicios">Servicios</option>
@@ -146,7 +146,7 @@
         </div>
         <div class="filter-group">
             <label>ESTADO</label>
-            <select id="statusFilter">
+            <select id="statusFilter" onchange="filterOpportunities()">
                 <option value="">Todos</option>
                 <option value="open">Abierta</option>
                 <option value="closing">Cerrando</option>
@@ -155,7 +155,7 @@
         </div>
         <div class="filter-group">
             <label>PRESUPUESTO MÍNIMO</label>
-            <select id="budgetFilter">
+            <select id="budgetFilter" onchange="filterOpportunities()">
                 <option value="">Cualquiera</option>
                 <option value="1000">Más de €1.000</option>
                 <option value="10000">Más de €10.000</option>
@@ -264,20 +264,28 @@
             { id: 6, title: 'Obras de rehabilitación energética', institution: 'Instituto de Energía', budget: '€200.000', deadline: '2026-08-20', status: 'open', category: 'obras', description: 'Mejora de eficiencia energética en edificios públicos' },
         ];
 
-        function loadOpportunities() {
-            const grid = document.getElementById('opportunitiesGrid');
-            grid.innerHTML = sampleOpportunities.map(opp => `
-                <div class="opportunity-card">
+    async function loadOpportunities() {
+        try {
+            const res = await fetch(`${API_URL}/api/opportunities`);
+            const data = await res.json();
+            const opportunities = data.opportunities || [];
+            const grid = document.getElementById("opportunitiesGrid");
+            if (opportunities.length === 0) {
+                grid.innerHTML = "<p style="grid-column: 1/-1; text-align: center; color: #999;">No hay oportunidades disponibles</p>";
+                return;
+            }
+            grid.innerHTML = opportunities.map(opp => `
+                <div class="opportunity-card" onclick="openOpportunity(${opp.id})">
                     <div class="card-header">
                         <div class="card-title">${opp.title}</div>
                         <div class="card-subtitle">${opp.institution}</div>
                     </div>
                     <div class="card-body">
-                        <div class="card-description">${opp.description}</div>
+                        <div class="card-description">${opp.description.substring(0, 100)}...</div>
                         <div class="card-stats">
                             <div class="stat">
                                 <div class="stat-label">Presupuesto</div>
-                                <div class="stat-value">${opp.budget}</div>
+                                <div class="stat-value">€${(opp.budget_min/1000).toFixed(0)}k - €${(opp.budget_max/1000).toFixed(0)}k</div>
                             </div>
                             <div class="stat">
                                 <div class="stat-label">Plazo</div>
@@ -286,12 +294,16 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <span class="badge badge-${opp.status}">${opp.status === 'open' ? 'ABIERTA' : opp.status === 'closing' ? 'CERRANDO' : 'CERRADA'}</span>
-                        <button class="btn btn-register" style="margin: 0;" onclick="alert('Inicia sesión para participar')">VER</button>
+                        <span class="badge badge-${opp.status}">${opp.status === "open" ? "ABIERTA" : opp.status === "closing" ? "CERRANDO" : "CERRADA"}</span>
+                        <button class="btn btn-register" style="margin: 0;" onclick="event.stopPropagation(); alert("Inicia sesiu00f3n para participar")">VER</button>
                     </div>
                 </div>
-            `).join('');
+            `).join("");
+        } catch (error) {
+            console.error("Error cargando oportunidades:", error);
+            document.getElementById("opportunitiesGrid").innerHTML = "<p style="grid-column: 1/-1; text-align: center; color: red;">Error al cargar licitaciones</p>";
         }
+    }
 
         function openModal(modalId) {
             document.getElementById(modalId).classList.add('active');
@@ -397,6 +409,60 @@
         });
 
         // Cerrar modal al hacer clic fuera
+    
+    async function filterOpportunities() {
+        const category = document.getElementById("categoryFilter")?.value || "";
+        const status = document.getElementById("statusFilter")?.value || "";
+        const budget = document.getElementById("budgetFilter")?.value || "";
+        let url = `${API_URL}/api/opportunities?`;
+        if (category) url += `category=${category}&`;
+        if (status) url += `status=${status}&`;
+        if (budget) url += `budget=${budget}`;
+        try {
+            const res = await fetch(url);
+            const data = await res.json();
+            const opportunities = data.opportunities || [];
+            const grid = document.getElementById("opportunitiesGrid");
+            grid.innerHTML = opportunities.map(opp => `
+                <div class="opportunity-card" onclick="openOpportunity(${opp.id})">
+                    <div class="card-header">
+                        <div class="card-title">${opp.title}</div>
+                        <div class="card-subtitle">${opp.institution}</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-description">${opp.description.substring(0, 100)}...</div>
+                        <div class="card-stats">
+                            <div class="stat"><div class="stat-label">Presupuesto</div><div class="stat-value">€${(opp.budget_min/1000).toFixed(0)}k</div></div>
+                            <div class="stat"><div class="stat-label">Plazo</div><div class="stat-value">${opp.deadline}</div></div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="badge badge-${opp.status}">${opp.status === "open" ? "ABIERTA" : "CERRANDO"}</span>
+                        <button class="btn btn-register" style="margin: 0;" onclick="event.stopPropagation(); alert("Inicia sesiu00f3n")">VER</button>
+                    </div>
+                </div>
+            `).join("");
+        } catch (error) { console.error("Error:", error); }
+    }
+    function openOpportunity(id) { alert("Abre sesiu00f3n para ver detalles"); }
+    async function search() {
+        const query = document.getElementById("searchInput").value;
+        if (!query.trim()) { loadOpportunities(); return; }
+        try {
+            const res = await fetch(`${API_URL}/api/search?q=${encodeURIComponent(query)}`);
+            const data = await res.json();
+            const results = data.results || [];
+            const grid = document.getElementById("opportunitiesGrid");
+            grid.innerHTML = results.map(opp => `
+                <div class="opportunity-card"><div class="card-header"><div class="card-title">${opp.title}</div><div class="card-subtitle">${opp.institution}</div></div>
+                <div class="card-body"><div class="card-description">${opp.description.substring(0, 100)}...</div><div class="card-stats">
+                <div class="stat"><div class="stat-label">Presupuesto</div><div class="stat-value">€${(opp.budget_min/1000).toFixed(0)}k</div></div>
+                <div class="stat"><div class="stat-label">Plazo</div><div class="stat-value">${opp.deadline}</div></div></div></div>
+                <div class="card-footer"><span class="badge badge-${opp.status}">${opp.status === "open" ? "ABIERTA" : "CERRANDO"}</span>
+                <button class="btn btn-register" style="margin: 0;">VER</button></div></div>
+            `).join("");
+        } catch (error) { console.error("Error:", error); }
+    }
         window.onclick = function(event) {
             if (event.target.classList.contains('modal')) {
                 event.target.classList.remove('active');
