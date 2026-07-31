@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Conecta",
-    "slug": "citas-app",
+    "name": "Yapp",
+    "slug": "yapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

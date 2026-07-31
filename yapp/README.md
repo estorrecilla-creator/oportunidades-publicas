@@ -1,8 +1,9 @@
-# Citas App (MVP)
+# Yapp (MVP)
 
-App móvil (Expo / React Native) para crear un perfil con foto y descripción,
-explorar perfiles de otras personas y chatear en tiempo real. Sin swipe/match:
-cualquier persona registrada puede ver los perfiles y escribir a quien quiera.
+App móvil (Expo / React Native) para chatear y conocer gente nueva. No es una
+app de citas: al abrir la app entras directo a una **sala general común para
+todo el mundo**, y además puedes crear/explorar **salas públicas por tema**
+(estilo IRC), tener **chats 1 a 1** y **grupos privados** (estilo WhatsApp).
 
 ## 1. Crear el proyecto de Firebase (gratis)
 
@@ -58,7 +59,10 @@ En la consola de Firebase:
 Estas reglas garantizan que:
 - Cualquier usuario registrado puede ver perfiles ajenos, pero solo puede
   editar el suyo.
-- Solo los dos participantes de un chat pueden leer y escribir sus mensajes.
+- Solo los participantes de un chat (1 a 1 o grupo) pueden leer y escribir
+  sus mensajes; en un grupo, solo su creador puede añadir o quitar miembros.
+- Cualquier usuario registrado puede ver y escribir en las salas públicas
+  (incluida la sala general), y cualquiera puede crear una sala nueva.
 - Solo puedes subir tu propia foto de perfil (máx. 5MB, solo imágenes).
 
 ## 4. Instalar dependencias y arrancar la app
@@ -78,10 +82,18 @@ en tu móvil sin necesidad de publicarla en ninguna tienda.
 - **Registro/login**: email + contraseña (Firebase Authentication).
 - **Crear perfil**: nombre, foto (se sube a Firebase Storage) y descripción
   (se guarda en Firestore, colección `users`).
+- **Pantalla de inicio (pestaña "General")**: sala de chat pública común para
+  todo el mundo, se crea sola la primera vez que alguien entra
+  (colección `rooms`, documento `general`).
 - **Explorar**: lista/cuadrícula con los perfiles de los demás usuarios.
-- **Chat**: al pulsar "Enviar mensaje" en un perfil se crea (o abre) una
-  conversación 1 a 1 (colección `chats` y subcolección `messages`), con
-  mensajes en tiempo real.
+- **Salas**: cualquiera puede crear una sala pública por tema (ej.
+  `#videojuegos`); cualquier usuario puede verla y escribir en ella
+  (colección `rooms`, cada una con su subcolección `messages`).
+- **Chats**: conversaciones 1 a 1 (al pulsar "Enviar mensaje" en un perfil) y
+  grupos privados sin límite de miembros (botón "+ Nuevo grupo", solo puedes
+  añadir a gente con la que ya tengas un chat abierto). El creador del grupo
+  puede eliminar miembros desde "Miembros" dentro del chat. Todo en tiempo
+  real (colección `chats` y subcolección `messages`).
 
 ## 6. Cuando quieras distribuir la app de verdad
 
@@ -100,8 +112,9 @@ cuando decidáis lanzarla de forma oficial.
 src/
   config/       Configuración de Firebase y tema visual (colores, radios...)
   context/      AuthContext: estado de sesión y perfil del usuario
-  navigation/   Navegación (auth stack, tabs principales, stack de perfil/chat)
-  screens/      Pantallas: Login, Register, EditProfile, Explore, ProfileDetail,
-                ChatsList, Chat
-  utils/        Utilidades (generación de ids de chat)
+  navigation/   Navegación (auth stack, tabs principales, stack de detalle)
+  screens/      Login, Register, EditProfile, Explore, ProfileDetail,
+                Room, RoomsList, CreateRoom, ChatsList, Chat, CreateGroup,
+                GroupMembers
+  utils/        Utilidades (generación de ids de chat 1 a 1)
 ```

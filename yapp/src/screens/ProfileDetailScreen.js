@@ -36,6 +36,8 @@ export default function ProfileDetailScreen({ route, navigation }) {
       const chatSnap = await getDoc(chatRef);
       if (!chatSnap.exists()) {
         await setDoc(chatRef, {
+          isGroup: false,
+          createdBy: user.uid,
           participants: [user.uid, profileId],
           participantNames: {
             [user.uid]: myProfile?.name ?? '',
